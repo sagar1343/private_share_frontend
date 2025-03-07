@@ -3,7 +3,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-export const App = () => {
+export const GoogleLoginButton = () => {
   const handleAuth = async (credentialResponse: CredentialResponse) => {
     const response = await axios.post(
       "http://localhost:8000/auth/google-login/",
