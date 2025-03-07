@@ -18,7 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { FolderClosed, Home, LogOut, MoonStar, Settings } from "lucide-react";
+import { FolderClosed, Home, LogOut, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const items = [
