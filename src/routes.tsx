@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "./Layout";
 import Collections from "./pages/Collections";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -14,9 +16,17 @@ const router = createBrowserRouter([
       },
       {
         path: "collections",
-        element: <Collections />,
+        element: (
+          <ProtectedRoute>
+            <Collections />
+          </ProtectedRoute>
+        ),
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

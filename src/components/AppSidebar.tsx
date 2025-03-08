@@ -18,8 +18,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { FolderClosed, Home, LogOut, Settings } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useAuthContext } from "@/context/AuthContext";
+import { FolderClosed, Home, Settings } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const items = [
   {
@@ -32,14 +34,12 @@ const items = [
     url: "/collections",
     icon: FolderClosed,
   },
-  {
-    title: "Log Out",
-    url: "#",
-    icon: LogOut,
-  },
 ];
 
 export function AppSidebar() {
+  const { authenticatedUser, isAuthenticated, logout } = useAuthContext();
+  const navigate = useNavigate();
+
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarContent>
@@ -75,12 +75,35 @@ export function AppSidebar() {
                   <Settings />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>
-                  sagarchakrawarti25@gmail.com
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Log out</DropdownMenuItem>
+              <DropdownMenuContent align="start">
+                {isAuthenticated && (
+                  <>
+                    <DropdownMenuLabel className="flex gap-2 items-center">
+                      <Avatar>
+                        <AvatarImage src={authenticatedUser?.profile_pic} />
+                        <AvatarFallback>
+                          {authenticatedUser?.first_name.slice(0, 2)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <p>{authenticatedUser?.email}</p>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+                <DropdownMenuItem>
+                  {isAuthenticated ? (
+                    <button
+                      onClick={() => {
+                        logout();
+                        navigate("/");
+                      }}
+                    >
+                      Log out
+                    </button>
+                  ) : (
+                    <Link to="/login">Log in</Link>
+                  )}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
