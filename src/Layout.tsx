@@ -8,7 +8,7 @@ export default function Layout() {
     <SidebarProvider>
       <AppSidebar />
       <main className="my-2 w-full">
-        <SidebarTrigger />
+        <SidebarTrigger className="cursor-pointer" />
         <div className="mx-8">
           <Outlet />
         </div>

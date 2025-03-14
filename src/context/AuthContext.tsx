@@ -16,14 +16,14 @@ interface User {
   profile_pic: string;
 }
 
-interface Context {
+interface IAuthContext {
   authenticatedUser: User | null;
   isAuthenticated: boolean;
   login: (credentialResponse: CredentialResponse) => Promise<void>;
   logout: () => void;
 }
 
-const AuthContext = createContext<Context | null>(null);
+const AuthContext = createContext<IAuthContext | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
