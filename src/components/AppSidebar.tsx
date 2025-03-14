@@ -19,7 +19,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuthContext } from "@/context/AuthContext";
-import { FolderClosed, Home, Settings } from "lucide-react";
+import { FolderClosed, Home, LogIn, LogOut, Settings } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
@@ -82,7 +82,9 @@ export function AppSidebar() {
                       <Avatar>
                         <AvatarImage src={authenticatedUser?.profile_pic} />
                         <AvatarFallback>
-                          {authenticatedUser?.first_name.slice(0, 2)}
+                          {authenticatedUser?.first_name
+                            .slice(0, 2)
+                            .toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       <p>{authenticatedUser?.email}</p>
@@ -93,15 +95,21 @@ export function AppSidebar() {
                 <DropdownMenuItem>
                   {isAuthenticated ? (
                     <button
+                      className="flex items-center flex-nowrap gap-2 cursor-pointer w-full text-left"
                       onClick={() => {
                         logout();
                         navigate("/");
                       }}
                     >
-                      Log out
+                      <LogOut /> Log out
                     </button>
                   ) : (
-                    <Link to="/login">Log in</Link>
+                    <Link
+                      to="/login"
+                      className="flex items-center flex-nowrap gap-2"
+                    >
+                      <LogIn /> Log in
+                    </Link>
                   )}
                 </DropdownMenuItem>
               </DropdownMenuContent>
