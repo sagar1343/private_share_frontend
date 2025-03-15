@@ -17,17 +17,19 @@ interface User {
 }
 
 interface IAuthContext {
+  loading: boolean;
   authenticatedUser: User | null;
   isAuthenticated: boolean;
   login: (credentialResponse: CredentialResponse) => Promise<void>;
   logout: () => void;
 }
 
-const AuthContext = createContext<IAuthContext | null>(null);
+const authContext = createContext<IAuthContext | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
   const [authenticatedUser, setAuthenticatedUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const login = async (credentialResponse: CredentialResponse) => {
     try {
@@ -51,6 +53,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Failed to fetch user:", error);
       logout();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,18 +72,18 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ authenticatedUser, isAuthenticated, login, logout }}
+    <authContext.Provider
+      value={{ loading, authenticatedUser, isAuthenticated, login, logout }}
     >
       {children}
-    </AuthContext.Provider>
+    </authContext.Provider>
   );
 }
 
 export const useAuthContext = () => {
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
+  const context = useContext(authContext);
+  if (!context) {
     throw new Error("Auth context not defined");
   }
-  return authContext;
+  return context;
 };

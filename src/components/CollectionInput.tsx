@@ -1,17 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/context/AuthContext";
-import useCollection from "@/hooks/useCollections";
+import { useCollections } from "@/context/CollectionsContext";
 import api from "@/services/api";
 import { Folder } from "lucide-react";
 import { FormEvent, useRef } from "react";
 
-interface Props {
-  setCreating: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function CollectionInput({ setCreating }: Props) {
+export default function CollectionInput() {
   const { authenticatedUser } = useAuthContext();
-  const { refreshCollections } = useCollection();
+  const { setCreating } = useCollections();
   const titleRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(event: FormEvent) {
@@ -22,10 +18,7 @@ export default function CollectionInput({ setCreating }: Props) {
         `api/users/${authenticatedUser?.id}/collections/`,
         { title: titleRef.current.value, user: authenticatedUser?.id }
       );
-      if (response.status === 201) {
-        refreshCollections();
-        setCreating(false);
-      }
+      if (response.status === 201) setCreating(false);
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +28,11 @@ export default function CollectionInput({ setCreating }: Props) {
     <figure className="flex flex-col items-center">
       <Folder size={82} fill="#008CFC" stroke="1" />
       <form onSubmit={handleSubmit}>
-        <Input autoFocus ref={titleRef} className="max-w-[100px]" />
+        <Input
+          autoFocus
+          ref={titleRef}
+          className="max-w-[100px] focus-visible:ring-0"
+        />
       </form>
     </figure>
   );

@@ -1,10 +1,8 @@
+import { useCollections } from "@/context/CollectionsContext";
 import { FolderPlus } from "lucide-react";
 
-interface Props {
-  setCreating: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function CreateCollectionButton({ setCreating }: Props) {
+export default function CreateCollectionButton() {
+  const { setCreating } = useCollections();
   return (
     <FolderPlus
       onClick={() => setCreating(true)}
