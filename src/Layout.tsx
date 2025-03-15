@@ -1,7 +1,8 @@
 import { AppSidebar } from "@/components/AppSidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { Outlet } from "react-router-dom";
-import ThemeToggle from "./components/ThemeToggle";
 
 export default function Layout() {
   return (
@@ -16,6 +17,7 @@ export default function Layout() {
           <ThemeToggle />
         </div>
       </main>
+      <Toaster />
     </SidebarProvider>
   );
 }
