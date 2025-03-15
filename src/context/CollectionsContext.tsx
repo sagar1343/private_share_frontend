@@ -13,7 +13,9 @@ interface ICollectionContext {
   collections: ICollection[];
   isLoading: boolean;
   isCreating: boolean;
+  isDeleting: boolean;
   setCreating: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CollectionsContext = createContext<ICollectionContext | null>(null);
@@ -26,6 +28,7 @@ export default function CollectionsProvider({ children }: Props) {
   const [collections, setCollections] = useState<ICollection[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [isCreating, setCreating] = useState(false);
+  const [isDeleting, setDeleting] = useState(false);
   const { authenticatedUser } = useAuthContext();
 
   async function fetchCollection() {
@@ -42,14 +45,21 @@ export default function CollectionsProvider({ children }: Props) {
     }
   }
   useEffect(() => {
-    if (authenticatedUser?.id && isCreating === false) {
+    if (authenticatedUser?.id && isCreating === false && isDeleting === false) {
       fetchCollection();
     }
-  }, [isCreating, authenticatedUser]);
+  }, [isCreating, authenticatedUser, isDeleting]);
 
   return (
     <CollectionsContext.Provider
-      value={{ collections, isLoading, isCreating, setCreating }}
+      value={{
+        collections,
+        isLoading,
+        isCreating,
+        setCreating,
+        isDeleting,
+        setDeleting,
+      }}
     >
       {children}
     </CollectionsContext.Provider>

@@ -20,7 +20,11 @@ export default function Collections() {
         {isCreating && <CollectionInput />}
 
         {collections.map((collection) => (
-          <Collection key={collection.id} title={collection.title} />
+          <Collection
+            key={collection.id}
+            collectionId={collection.id}
+            title={collection.title}
+          />
         ))}
       </div>
     </>
