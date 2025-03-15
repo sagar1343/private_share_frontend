@@ -2,8 +2,10 @@ import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/context/AuthContext";
 import { useCollections } from "@/context/CollectionsContext";
 import api from "@/services/api";
+import { AxiosError } from "axios";
 import { Folder } from "lucide-react";
 import { FormEvent, useRef } from "react";
+import { toast } from "sonner";
 
 export default function CollectionInput() {
   const { authenticatedUser } = useAuthContext();
@@ -19,8 +21,15 @@ export default function CollectionInput() {
         { title: titleRef.current.value, user: authenticatedUser?.id }
       );
       if (response.status === 201) setCreating(false);
-    } catch (error) {
-      console.log(error);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.title || "An error occurred", {
+          action: {
+            label: "Close",
+            onClick: () => toast.dismiss(),
+          },
+        });
+      }
     }
   }
 
