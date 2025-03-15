@@ -12,7 +12,7 @@ export default function Layout() {
         <div className="mx-8">
           <Outlet />
         </div>
-        <div className="fixed top-8 right-8">
+        <div className="fixed top-2 right-8">
           <ThemeToggle />
         </div>
       </main>
