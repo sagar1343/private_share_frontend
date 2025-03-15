@@ -71,7 +71,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton className="cursor-pointer">
                   <Settings />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

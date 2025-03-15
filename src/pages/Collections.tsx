@@ -2,21 +2,22 @@ import Collection from "@/components/Collection";
 import CollectionInput from "@/components/CollectionInput";
 import CreateCollectionButton from "@/components/CreateCollectionButton";
 import Heading from "@/components/Heading";
-import useCollection from "@/hooks/useCollections";
-import { useState } from "react";
+import Loader from "@/components/Loader";
+import { useCollections } from "@/context/CollectionsContext";
 
 export default function Collections() {
-  const { collections } = useCollection();
-  const [isCreating, setCreating] = useState(false);
+  const { collections, isLoading, isCreating } = useCollections();
+
+  if (isLoading) return <Loader />;
   return (
     <>
       <div>
         <Heading className="flex items-center gap-2">
-          Collections <CreateCollectionButton setCreating={setCreating} />
+          Collections <CreateCollectionButton />
         </Heading>
       </div>
       <div className="mt-12 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 justify-items-center gap-6">
-        {isCreating && <CollectionInput setCreating={setCreating} />}
+        {isCreating && <CollectionInput />}
 
         {collections.map((collection) => (
           <Collection key={collection.id} title={collection.title} />
