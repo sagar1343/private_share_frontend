@@ -29,6 +29,10 @@ export default function RenameInput({
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (!inputRef.current) return;
+    if (newTitle === title) {
+      onRenameComplete();
+      return;
+    }
 
     try {
       const response = await api.patch(
