@@ -17,7 +17,7 @@ export default function Layout() {
           <ThemeToggle />
         </div>
       </main>
-      <Toaster />
+      <Toaster richColors />
     </SidebarProvider>
   );
 }

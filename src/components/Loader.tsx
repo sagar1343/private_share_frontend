@@ -8,7 +8,7 @@ export default function Loader() {
         loop
         speed={0.8}
         autoplay
-        className="size-64"
+        className="size-48"
       />
     </div>
   );
