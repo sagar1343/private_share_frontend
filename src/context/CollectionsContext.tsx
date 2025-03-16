@@ -14,8 +14,10 @@ interface ICollectionContext {
   isLoading: boolean;
   isCreating: boolean;
   isDeleting: boolean;
+  isUpdating: boolean;
   setCreating: React.Dispatch<React.SetStateAction<boolean>>;
   setDeleting: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdating: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CollectionsContext = createContext<ICollectionContext | null>(null);
@@ -29,6 +31,7 @@ export default function CollectionsProvider({ children }: Props) {
   const [isLoading, setLoading] = useState(true);
   const [isCreating, setCreating] = useState(false);
   const [isDeleting, setDeleting] = useState(false);
+  const [isUpdating, setUpdating] = useState(false);
   const { authenticatedUser } = useAuthContext();
 
   async function fetchCollection() {
@@ -45,10 +48,15 @@ export default function CollectionsProvider({ children }: Props) {
     }
   }
   useEffect(() => {
-    if (authenticatedUser?.id && isCreating === false && isDeleting === false) {
+    if (
+      authenticatedUser?.id &&
+      isCreating === false &&
+      isDeleting === false &&
+      isUpdating === false
+    ) {
       fetchCollection();
     }
-  }, [isCreating, authenticatedUser, isDeleting]);
+  }, [isCreating, authenticatedUser, isDeleting, isUpdating]);
 
   return (
     <CollectionsContext.Provider
@@ -59,6 +67,8 @@ export default function CollectionsProvider({ children }: Props) {
         setCreating,
         isDeleting,
         setDeleting,
+        isUpdating,
+        setUpdating,
       }}
     >
       {children}

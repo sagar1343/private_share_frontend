@@ -1,22 +1,31 @@
-import { useState } from "react";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { useCollections } from "@/context/CollectionsContext";
+import { useState } from "react";
 import DeleteCollectionDialog from "../components/DeleteCollectionModal";
 
 interface ContextMenuProps {
   children: React.ReactNode;
   collectionId: number;
+  setRenamingCollectionId: (id: number | null) => void;
 }
 
 export default function ContextMenuComponent({
   children,
   collectionId,
+  setRenamingCollectionId,
 }: ContextMenuProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { setUpdating } = useCollections();
+
+  const handleRenaming = () => {
+    setUpdating(true);
+    setRenamingCollectionId(collectionId);
+  };
 
   return (
     <>
@@ -27,7 +36,7 @@ export default function ContextMenuComponent({
           <ContextMenuItem onClick={() => setIsDialogOpen(true)}>
             Delete
           </ContextMenuItem>
-          <ContextMenuItem>Rename</ContextMenuItem>
+          <ContextMenuItem onClick={handleRenaming}>Rename</ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
 
