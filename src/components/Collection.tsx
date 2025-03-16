@@ -18,7 +18,7 @@ export default function Collection({ title, collectionId }: Props) {
       collectionId={collectionId}
       setRenamingCollectionId={setRenamingCollectionId}
     >
-      <figure className="flex flex-col items-center p-4 rounded-lg shadow-md">
+      <figure className="flex flex-col items-center cursor-pointer p-2 rounded-xl">
         <Folder size={82} fill="#008CFC" stroke="1" />
         {renamingCollectionId === collectionId ? (
           <RenameInput
@@ -27,7 +27,7 @@ export default function Collection({ title, collectionId }: Props) {
             onRenameComplete={() => setRenamingCollectionId(null)}
           />
         ) : (
-          <figcaption className="mt-2 text-lg font-semibold">
+          <figcaption className="max-w-[100px] overflow-hidden whitespace-nowrap overflow-ellipsis">
             {title}
           </figcaption>
         )}
