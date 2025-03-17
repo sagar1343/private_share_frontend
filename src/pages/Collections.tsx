@@ -4,9 +4,12 @@ import CreateCollectionButton from "@/components/CreateCollectionButton";
 import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
 import { useCollections } from "@/context/CollectionsContext";
+import clsx from "clsx";
+import { useState } from "react";
 
 export default function Collections() {
   const { collections, isLoading, isCreating } = useCollections();
+  const [active, setActive] = useState(-1);
 
   if (isLoading) return <Loader />;
   return (
@@ -16,17 +19,25 @@ export default function Collections() {
           Collections <CreateCollectionButton />
         </Heading>
       </div>
-      <div className="mt-12 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 justify-items-center gap-6">
-        {isCreating && <CollectionInput />}
+      <ul className="mt-12 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 justify-items-center gap-6">
+        {isCreating && (
+          <li>
+            <CollectionInput />
+          </li>
+        )}
 
         {collections.map((collection) => (
-          <Collection
+          <li
             key={collection.id}
-            collectionId={collection.id}
-            title={collection.title}
-          />
+            onClick={() => setActive(collection.id)}
+            className={clsx("rounded-md", {
+              "bg-white/20": active === collection.id,
+            })}
+          >
+            <Collection collection={collection} />
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }

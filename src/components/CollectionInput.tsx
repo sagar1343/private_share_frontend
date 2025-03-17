@@ -23,12 +23,7 @@ export default function CollectionInput() {
       if (response.status === 201) setCreating(false);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data?.title || "An error occurred", {
-          action: {
-            label: "Close",
-            onClick: () => toast.dismiss(),
-          },
-        });
+        toast.info(error.response?.data?.title || "An error occurred", {});
       }
     }
   }
