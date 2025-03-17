@@ -28,12 +28,13 @@ export default function Collections() {
 
         {collections.map((collection) => (
           <li
+            key={collection.id}
             onClick={() => setActive(collection.id)}
             className={clsx("rounded-md", {
               "bg-white/20": active === collection.id,
             })}
           >
-            <Collection key={collection.id} collection={collection} />
+            <Collection collection={collection} />
           </li>
         ))}
       </ul>

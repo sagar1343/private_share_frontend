@@ -1,8 +1,9 @@
+import useFileSize from "@/hooks/useFileSize";
 import { IFile } from "@/types/File";
-import axios from "axios";
 import { ChevronRight, Dot } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "./ui/button";
 import {
   Card,
   CardDescription,
@@ -10,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Button } from "./ui/button";
 
 interface Props {
   file: IFile;
@@ -18,18 +18,13 @@ interface Props {
 }
 
 export default function FileCard({ file, collectionId }: Props) {
-  const [fileSize, setFileSize] = useState<number | null>(null);
+  const [fileSize, setFileSize] = useState<string | null>(null);
   const navigate = useNavigate();
-
-  async function getFileDetails(url: string) {
-    const response = await axios.get(url, { responseType: "blob" });
-    const size_in_MB = response.data.size / (1024 * 1024);
-    setFileSize(size_in_MB);
-  }
+  const getFileSize = useFileSize();
 
   useEffect(() => {
-    getFileDetails(file.file);
-  }, []);
+    getFileSize(file.file).then((data) => setFileSize(data.toFixed(2)));
+  }, [file]);
 
   return (
     <Card className="flex-row justify-between">
@@ -40,7 +35,7 @@ export default function FileCard({ file, collectionId }: Props) {
             Added on {new Date(file.created_at).toDateString()}
           </span>
           <Dot className="max-lg:hidden" />
-          <span>{fileSize?.toFixed(2)} MB</span>
+          <span>{fileSize} MB</span>
           <Dot />
           <span className="text-red-400">
             Expires in {new Date(file.expiration_time).toDateString()}

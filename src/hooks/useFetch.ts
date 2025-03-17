@@ -8,6 +8,7 @@ export default function useFetch<T>(endpoint: string) {
   const [isPending, startTransition] = useTransition();
 
   async function fetchData() {
+    if (!endpoint) return;
     startTransition(async () => {
       try {
         const response = await api.get<T>(endpoint);
