@@ -1,7 +1,7 @@
 import { ICollection } from "@/types/Collection";
 import { Folder } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ContextMenuComponent from "../components/ContextMenu";
 import RenameInput from "../components/RenameCollectionInput";
 
@@ -10,7 +10,7 @@ interface Props {
   collection: ICollection;
 }
 
-export default function Collection({ collection, collectionId }: Props) {
+export default function Collection({ collection }: Props) {
   const navigate = useNavigate();
 
   const [renamingCollectionId, setRenamingCollectionId] = useState<
@@ -19,18 +19,18 @@ export default function Collection({ collection, collectionId }: Props) {
 
   return (
     <ContextMenuComponent
-      collectionId={collectionId}
+      collectionId={collection.id}
       setRenamingCollectionId={setRenamingCollectionId}
     >
       <figure
-      className="flex flex-col items-center cursor-pointer p-2 rounded-xl"
-      onDoubleClick={() => navigate(`/collections/${collection.id}`)}
-    >
+        className="flex flex-col items-center cursor-pointer p-2 rounded-xl"
+        onDoubleClick={() => navigate(`/collections/${collection.id}`)}
+      >
         <Folder size={82} fill="#008CFC" stroke="1" />
-        {renamingCollectionId === collectionId ? (
+        {renamingCollectionId === collection.id ? (
           <RenameInput
             title={collection.title}
-            collectionId={collectionId}
+            collectionId={collection.id}
             onRenameComplete={() => setRenamingCollectionId(null)}
           />
         ) : (
