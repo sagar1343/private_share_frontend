@@ -4,6 +4,15 @@ import { IFile } from "@/types/File";
 import { Dot, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 
+const options: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  timeZone: "UTC",
+};
+
 export default function FileDetailsHeader({ file }: { file: IFile }) {
   const getFileSize = useFileSize();
   const [size, setSize] = useState<string | null>(null);
@@ -23,10 +32,7 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
       <div className="mt-2 text-sm font-normal flex items-center">
         <span>File size {size} MB</span>
         <Dot />
-        <span>
-          Added on {date.toDateString()} at{" "}
-          {date.toLocaleTimeString().slice(0, 5)}
-        </span>
+        <span>Added on {date.toLocaleString("en-US", options)}</span>
       </div>
     </Heading>
   );

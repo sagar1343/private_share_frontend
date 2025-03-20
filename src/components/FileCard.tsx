@@ -27,7 +27,7 @@ export default function FileCard({ file, collectionId }: Props) {
   }, [file]);
 
   return (
-    <Card className="flex-row justify-between">
+    <Card className="flex-row items-center justify-between border-primary">
       <CardHeader className="grow">
         <CardTitle>{file.file_name}</CardTitle>
         <CardDescription className="flex items-center max-sm:hidden">
@@ -37,14 +37,14 @@ export default function FileCard({ file, collectionId }: Props) {
           <Dot className="max-lg:hidden" />
           <span>{fileSize} MB</span>
           <Dot />
-          <span className="text-red-400">
+          <span className="text-primary">
             Expires in {new Date(file.expiration_time).toDateString()}
           </span>
         </CardDescription>
       </CardHeader>
       <CardFooter>
         <Button
-          variant="ghost"
+          variant="default"
           className="cursor-pointer"
           onClick={() =>
             navigate(`/collections/${collectionId}/files/${file.id}`)

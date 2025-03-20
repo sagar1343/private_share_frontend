@@ -15,13 +15,13 @@ import api from "@/services/api";
 interface DeleteCollectionDialogProps {
   collectionId: number;
   isOpen: boolean;
-  onClose: () => void;
+  handleClose: () => void;
 }
 
 export default function DeleteCollectionDialog({
   collectionId,
   isOpen,
-  onClose,
+  handleClose,
 }: DeleteCollectionDialogProps) {
   const { authenticatedUser } = useAuthContext();
   const { setDeleting } = useCollections();
@@ -36,12 +36,12 @@ export default function DeleteCollectionDialog({
       console.log(error);
     } finally {
       setDeleting(false);
-      onClose();
+      handleClose();
     }
   };
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={onClose}>
+    <AlertDialog open={isOpen} onOpenChange={handleClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="flex justify-center ">
@@ -53,13 +53,13 @@ export default function DeleteCollectionDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <div className="flex justify-around w-full">
-            <AlertDialogCancel onClick={onClose} className="cursor-pointer">
+          <div className="flex justify-center space-x-5">
+            <AlertDialogCancel onClick={handleClose} className="cursor-pointer">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-white text-black hover:bg-gray-200 cursor-pointer"
+              className="bg-primary text-white hover:bg-primary/80 cursor-pointer"
             >
               Delete
             </AlertDialogAction>

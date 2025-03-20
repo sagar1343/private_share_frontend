@@ -5,7 +5,9 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { useCollections } from "@/context/CollectionsContext";
+import { ExternalLink, FolderPen, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import DeleteCollectionDialog from "../components/DeleteCollectionModal";
 
 interface ContextMenuProps {
@@ -21,7 +23,7 @@ export default function ContextMenuComponent({
 }: ContextMenuProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { setUpdating } = useCollections();
-
+  const navigate = useNavigate();
   const handleRenaming = () => {
     setUpdating(true);
     setRenamingCollectionId(collectionId);
@@ -32,18 +34,24 @@ export default function ContextMenuComponent({
       <ContextMenu>
         <ContextMenuTrigger>{children}</ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem>Open</ContextMenuItem>
+          <ContextMenuItem onClick={() => navigate("/")}>
+            <ExternalLink /> Open
+          </ContextMenuItem>
+          <ContextMenuItem onClick={handleRenaming}>
+            <FolderPen />
+            Rename
+          </ContextMenuItem>
           <ContextMenuItem onClick={() => setIsDialogOpen(true)}>
+            <Trash2 />
             Delete
           </ContextMenuItem>
-          <ContextMenuItem onClick={handleRenaming}>Rename</ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
 
       <DeleteCollectionDialog
         collectionId={collectionId}
         isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        handleClose={() => setIsDialogOpen(false)}
       />
     </>
   );
