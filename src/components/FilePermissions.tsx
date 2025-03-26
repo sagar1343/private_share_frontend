@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import useFetch from "@/hooks/useFetch";
+import { useState } from "react";
 import InfoButton from "./InfoButton";
 import { Button } from "./ui/button";
-import useFetch from "@/hooks/useFetch";
 
 export default function FilePermissions({ fileId }: { fileId: number }) {
   const [isEdit, setEdit] = useState(false);
