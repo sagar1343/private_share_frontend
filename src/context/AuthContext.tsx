@@ -1,5 +1,6 @@
 import api from "@/services/api";
 import { CredentialResponse } from "@react-oauth/google";
+import { AxiosError } from "axios";
 import {
   createContext,
   ReactNode,
@@ -7,6 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 interface User {
   id: number;
@@ -39,9 +41,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
       localStorage.setItem("tokens", JSON.stringify(response.data));
 
-      fetchUser();
-    } catch (error) {
-      console.error("Login failed:", error);
+      await fetchUser();
+      toast.success("Login Successfull");
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        toast.error(
+          `Login failed: ${error.response?.data?.message ?? "Server Error"}`
+        );
+      }
     }
   };
 
@@ -63,6 +70,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("tokens");
     setAuthenticated(false);
     setAuthenticatedUser(null);
+    toast.success("Logout Successfull");
   };
 
   useEffect(() => {

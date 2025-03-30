@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import collectionReducer from "../features/collection/collectionSlice";
 
-const Store = configureStore({
+const store = configureStore({
   reducer: {
     UserCollections: collectionReducer,
   },
 });
-export type RootState = ReturnType<typeof Store.getState>;
-export type AppDispatch = typeof Store.dispatch;
-export default Store;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export default store;
