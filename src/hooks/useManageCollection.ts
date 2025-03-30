@@ -56,5 +56,24 @@ export default function useManageCollection() {
       }
     }
   }
-  return { handleCreate, handleRename };
+
+  const handleDelete = async (
+    collectionId: number,
+    handleClose: () => void
+  ) => {
+    dispatch(setActionStatus(CollectionActionStatus.DELETING));
+    try {
+      await api.delete(
+        `api/users/${authenticatedUser?.id}/collections/${collectionId}/`
+      );
+      toast.success("Collection deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete collection, Try later.");
+    } finally {
+      dispatch(setActionStatus(CollectionActionStatus.IDLE));
+      handleClose();
+    }
+  };
+
+  return { handleCreate, handleRename, handleDelete };
 }
