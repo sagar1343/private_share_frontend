@@ -6,6 +6,7 @@ import CollectionDetails from "./pages/CollectionDetails";
 import Collections from "./pages/Collections";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Recieved from "./pages/Recieved";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <FileDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "recieved",
+        element: (
+          <ProtectedRoute>
+            <Recieved />
           </ProtectedRoute>
         ),
       },

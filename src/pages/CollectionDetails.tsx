@@ -1,5 +1,5 @@
+import CollectionBreadCrumb from "@/components/CollectionBreadCrumb";
 import FileContainer from "@/components/FileContainer";
-import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
 import { useAuthContext } from "@/context/AuthContext";
 import useFetch from "@/hooks/useFetch";
@@ -8,18 +8,17 @@ import { useParams } from "react-router-dom";
 
 export default function CollectionDetails() {
   const { authenticatedUser } = useAuthContext();
-  const { id: collectionId } = useParams();
+  const { id } = useParams();
 
-  const { data: collection, loading } = useFetch<ICollection>(
-    `api/users/${authenticatedUser?.id}/collections/${collectionId}`
+  const { data: collection, loading,errors } = useFetch<ICollection>(
+    `api/users/${authenticatedUser?.id}/collections/${id}`
   );
 
+  if(errors) console.log(errors)
   if (loading) return <Loader />;
   return (
     <div>
-      <Heading className="capitalize flex items-center justify-between">
-        {collection?.title}
-      </Heading>
+      <CollectionBreadCrumb id={id} title={collection?.title!} />
       <FileContainer className="mt-12" collectionId={collection?.id!} />
     </div>
   );
