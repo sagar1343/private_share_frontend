@@ -44,7 +44,7 @@ export default function ContextMenuComponent({
         <ContextMenuContent>
           <ContextMenuItem
             className="cursor-pointer"
-            onClick={() => navigate("/")}
+            onClick={() => navigate(`/collections/${collectionId}`)}
           >
             <ExternalLink /> Open
           </ContextMenuItem>
