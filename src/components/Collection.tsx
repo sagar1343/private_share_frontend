@@ -1,40 +1,49 @@
+import useManageCollection from "@/hooks/useManageCollection";
 import { ICollection } from "@/types/Collection";
 import { Folder } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContextMenuComponent from "../components/ContextMenu";
-import RenameInput from "../components/RenameCollectionInput";
+import CollectionInput from "./CollectionInput";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { CollectionActionStatus } from "@/features/collection/collectionSlice";
 
 interface Props {
-  active?: boolean;
+  isActive: boolean;
   collection: ICollection;
 }
 
-export default function Collection({ collection }: Props) {
+export default function Collection({ collection, isActive }: Props) {
   const navigate = useNavigate();
-
-  const [renamingCollectionId, setRenamingCollectionId] = useState<
-    number | null
-  >(null);
-
+  const [renameId, setRenameId] = useState<number | null>(null);
+  const { handleRename } = useManageCollection();
+  const { actionStatus } = useSelector(
+    (state: RootState) => state.UserCollections
+  );
+  function handleDoubleClick() {
+    if (actionStatus !== CollectionActionStatus.RENAMING)
+      navigate(`/collections/${collection.id}`);
+  }
   return (
     <ContextMenuComponent
       collectionId={collection.id}
-      setRenamingCollectionId={setRenamingCollectionId}
+      setRenameId={setRenameId}
+      isActive={isActive}
     >
       <figure
         className="flex flex-col items-center cursor-pointer p-2 rounded-xl"
-        onDoubleClick={() => navigate(`/collections/${collection.id}`)}
+        onDoubleClick={() => handleDoubleClick()}
       >
         <Folder size={82} fill="#008CFC" stroke="1" />
-        {renamingCollectionId === collection.id ? (
-          <RenameInput
-            title={collection.title}
-            collectionId={collection.id}
-            onRenameComplete={() => setRenamingCollectionId(null)}
+        {renameId === collection.id ? (
+          <CollectionInput
+            key={renameId}
+            defaultValues={collection}
+            onSubmit={(data) => handleRename(collection, setRenameId, data)}
           />
         ) : (
-          <figcaption className="max-w-[100px] overflow-hidden whitespace-nowrap overflow-ellipsis">
+          <figcaption className="max-w-[100px] h-9 overflow-hidden whitespace-nowrap overflow-ellipsis">
             {collection.title}
           </figcaption>
         )}

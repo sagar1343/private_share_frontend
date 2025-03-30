@@ -18,7 +18,7 @@ import api from "@/services/api";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 
-interface DeleteCollectionDialogProps {
+interface Props {
   collectionId: number;
   isOpen: boolean;
   handleClose: () => void;
@@ -28,7 +28,7 @@ export default function DeleteCollectionDialog({
   collectionId,
   isOpen,
   handleClose,
-}: DeleteCollectionDialogProps) {
+}: Props) {
   const { authenticatedUser } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -40,7 +40,7 @@ export default function DeleteCollectionDialog({
       );
       toast.success("Collection deleted successfully");
     } catch (error) {
-      toast.error("Failed to delete collection, Try later.")
+      toast.error("Failed to delete collection, Try later.");
     } finally {
       dispatch(setActionStatus(CollectionActionStatus.IDLE));
       handleClose();
