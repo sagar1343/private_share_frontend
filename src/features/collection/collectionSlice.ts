@@ -28,6 +28,7 @@ export const fetchCollections = createAsyncThunk(
     return response.data;
   }
 );
+
 export const CollectionSlice = createSlice({
   name: "collection",
   initialState,
@@ -36,15 +37,14 @@ export const CollectionSlice = createSlice({
       state.actionStatus = action.payload;
     },
   },
-
   extraReducers: (builder) => {
     builder
       .addCase(fetchCollections.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchCollections.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.collections = action.payload;
+        state.isLoading = false;
       })
       .addCase(fetchCollections.rejected, (state, action) => {
         state.isLoading = false;

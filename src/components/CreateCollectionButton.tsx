@@ -9,11 +9,9 @@ import { useDispatch } from "react-redux";
 export default function CreateCollectionButton() {
   const dispatch = useDispatch<AppDispatch>();
   return (
-    <FolderPlus
-      onClick={() => dispatch(setActionStatus(CollectionActionStatus.CREATING))}
-      size={32}
-      cursor="pointer"
-      className="hover:text-primary"
-    />
+    <button onClick={() => dispatch(setActionStatus(CollectionActionStatus.CREATING))} className="hover:text-primary">
+      <FolderPlus size={82} cursor="pointer" />
+      <p>Create New</p>
+    </button>
   );
 }

@@ -50,12 +50,7 @@ export default function RenameInput({
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data?.title || "An error occurred", {
-          action: {
-            label: "Close",
-            onClick: () => toast.dismiss(),
-          },
-        });
+        toast.error(error.response?.data?.title || "An error occurred");
       }
     }
   }

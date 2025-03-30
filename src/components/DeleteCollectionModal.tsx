@@ -15,6 +15,7 @@ import {
   setActionStatus,
 } from "@/features/collection/collectionSlice";
 import api from "@/services/api";
+import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 
 interface DeleteCollectionDialogProps {
@@ -37,8 +38,9 @@ export default function DeleteCollectionDialog({
       await api.delete(
         `api/users/${authenticatedUser?.id}/collections/${collectionId}/`
       );
+      toast.success("Collection deleted successfully");
     } catch (error) {
-      console.log(error);
+      toast.error("Failed to delete collection, Try later.")
     } finally {
       dispatch(setActionStatus(CollectionActionStatus.IDLE));
       handleClose();
