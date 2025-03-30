@@ -5,16 +5,17 @@ import AuthProvider from "./context/AuthContext.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
 import "./global.css";
 import router from "./routes.tsx";
-import CollectionsProvider from "./context/CollectionsContext.tsx";
+import { Provider } from "react-redux";
+import Store from "./app/store.ts";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AuthProvider>
-      <CollectionsProvider>
+    <Provider store={Store}>
+      <AuthProvider>
         <ThemeProvider defaultTheme="dark" storageKey="private_share_theme">
           <RouterProvider router={router} />
         </ThemeProvider>
-      </CollectionsProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </Provider>
   </StrictMode>
 );

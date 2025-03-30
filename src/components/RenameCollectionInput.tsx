@@ -1,9 +1,14 @@
+import { AppDispatch } from "@/app/store";
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/context/AuthContext";
-import { useCollections } from "@/context/CollectionsContext";
+import {
+  CollectionActionStatus,
+  setActionStatus,
+} from "@/features/collection/collectionSlice";
 import api from "@/services/api";
 import { AxiosError } from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
 interface RenameInputProps {
@@ -20,7 +25,7 @@ export default function RenameInput({
   const [newTitle, setNewTitle] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);
   const { authenticatedUser } = useAuthContext();
-  const { setUpdating } = useCollections();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -40,7 +45,7 @@ export default function RenameInput({
         { title: newTitle }
       );
       if (response.status === 200) {
-        setUpdating(false);
+        dispatch(setActionStatus(CollectionActionStatus.IDLE));
         onRenameComplete();
       }
     } catch (error: unknown) {
