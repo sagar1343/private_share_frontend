@@ -34,6 +34,11 @@ const items = [
     url: "/collections",
     icon: FolderClosed,
   },
+  {
+    title: "Recieved Files",
+    url: "/recieved",
+    icon: FolderClosed,
+  },
 ];
 
 export function AppSidebar() {

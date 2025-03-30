@@ -11,6 +11,7 @@ import {
 import { useAuthContext } from "@/context/AuthContext";
 import { useCollections } from "@/context/CollectionsContext";
 import api from "@/services/api";
+import { toast } from "sonner";
 
 interface DeleteCollectionDialogProps {
   collectionId: number;
@@ -32,8 +33,9 @@ export default function DeleteCollectionDialog({
       await api.delete(
         `api/users/${authenticatedUser?.id}/collections/${collectionId}/`
       );
+      toast.success("Collection deleted successfully");
     } catch (error) {
-      console.log(error);
+      toast.error("Failed to delete collection, Try later.")
     } finally {
       setDeleting(false);
       handleClose();
