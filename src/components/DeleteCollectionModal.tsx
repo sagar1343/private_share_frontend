@@ -1,3 +1,4 @@
+import { AppDispatch } from "@/app/store";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,9 +10,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useAuthContext } from "@/context/AuthContext";
-import { useCollections } from "@/context/CollectionsContext";
+import {
+  CollectionActionStatus,
+  setActionStatus,
+} from "@/features/collection/collectionSlice";
 import api from "@/services/api";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
 
 interface DeleteCollectionDialogProps {
   collectionId: number;
@@ -25,10 +30,10 @@ export default function DeleteCollectionDialog({
   handleClose,
 }: DeleteCollectionDialogProps) {
   const { authenticatedUser } = useAuthContext();
-  const { setDeleting } = useCollections();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleDelete = async () => {
-    setDeleting(true);
+    dispatch(setActionStatus(CollectionActionStatus.DELETING));
     try {
       await api.delete(
         `api/users/${authenticatedUser?.id}/collections/${collectionId}/`
@@ -37,7 +42,7 @@ export default function DeleteCollectionDialog({
     } catch (error) {
       toast.error("Failed to delete collection, Try later.")
     } finally {
-      setDeleting(false);
+      dispatch(setActionStatus(CollectionActionStatus.IDLE));
       handleClose();
     }
   };

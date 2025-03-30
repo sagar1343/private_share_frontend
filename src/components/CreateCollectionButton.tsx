@@ -1,10 +1,15 @@
-import { useCollections } from "@/context/CollectionsContext";
+import { AppDispatch } from "@/app/store";
+import {
+  CollectionActionStatus,
+  setActionStatus,
+} from "@/features/collection/collectionSlice";
 import { FolderPlus } from "lucide-react";
+import { useDispatch } from "react-redux";
 
 export default function CreateCollectionButton() {
-  const { setCreating } = useCollections();
+  const dispatch = useDispatch<AppDispatch>();
   return (
-    <button onClick={() => setCreating(true)} className="hover:text-primary">
+    <button onClick={() => dispatch(setActionStatus(CollectionActionStatus.CREATING))} className="hover:text-primary">
       <FolderPlus size={82} cursor="pointer" />
       <p>Create New</p>
     </button>

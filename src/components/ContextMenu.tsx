@@ -1,12 +1,17 @@
+import { AppDispatch } from "@/app/store";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { useCollections } from "@/context/CollectionsContext";
+import {
+  CollectionActionStatus,
+  setActionStatus,
+} from "@/features/collection/collectionSlice";
 import { ExternalLink, FolderPen, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import DeleteCollectionDialog from "../components/DeleteCollectionModal";
 
@@ -22,10 +27,10 @@ export default function ContextMenuComponent({
   setRenamingCollectionId,
 }: ContextMenuProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { setUpdating } = useCollections();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const handleRenaming = () => {
-    setUpdating(true);
+    dispatch(setActionStatus(CollectionActionStatus.RENAMING));
     setRenamingCollectionId(collectionId);
   };
 

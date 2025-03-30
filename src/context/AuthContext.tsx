@@ -29,7 +29,7 @@ const authContext = createContext<IAuthContext | null>(null);
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
   const [authenticatedUser, setAuthenticatedUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const login = async (credentialResponse: CredentialResponse) => {
     try {
@@ -47,6 +47,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUser = async () => {
     try {
+      setLoading(true);
       const userResponse = await api.get("/auth/me");
       setAuthenticatedUser(userResponse.data);
       setAuthenticated(true);
