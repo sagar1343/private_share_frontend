@@ -6,10 +6,9 @@ import { IFile } from "@/types/File";
 import { useParams } from "react-router-dom";
 import DownlaodSection from "./DownlaodsSection";
 import ExpirationSection from "./ExpirationSection";
-import PasswordSection from "./PasswordSection";
-import MaxDownlaodSection from "./MaxDownloadSection";
-import AccessLogs from "./AccessLogs";
 import FilePermissions from "./FilePermissions";
+import MaxDownlaodSection from "./MaxDownloadSection";
+import PasswordSection from "./PasswordSection";
 
 export default function FileDetails() {
   const { id } = useParams();
@@ -31,7 +30,6 @@ export default function FileDetails() {
         </div>
         <div className="mt-12 space-y-4">
           <FilePermissions fileId={file.id} />
-          <AccessLogs fileId={file.id} />
         </div>
       </div>
     </div>

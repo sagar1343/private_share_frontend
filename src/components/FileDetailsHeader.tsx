@@ -1,8 +1,9 @@
 import Heading from "@/components/Heading";
 import useFileSize from "@/hooks/useFileSize";
 import { IFile } from "@/types/File";
-import { Dot, Pencil } from "lucide-react";
+import { Dot } from "lucide-react";
 import { useEffect, useState } from "react";
+import FileNameUpdate from "./FileNameUpdate";
 
 const options: Intl.DateTimeFormatOptions = {
   year: "numeric",
@@ -15,6 +16,7 @@ const options: Intl.DateTimeFormatOptions = {
 
 export default function FileDetailsHeader({ file }: { file: IFile }) {
   const getFileSize = useFileSize();
+  const [fileName, setFileName] = useState(file.file_name);
   const [size, setSize] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,8 +28,12 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
   return (
     <Heading>
       <div className="flex items-center gap-4">
-        <span>{file.file_name} </span>
-        <Pencil className="hover:text-primary cursor-pointer" />
+        <span>{fileName} </span>
+        <FileNameUpdate
+          fileName={file.file_name}
+          fileId={file.id}
+          setFileName={setFileName}
+        />
       </div>
       <div className="mt-2 text-sm font-normal flex items-center">
         <span>File size {size} MB</span>
