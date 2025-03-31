@@ -25,7 +25,7 @@ export default function useSecureFile() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.status === 201) {
-        navigate(`/collections/${collectionId}`);
+        navigate(`/collections/${collectionId}/files/${response.data.id}`);
         toast.success("Secured file successfully");
       }
     } catch (error) {

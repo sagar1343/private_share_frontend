@@ -14,15 +14,24 @@ import * as React from "react";
 interface DateTimePickerProps {
   value?: Date;
   onChange: (date: Date) => void;
+  setDefault: boolean;
 }
 
-export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
+export function DateTimePicker({
+  value,
+  onChange,
+  setDefault,
+}: DateTimePickerProps) {
   const [date, setDate] = React.useState<Date | undefined>(value);
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (value) setDate(value);
   }, [value]);
+
+  React.useEffect(() => {
+    if(setDefault) setDate(undefined)
+  }, [setDefault]);
 
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
 

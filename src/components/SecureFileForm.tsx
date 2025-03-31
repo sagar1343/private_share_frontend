@@ -66,7 +66,7 @@ export default function SecureFileForm() {
                 <Label htmlFor="file-expiration">
                   Set Expiration (optional)
                 </Label>
-                <DateTimePicker {...field} />
+                <DateTimePicker {...field} setDefault={errors === null} />
               </>
             )}
             control={control}
@@ -79,7 +79,7 @@ export default function SecureFileForm() {
             id="file-download-limit"
             type="number"
             min={1}
-            defaultValue={3}
+            placeholder="Default 3"
           />
         </div>
       </div>
