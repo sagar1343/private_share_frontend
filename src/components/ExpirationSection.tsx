@@ -1,6 +1,6 @@
 import InfoButton from "./InfoButton";
 
-export default function ExpirationSection({ date }: { date: string }) {
+export default function ExpirationSection({ date }: { date: string | null }) {
   return (
     <div>
       <h2 className="font-semibold flex items-center gap-2">
@@ -11,7 +11,7 @@ export default function ExpirationSection({ date }: { date: string }) {
         />
       </h2>
       <p className="font-light text-foreground/70">
-        {new Date(date).toDateString()}
+        {date ? new Date(date).toDateString() : "No expiration"}
       </p>
     </div>
   );

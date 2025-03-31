@@ -10,43 +10,52 @@ import {
   setActionStatus,
 } from "@/features/collection/collectionSlice";
 import { ExternalLink, FolderPen, Trash2 } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import DeleteCollectionDialog from "../components/DeleteCollectionModal";
 
-interface ContextMenuProps {
+interface Props {
   children: React.ReactNode;
   collectionId: number;
-  setRenamingCollectionId: (id: number | null) => void;
+  setRenameId: React.Dispatch<React.SetStateAction<number | null>>;
+  isActive: boolean;
 }
 
 export default function ContextMenuComponent({
   children,
   collectionId,
-  setRenamingCollectionId,
-}: ContextMenuProps) {
+  setRenameId,
+  isActive,
+}: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
   const handleRenaming = () => {
     dispatch(setActionStatus(CollectionActionStatus.RENAMING));
-    setRenamingCollectionId(collectionId);
+    setRenameId(collectionId);
   };
 
   return (
     <>
       <ContextMenu>
-        <ContextMenuTrigger>{children}</ContextMenuTrigger>
+        <ContextMenuTrigger disabled={!isActive}>{children}</ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem onClick={() => navigate("/")}>
+          <ContextMenuItem
+            className="cursor-pointer"
+            onClick={() => navigate(`/collections/${collectionId}`)}
+          >
             <ExternalLink /> Open
           </ContextMenuItem>
-          <ContextMenuItem onClick={handleRenaming}>
+          <ContextMenuItem className="cursor-pointer" onClick={handleRenaming}>
             <FolderPen />
             Rename
           </ContextMenuItem>
-          <ContextMenuItem onClick={() => setIsDialogOpen(true)}>
+          <ContextMenuItem
+            className="cursor-pointer"
+            onClick={() => setIsDialogOpen(true)}
+          >
             <Trash2 />
             Delete
           </ContextMenuItem>

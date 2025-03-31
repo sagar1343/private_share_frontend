@@ -7,6 +7,7 @@ import Collections from "./pages/Collections";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Recieved from "./pages/Recieved";
+import FileCreate from "./pages/FileCreate";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <CollectionDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/collections/:collectionId/files",
+        element: (
+          <ProtectedRoute>
+            <FileCreate />
           </ProtectedRoute>
         ),
       },

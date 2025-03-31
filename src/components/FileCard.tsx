@@ -36,9 +36,13 @@ export default function FileCard({ file, collectionId }: Props) {
           </span>
           <Dot className="max-lg:hidden" />
           <span>{fileSize} MB</span>
-          <Dot />
+          {file.expiration_time && <Dot />}
           <span className="text-primary">
-            Expires in {new Date(file.expiration_time).toDateString()}
+            {file.expiration_time ? (
+              <em>
+                Expires in {new Date(file.expiration_time).toDateString()}
+              </em>
+            ) : null}
           </span>
         </CardDescription>
       </CardHeader>
