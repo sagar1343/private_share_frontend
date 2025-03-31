@@ -1,8 +1,3 @@
-
-import * as React from "react";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -11,16 +6,33 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import * as React from "react";
 
-export function DateTimePicker() {
-  const [date, setDate] = React.useState<Date>();
+interface DateTimePickerProps {
+  value?: Date;
+  onChange: (date: Date) => void;
+}
+
+export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
+  const [date, setDate] = React.useState<Date | undefined>(value);
   const [isOpen, setIsOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    if (value) setDate(value);
+  }, [value]);
+
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
+
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      setDate(selectedDate);
+      const newDate = new Date(selectedDate);
+      setDate(newDate);
+      onChange(newDate);
     }
+    setIsOpen(false);
   };
 
   const handleTimeChange = (
@@ -30,18 +42,21 @@ export function DateTimePicker() {
     if (date) {
       const newDate = new Date(date);
       if (type === "hour") {
-        newDate.setHours(
-          (parseInt(value) % 12) + (newDate.getHours() >= 12 ? 12 : 0)
-        );
+        const currentHours = newDate.getHours() >= 12 ? 12 : 0;
+        newDate.setHours((parseInt(value) % 12) + currentHours);
       } else if (type === "minute") {
         newDate.setMinutes(parseInt(value));
       } else if (type === "ampm") {
+        const isPM = value === "PM";
         const currentHours = newDate.getHours();
-        newDate.setHours(
-          value === "PM" ? currentHours + 12 : currentHours - 12
-        );
+        if (isPM && currentHours < 12) {
+          newDate.setHours(currentHours + 12);
+        } else if (!isPM && currentHours >= 12) {
+          newDate.setHours(currentHours - 12);
+        }
       }
       setDate(newDate);
+      onChange(newDate);
     }
   };
 
@@ -68,6 +83,7 @@ export function DateTimePicker() {
           <Calendar
             mode="single"
             selected={date}
+            disabled={(selectedDate) => selectedDate <= new Date()}
             onSelect={handleDateSelect}
             initialFocus
           />
@@ -92,6 +108,7 @@ export function DateTimePicker() {
               </div>
               <ScrollBar orientation="horizontal" className="sm:hidden" />
             </ScrollArea>
+
             <ScrollArea className="w-64 sm:w-auto">
               <div className="flex sm:flex-col p-2">
                 {Array.from({ length: 12 }, (_, i) => i * 5).map((minute) => (
@@ -112,7 +129,8 @@ export function DateTimePicker() {
               </div>
               <ScrollBar orientation="horizontal" className="sm:hidden" />
             </ScrollArea>
-            <ScrollArea className="">
+
+            <ScrollArea>
               <div className="flex sm:flex-col p-2">
                 {["AM", "PM"].map((ampm) => (
                   <Button
