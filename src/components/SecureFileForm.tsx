@@ -28,13 +28,16 @@ export default function SecureFileForm() {
   useEffect(() => {
     if (errors === null) reset();
     if (errors?.file) toast.error(errors.file[0]);
+  }, [errors]);
+
+  useEffect(() => {
     if (formState.errors.file_name)
       toast.error(formState.errors.file_name.message);
     if (formState.errors.max_download_count)
       toast.error(formState.errors.max_download_count.message);
     if (formState.errors.password)
       toast.error(formState.errors.password.message);
-  }, [errors, formState]);
+  }, [formState]);
 
   return (
     <form
@@ -65,7 +68,6 @@ export default function SecureFileForm() {
           <Label htmlFor="file-password">Set Password (optional)</Label>
           <Input
             {...register("password", {
-              required: "Password is required",
               minLength: {
                 value: 6,
                 message: "Password must be at least 6 characters",
