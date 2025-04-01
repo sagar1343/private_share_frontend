@@ -1,4 +1,4 @@
-import ExpirationAction from "@/components/ExpirationAction";
+import ExpirationAction from "@/components/FileActionButton";
 import ExpirationUpdateForm from "@/components/ExpirationUpdateForm";
 import InfoButton from "@/components/InfoButton";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export default function ExpirationSection({ date }: { date: string | Date }) {
         <ExpirationAction show={show} setShow={setShow} />
       </h2>
       {!show ? (
-        <p className="h-[44px] font-light text-foreground/70">
+        <p className="text-sm h-[44px] text-foreground/70">
           {expiration_time
             ? new Date(expiration_time).toLocaleString()
             : "No expiration"}

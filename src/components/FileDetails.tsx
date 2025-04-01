@@ -24,7 +24,7 @@ export default function FileDetails() {
       <div className="grid grid-cols-2 gap-8">
         <div className="mt-12 space-y-12">
           <ExpirationSection date={file.expiration_time} />
-          <PasswordSection />
+          <PasswordSection isProtected={file.is_protected} />
           <DownlaodSection totalDownloads={file.download_count} />
           <MaxDownlaodSection maxDownloads={file.max_download_count} />
         </div>

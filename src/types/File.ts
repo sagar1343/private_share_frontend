@@ -6,5 +6,6 @@ export interface IFile {
   expiration_time: string;
   max_download_count: number;
   download_count: number;
+  is_protected: boolean;
   created_at: string;
 }

@@ -53,6 +53,9 @@ export default function SecureFileForm() {
           <Label htmlFor="file-password">Set Password (optional)</Label>
           <Input
             {...register("password")}
+            minLength={6}
+            maxLength={16}
+            pattern="^\S+$"
             id="file-password"
             type="password"
             placeholder="*******"

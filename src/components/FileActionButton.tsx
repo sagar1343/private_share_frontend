@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 
 interface Props {
+  editLabel?: string;
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export default function ExpirationAction({ show, setShow }: Props) {
+export default function FileActionButton({ show, setShow, editLabel }: Props) {
   return (
     <>
       {!show ? (
@@ -13,7 +14,7 @@ export default function ExpirationAction({ show, setShow }: Props) {
           variant="link"
           className="cursor-pointer"
         >
-          Edit
+          {editLabel ?? "Edit"}
         </Button>
       ) : (
         <Button

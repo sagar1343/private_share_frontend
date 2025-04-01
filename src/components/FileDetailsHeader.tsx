@@ -30,7 +30,7 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
       <div className="flex items-center gap-4">
         <span>{fileName} </span>
         <FileNameUpdate
-          fileName={file.file_name}
+          fileName={fileName}
           fileId={file.id}
           setFileName={setFileName}
         />
