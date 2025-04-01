@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 export default function FilePermissions({ fileId }: { fileId: number }) {
   const [isEdit, setEdit] = useState(false);
-
+  console.log(fileId);
   return (
     <div>
       <h2 className="font-semibold flex items-center gap-2">
