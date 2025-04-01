@@ -30,8 +30,8 @@ export default function FileNameUpdate({
     defaultValues: { file_name: fileName },
   });
   async function onSubmit(data: FieldValues) {
-    if (data.file_name === fileName) {
-      toast.warning("No changes detected");
+    if (data.file_name.trim() === fileName) {
+      toast.info("No changes detected");
       setOpen(false);
       return;
     }
