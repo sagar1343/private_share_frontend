@@ -19,9 +19,9 @@ export default function FileDetails() {
   return (
     <div>
       <FileDetailsHeader file={file} />
-      <CopyLink />
+      <CopyLink id={file.id} />
       <hr />
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 gap-8">
         <div className="mt-12 space-y-12">
           <ExpirationSection date={file.expiration_time} />
           <PasswordSection />

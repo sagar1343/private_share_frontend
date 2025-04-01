@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { ClipboardCheck, Link } from "lucide-react";
 import { useRef, useState } from "react";
 
-export default function CopyLink() {
+export default function CopyLink({ id }: { id: number }) {
   const [copied, setCopied] = useState(false);
   const copyRef = useRef<HTMLInputElement | null>(null);
 
@@ -20,7 +20,7 @@ export default function CopyLink() {
       <Input
         ref={copyRef}
         className="max-w-2xs focus-visible:ring-0 focus-visible:border-inherit focus-visible:border-[1px]"
-        defaultValue="http://localhost:8000/api/fileshare/1"
+        defaultValue={`http://localhost:8000/api/fileshare/${id}`}
         readOnly
       />
       <Button

@@ -24,13 +24,13 @@ export function DateTimePicker({
 }: DateTimePickerProps) {
   const [date, setDate] = React.useState<Date | undefined>(value);
   const [isOpen, setIsOpen] = React.useState(false);
-
+  
   React.useEffect(() => {
     if (value) setDate(value);
   }, [value]);
 
   React.useEffect(() => {
-    if(setDefault) setDate(undefined)
+    if (setDefault) setDate(undefined);
   }, [setDefault]);
 
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -41,7 +41,6 @@ export function DateTimePicker({
       setDate(newDate);
       onChange(newDate);
     }
-    setIsOpen(false);
   };
 
   const handleTimeChange = (
@@ -66,6 +65,7 @@ export function DateTimePicker({
       }
       setDate(newDate);
       onChange(newDate);
+      setIsOpen(false);
     }
   };
 
@@ -104,7 +104,7 @@ export function DateTimePicker({
                     key={hour}
                     size="icon"
                     variant={
-                      date && date.getHours() % 12 === hour % 12
+                      date && new Date(date).getHours() % 12 === hour % 12
                         ? "default"
                         : "ghost"
                     }
@@ -125,7 +125,9 @@ export function DateTimePicker({
                     key={minute}
                     size="icon"
                     variant={
-                      date && date.getMinutes() === minute ? "default" : "ghost"
+                      date && new Date(date).getMinutes() === minute
+                        ? "default"
+                        : "ghost"
                     }
                     className="sm:w-full shrink-0 aspect-square"
                     onClick={() =>
@@ -147,8 +149,8 @@ export function DateTimePicker({
                     size="icon"
                     variant={
                       date &&
-                      ((ampm === "AM" && date.getHours() < 12) ||
-                        (ampm === "PM" && date.getHours() >= 12))
+                      ((ampm === "AM" && new Date(date).getHours() < 12) ||
+                        (ampm === "PM" && new Date(date).getHours() >= 12))
                         ? "default"
                         : "ghost"
                     }

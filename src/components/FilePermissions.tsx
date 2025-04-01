@@ -1,11 +1,9 @@
-import useFetch from "@/hooks/useFetch";
 import { useState } from "react";
 import InfoButton from "./InfoButton";
 import { Button } from "./ui/button";
 
 export default function FilePermissions({ fileId }: { fileId: number }) {
   const [isEdit, setEdit] = useState(false);
-  useFetch(`api/files/${fileId}/permissions`);
 
   return (
     <div>
@@ -22,9 +20,7 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
           </Button>
         )}
       </h2>
-      <div>
-        
-      </div>
+      <div></div>
     </div>
   );
 }
