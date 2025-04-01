@@ -1,6 +1,6 @@
 import api from "@/services/api";
 import { IFile } from "@/types/File";
-import { LockOpen, RemoveFormatting, SendHorizonal, X } from "lucide-react";
+import { LockOpen, SendHorizonal } from "lucide-react";
 import { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Params, useParams } from "react-router";

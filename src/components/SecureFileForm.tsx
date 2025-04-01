@@ -18,7 +18,7 @@ interface Params {
 export default function SecureFileForm() {
   const { collectionId }: Params = useParams();
   const { onSubmit, errors } = useSecureFile();
-  const { register, handleSubmit, control, setValue, reset } =
+  const { register, handleSubmit, control, setValue, reset, formState } =
     useForm<FormData>({
       defaultValues: {
         collections: collectionId ? parseInt(collectionId) : [],
@@ -26,13 +26,15 @@ export default function SecureFileForm() {
     });
 
   useEffect(() => {
-    console.log(errors);
-    if (errors == null) {
-      reset();
-    }
+    if (errors === null) reset();
     if (errors?.file) toast.error(errors.file[0]);
-    if (errors?.file_name) toast.error(`file name: ${errors.file_name[0]}`);
-  }, [errors]);
+    if (formState.errors.file_name)
+      toast.error(formState.errors.file_name.message);
+    if (formState.errors.max_download_count)
+      toast.error(formState.errors.max_download_count.message);
+    if (formState.errors.password)
+      toast.error(formState.errors.password.message);
+  }, [errors, formState]);
 
   return (
     <form
@@ -43,7 +45,17 @@ export default function SecureFileForm() {
         <div className="space-y-3">
           <Label htmlFor="file-name">File Name</Label>
           <Input
-            {...register("file_name")}
+            {...register("file_name", {
+              required: "File name is required",
+              minLength: {
+                value: 3,
+                message: "File name must be at least 3 characters",
+              },
+              maxLength: {
+                value: 120,
+                message: "File name must be at most 120 characters",
+              },
+            })}
             id="file-name"
             type="text"
             placeholder="File name"
@@ -52,10 +64,18 @@ export default function SecureFileForm() {
         <div className="space-y-3">
           <Label htmlFor="file-password">Set Password (optional)</Label>
           <Input
-            {...register("password")}
-            minLength={6}
-            maxLength={16}
-            pattern="^\S+$"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+              maxLength: {
+                value: 16,
+                message: "Password must be at most 16 characters",
+              },
+              pattern: { value: /^\S+$/, message: "Spaces are not allowed" },
+            })}
             id="file-password"
             type="password"
             placeholder="*******"
@@ -78,10 +98,12 @@ export default function SecureFileForm() {
         <div className="space-y-3">
           <Label htmlFor="file-download-limit">Download Limit</Label>
           <Input
-            {...register("max_download_count")}
+            {...register("max_download_count", {
+              min: { value: 1, message: " Download limit must be at least 1" },
+              max: { value: 10, message: "Downlaod limit must be at most 10" },
+            })}
             id="file-download-limit"
             type="number"
-            min={1}
             placeholder="Default 3"
           />
         </div>
