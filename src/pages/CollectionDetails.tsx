@@ -1,4 +1,4 @@
-import CollectionBreadCrumb from "@/components/CollectionBreadCrumb";
+import FileBreadCrumb from "@/components/FileBreadCrumb";
 import FileContainer from "@/components/FileContainer";
 import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,9 @@ import { FilePlus } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function CollectionDetails() {
-  const { authenticatedUser } = useAuthContext();
   const { id } = useParams();
   const navigate = useNavigate();
+  const { authenticatedUser } = useAuthContext();
   const { data: collection, loading } = useFetch<ICollection>(
     `api/users/${authenticatedUser?.id}/collections/${id}`
   );
@@ -19,7 +19,10 @@ export default function CollectionDetails() {
   if (loading) return <Loader />;
   return (
     <div>
-      <CollectionBreadCrumb id={id} title={collection?.title!} />
+      <FileBreadCrumb
+        collectionId={parseInt(id!)}
+        collectionTitle={collection?.title!}
+      />
       <div className="flex justify-end">
         <Button
           onClick={() => navigate(`/collections/${collection?.id}/files`)}
