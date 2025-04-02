@@ -1,9 +1,14 @@
+import FileBreadCrumb from "@/components/FileBreadCrumb";
+import FileNameUpdate from "@/components/FileNameUpdate";
 import Heading from "@/components/Heading";
+import { useAuthContext } from "@/context/AuthContext";
+import useFetch from "@/hooks/useFetch";
 import useFileSize from "@/hooks/useFileSize";
+import { ICollection } from "@/types/Collection";
 import { IFile } from "@/types/File";
 import { Dot } from "lucide-react";
 import { useEffect, useState } from "react";
-import FileNameUpdate from "./FileNameUpdate";
+import { Params, useParams } from "react-router";
 
 const options: Intl.DateTimeFormatOptions = {
   year: "numeric",
@@ -18,6 +23,12 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
   const getFileSize = useFileSize();
   const [fileName, setFileName] = useState(file.file_name);
   const [size, setSize] = useState<string | null>(null);
+  const { collectionId }: Params = useParams();
+
+  const { authenticatedUser } = useAuthContext();
+  const { data: collection } = useFetch<ICollection>(
+    `api/users/${authenticatedUser?.id}/collections/${collectionId}`
+  );
 
   useEffect(() => {
     if (file) getFileSize(file.file).then((data) => setSize(data.toFixed(2)));
@@ -28,17 +39,24 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
   return (
     <Heading>
       <div className="flex items-center gap-4">
-        <span>{fileName} </span>
+        <FileBreadCrumb
+          collectionId={parseInt(collectionId!)}
+          fileId={file.id}
+          fileTitle={fileName}
+          collectionTitle={collection?.title}
+        />
         <FileNameUpdate
-          fileName={file.file_name}
+          fileName={fileName}
           fileId={file.id}
           setFileName={setFileName}
         />
       </div>
-      <div className="mt-2 text-sm font-normal flex items-center">
+      <div className="mt-2 text-sm font-normal flex flex-col sm:flex-row sm:items-center max-sm:space-y-2">
         <span>File size {size} MB</span>
-        <Dot />
-        <span>Added on {date.toLocaleString("en-US", options)}</span>
+        <div className="flex items-center">
+          <Dot size={30} className="hidden sm:inline text-green-500" />
+          <span>Added on {date.toLocaleString("en-US", options)}</span>
+        </div>
       </div>
     </Heading>
   );

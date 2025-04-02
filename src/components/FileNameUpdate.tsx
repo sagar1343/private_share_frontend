@@ -6,8 +6,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import api from "@/services/api";
+import { IFile } from "@/types/File";
 import { Pencil, SendHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -30,14 +31,15 @@ export default function FileNameUpdate({
     defaultValues: { file_name: fileName },
   });
   async function onSubmit(data: FieldValues) {
-    if (data.file_name === fileName) {
-      toast.warning("No changes detected");
+    console.log(fileName, data.file_name);
+    if (data.file_name.trim() === fileName) {
+      toast.info("No changes detected");
       setOpen(false);
       return;
     }
     try {
-      await api.patch(`/api/files/${fileId}/`, data);
-      setFileName(data.file_name);
+      const response = await api.patch<IFile>(`/api/files/${fileId}/`, data);
+      setFileName(response.data.file_name);
       toast.success("File name updated");
     } catch (error) {
       toast.error("Failed to update the name");
@@ -45,6 +47,10 @@ export default function FileNameUpdate({
       setOpen(false);
     }
   }
+  useEffect(() => {
+    if (formState.errors.file_name)
+      toast.error(formState.errors.file_name.message);
+  }, [formState]);
 
   return (
     <Popover open={open} onOpenChange={() => setOpen((prev) => !prev)}>
@@ -53,7 +59,20 @@ export default function FileNameUpdate({
       </PopoverTrigger>
       <PopoverContent align="start">
         <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-4">
-          <Input {...register("file_name")} type="text" />
+          <Input
+            {...register("file_name", {
+              required: "File name is required",
+              minLength: {
+                value: 3,
+                message: "File name must be at least 3 characters",
+              },
+              maxLength: {
+                value: 120,
+                message: "File name must be at most 120 characters",
+              },
+            })}
+            type="text"
+          />
           <Button className="cursor-pointer" disabled={formState.isSubmitting}>
             <SendHorizontal />
           </Button>

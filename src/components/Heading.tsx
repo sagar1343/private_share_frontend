@@ -15,7 +15,7 @@ export default function Heading({
   return (
     <>
       <h1
-        className={clsx("my-6 text-2xl md:text-4xl font-extrabold", className)}
+        className={clsx("my-6 text-2xl sm:text-3xl font-extrabold", className)}
       >
         {children}
       </h1>
