@@ -29,7 +29,12 @@ export default function FileContainer({ className, collectionId }: Props) {
   }
 
   return (
-    <div className={clsx("space-y-4", className)}>
+    <div
+      className={clsx(
+        "space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",
+        className
+      )}
+    >
       {files.map((file) => (
         <FileCard key={file.id} file={file} collectionId={collectionId} />
       ))}
