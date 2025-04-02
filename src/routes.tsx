@@ -4,10 +4,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./Layout";
 import CollectionDetails from "./pages/CollectionDetails";
 import Collections from "./pages/Collections";
+import FileCreate from "./pages/FileCreate";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Recieved from "./pages/Recieved";
-import FileCreate from "./pages/FileCreate";
+import ReceivedFiles from "./pages/ReceivedFiles";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         path: "recieved",
         element: (
           <ProtectedRoute>
-            <Recieved />
+            <ReceivedFiles />
           </ProtectedRoute>
         ),
       },
