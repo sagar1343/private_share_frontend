@@ -21,14 +21,14 @@ export default function FileDetails() {
       <FileDetailsHeader file={file} />
       <CopyLink id={file.id} />
       <hr />
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-8 max-sm:space-y-12">
         <div className="mt-12 space-y-12">
           <ExpirationSection date={file.expiration_time} />
           <PasswordSection isProtected={file.is_protected} />
           <DownlaodSection totalDownloads={file.download_count} />
           <MaxDownlaodSection maxDownloads={file.max_download_count} />
         </div>
-        <div className="mt-12 space-y-4">
+        <div className="sm:mt-12">
           <FilePermissions fileId={file.id} />
         </div>
       </div>

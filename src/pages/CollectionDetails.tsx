@@ -32,6 +32,7 @@ export default function CollectionDetails() {
           <FilePlus /> Add File
         </Button>
       </div>
+      <hr className="my-12" />
       <FileContainer className="mt-12" collectionId={collection?.id!} />
     </div>
   );

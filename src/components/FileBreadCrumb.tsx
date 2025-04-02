@@ -24,36 +24,56 @@ export default function FileBreadCrumb({
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem>
-          <Link to="/collections">
-            <Heading>Collections</Heading>
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem className="items-center">
-          <ChevronRight size="28" />
-        </BreadcrumbItem>
+        {!fileId && (
+          <>
+            <BreadcrumbItem className="max-md:hidden">
+              <Link to="/collections">
+                <Heading>Collections</Heading>
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem className="items-center max-md:hidden">
+              <ChevronRight size="28" />
+            </BreadcrumbItem>
+          </>
+        )}
         {collectionId && (
-          <BreadcrumbItem>
+          <BreadcrumbItem className="max-md:hidden">
             <Link to={`/collections/${collectionId}`}>
-              <BreadcrumbPage>
-                {collectionTitle ? (
-                  <Heading>{collectionTitle}</Heading>
-                ) : (
-                  <Ellipsis size="28" />
-                )}
-              </BreadcrumbPage>
+              {fileId ? (
+                <>
+                  {collectionTitle ? (
+                    <Heading className="max-w-[8ch] truncate">
+                      {collectionTitle}
+                    </Heading>
+                  ) : (
+                    <Ellipsis size="28" />
+                  )}
+                </>
+              ) : (
+                <BreadcrumbPage>
+                  {collectionTitle ? (
+                    <Heading className="max-w-[12ch] truncate">
+                      {collectionTitle}
+                    </Heading>
+                  ) : (
+                    <Ellipsis size="28" />
+                  )}
+                </BreadcrumbPage>
+              )}
             </Link>
           </BreadcrumbItem>
         )}
         {fileId && (
           <>
-            <BreadcrumbItem className="items-center">
+            <BreadcrumbItem className="items-center max-md:hidden">
               <ChevronRight size="28" />
             </BreadcrumbItem>
             <BreadcrumbItem>
               <Link to={`/collections/${collectionId}/files/${fileId}`}>
                 <BreadcrumbPage>
-                  <Heading>{fileTitle}</Heading>
+                  <Heading className="max-w-[12ch] truncate">
+                    {fileTitle}
+                  </Heading>
                 </BreadcrumbPage>
               </Link>
             </BreadcrumbItem>

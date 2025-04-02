@@ -51,10 +51,12 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
           setFileName={setFileName}
         />
       </div>
-      <div className="mt-2 text-sm font-normal flex items-center">
+      <div className="mt-2 text-sm font-normal flex flex-col sm:flex-row sm:items-center max-sm:space-y-2">
         <span>File size {size} MB</span>
-        <Dot />
-        <span>Added on {date.toLocaleString("en-US", options)}</span>
+        <div className="flex items-center">
+          <Dot size={30} className="hidden sm:inline text-green-500" />
+          <span>Added on {date.toLocaleString("en-US", options)}</span>
+        </div>
       </div>
     </Heading>
   );

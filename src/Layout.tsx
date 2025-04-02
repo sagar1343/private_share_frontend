@@ -9,10 +9,10 @@ export default function Layout() {
       <AppSidebar />
       <main className="my-2 w-full">
         <SidebarTrigger className="cursor-pointer" />
-        <div className="mx-8">
+        <div className="mx-4 sm:mx-8">
           <Outlet />
         </div>
-        <div className="fixed top-2 right-8">
+        <div className="fixed top-2 right-2 sm:right-8">
           <ThemeToggle />
         </div>
       </main>
