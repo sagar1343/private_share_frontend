@@ -63,6 +63,7 @@ export default function FileContainer({ className, collectionId }: Props) {
           currentPage={page}
           handleNext={onNext}
           handlePrevious={onPrevious}
+          pageSize={12}
         />
       </div>
     </>

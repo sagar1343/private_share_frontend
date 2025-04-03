@@ -1,5 +1,6 @@
 import api from "@/services/api";
 import { ICollection } from "@/types/Collection";
+import { PaginatedResponse } from "@/types/Pagination";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export enum CollectionActionStatus {
@@ -11,20 +12,22 @@ export enum CollectionActionStatus {
 
 export interface ICollectionState {
   isLoading: boolean;
-  collections: ICollection[];
+  paginatedCollections: PaginatedResponse<ICollection> | null;
   actionStatus: CollectionActionStatus;
 }
 
 const initialState: ICollectionState = {
   isLoading: false,
-  collections: [],
+  paginatedCollections: null,
   actionStatus: CollectionActionStatus.IDLE,
 };
 
 export const fetchCollections = createAsyncThunk(
   "fetchCollections",
-  async (userId: number) => {
-    const response = await api.get(`api/users/${userId}/collections`);
+  async ({ userId, page = 1 }: { userId: number; page: number }) => {
+    const response = await api.get<PaginatedResponse<ICollection>>(
+      `api/users/${userId}/collections/?page=${page}`
+    );
     return response.data;
   }
 );
@@ -43,7 +46,7 @@ export const CollectionSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchCollections.fulfilled, (state, action) => {
-        state.collections = action.payload;
+        state.paginatedCollections = action.payload;
         state.isLoading = false;
       })
       .addCase(fetchCollections.rejected, (state, action) => {
