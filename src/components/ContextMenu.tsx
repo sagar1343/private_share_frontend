@@ -8,7 +8,7 @@ import {
 import {
   CollectionActionStatus,
   setActionStatus,
-} from "@/features/collection/collectionSlice";
+} from "@/app/features/collection/collectionSlice";
 import { ExternalLink, FolderPen, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";

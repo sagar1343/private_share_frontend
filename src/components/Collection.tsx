@@ -7,7 +7,7 @@ import ContextMenuComponent from "../components/ContextMenu";
 import CollectionInput from "./CollectionInput";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { CollectionActionStatus } from "@/features/collection/collectionSlice";
+import { CollectionActionStatus } from "@/app/features/collection/collectionSlice";
 
 interface Props {
   isActive: boolean;

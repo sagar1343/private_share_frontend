@@ -2,7 +2,7 @@ import { RootState } from "@/app/store";
 import CollectionCreatingItem from "@/components/CollectionCreatingItem";
 import CreateCollectionButton from "@/components/CreateCollectionButton";
 import Loader from "@/components/Loader";
-import { CollectionActionStatus } from "@/features/collection/collectionSlice";
+import { CollectionActionStatus } from "@/app/features/collection/collectionSlice";
 import useClickOutside from "@/hooks/useClickOutside";
 import useFetchCollections from "@/hooks/useFetchCollections";
 import { useState } from "react";

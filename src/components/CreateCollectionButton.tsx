@@ -2,7 +2,7 @@ import { AppDispatch } from "@/app/store";
 import {
   CollectionActionStatus,
   setActionStatus,
-} from "@/features/collection/collectionSlice";
+} from "@/app/features/collection/collectionSlice";
 import { FolderPlus } from "lucide-react";
 import { useDispatch } from "react-redux";
 

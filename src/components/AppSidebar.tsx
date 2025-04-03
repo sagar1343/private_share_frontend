@@ -19,7 +19,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuthContext } from "@/context/AuthContext";
-import { FolderClosed, Home, LogIn, LogOut, Settings } from "lucide-react";
+import {
+  FolderClosed,
+  Home,
+  Library,
+  LogIn,
+  LogOut,
+  Settings,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
@@ -35,9 +42,9 @@ const items = [
     icon: FolderClosed,
   },
   {
-    title: "Recieved Files",
-    url: "/recieved",
-    icon: FolderClosed,
+    title: "Received Files",
+    url: "/received",
+    icon: Library,
   },
 ];
 

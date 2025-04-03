@@ -3,11 +3,13 @@ import { useAuthContext } from "@/context/AuthContext";
 import {
   CollectionActionStatus,
   fetchCollections,
-} from "@/features/collection/collectionSlice";
+} from "@/app/features/collection/collectionSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-export default function useFetchCollections(actionStatus: CollectionActionStatus) {
+export default function useFetchCollections(
+  actionStatus: CollectionActionStatus
+) {
   const { authenticatedUser } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
 
