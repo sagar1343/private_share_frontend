@@ -17,7 +17,7 @@ export default function CollectionItem({
       onClick={onClick}
       className={clsx(
         "rounded-md cursor-pointer transition-all",
-        isActive ? "bg-white/20 shadow-lg" : "bg-transparent"
+        isActive ? "bg-black/10 dark:bg-white/20 shadow-lg" : "bg-transparent"
       )}
     >
       <Collection isActive={isActive} collection={collection} />
