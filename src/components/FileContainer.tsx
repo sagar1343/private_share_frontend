@@ -1,11 +1,11 @@
+import FileCard from "@/components/FileCard";
+import FilesSkeleton from "@/components/FilesSkeleton";
+import Pagination from "@/components/Pagination";
 import useFetch from "@/hooks/useFetch";
 import { IFile } from "@/types/File";
 import { PaginatedResponse } from "@/types/Pagination";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import FileCard from "./FileCard";
-import FileSkeleton from "./FileSkeleton";
-import Pagination from "./Pagination";
 
 interface Props {
   collectionId: number;
@@ -31,15 +31,7 @@ export default function FileContainer({ className, collectionId }: Props) {
     if (data) setFiles(data.results);
   }, [data]);
 
-  if (loading) {
-    return (
-      <div className="space-y-4 mt-12">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <FileSkeleton key={index} />
-        ))}
-      </div>
-    );
-  }
+  if (loading) return <FilesSkeleton />;
 
   if (!files || files.length === 0) {
     return <p className="mt-12 text-center text-gray-500">No files found.</p>;
@@ -57,7 +49,7 @@ export default function FileContainer({ className, collectionId }: Props) {
           <FileCard key={file.id} file={file} collectionId={collectionId} />
         ))}
       </div>
-      <div className="flex justify-end my-12">
+      <div className="flex justify-center my-12">
         <Pagination
           count={data?.count!}
           currentPage={page}

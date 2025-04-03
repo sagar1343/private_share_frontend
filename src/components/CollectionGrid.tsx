@@ -65,7 +65,7 @@ export default function CollectionGrid() {
           ))}
       </ul>
       {paginatedCollections && (
-        <div className="flex justify-end my-12">
+        <div className="flex justify-center my-12">
           <Pagination
             count={paginatedCollections.count}
             currentPage={page}
