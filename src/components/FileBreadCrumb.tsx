@@ -42,7 +42,7 @@ export default function FileBreadCrumb({
               {fileId ? (
                 <>
                   {collectionTitle ? (
-                    <Heading className="max-w-[8ch] truncate">
+                    <Heading className="max-w-[12ch] truncate">
                       {collectionTitle}
                     </Heading>
                   ) : (
