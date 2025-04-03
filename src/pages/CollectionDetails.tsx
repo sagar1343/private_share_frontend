@@ -19,11 +19,11 @@ export default function CollectionDetails() {
   if (loading) return <Loader />;
   return (
     <div>
-      <FileBreadCrumb
-        collectionId={parseInt(id!)}
-        collectionTitle={collection?.title!}
-      />
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between">
+        <FileBreadCrumb
+          collectionId={parseInt(id!)}
+          collectionTitle={collection?.title!}
+        />
         <Button
           onClick={() => navigate(`/collections/${collection?.id}/files`)}
           size="default"
@@ -32,7 +32,6 @@ export default function CollectionDetails() {
           <FilePlus /> Add File
         </Button>
       </div>
-      <hr className="my-12" />
       <FileContainer className="mt-12" collectionId={collection?.id!} />
     </div>
   );
