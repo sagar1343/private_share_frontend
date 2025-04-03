@@ -3,7 +3,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import {
   CollectionActionStatus,
   setActionStatus,
-} from "@/features/collection/collectionSlice";
+} from "@/app/features/collection/collectionSlice";
 import api from "@/services/api";
 import { ICollection } from "@/types/Collection";
 import { CollectionFormData } from "@/types/CollectionFormData";

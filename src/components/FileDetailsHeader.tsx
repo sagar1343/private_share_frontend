@@ -9,6 +9,7 @@ import { IFile } from "@/types/File";
 import { Dot } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Params, useParams } from "react-router";
+import { Badge } from "./ui/badge";
 
 const options: Intl.DateTimeFormatOptions = {
   year: "numeric",
@@ -52,10 +53,12 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
         />
       </div>
       <div className="mt-2 text-sm font-normal flex flex-col sm:flex-row sm:items-center max-sm:space-y-2">
-        <span>File size {size} MB</span>
+        <Badge variant="secondary">File size {size} MB</Badge>
         <div className="flex items-center">
           <Dot size={30} className="hidden sm:inline text-green-500" />
-          <span>Added on {date.toLocaleString("en-US", options)}</span>
+          <Badge variant="secondary">
+            Added on {date.toLocaleString("en-US", options)}
+          </Badge>
         </div>
       </div>
     </Heading>
