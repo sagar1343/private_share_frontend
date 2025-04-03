@@ -9,14 +9,14 @@ interface Props {
 }
 export default function ReceivedFileCard({ file }: Props) {
   return (
-    <div className="flex items-center justify-between bg-gray-900 text-white px-3 py-5 rounded-lg w-full mb-4">
+    <div className="flex items-center justify-between bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-5 rounded-lg w-full mb-4 shadow-md">
       <div className="flex items-center overflow-hidden">
         <FileText
-          className="text-gray-300 p-2 bg-gray-600 rounded-lg flex-shrink-0"
+          className="text-zinc-500 bg-gray-200 dark:text-gray-300 p-2  dark:bg-gray-600 rounded-lg flex-shrink-0"
           size={40}
         />
         <div className="ml-3 truncate">
-          <p className="font-semibold text-lg truncate">{file.file_name}</p>
+          <p className="font-normal text-lg truncate">{file.file_name}</p>
           <HoverCard>
             <HoverCardTrigger asChild>
               <p className="text-gray-400 text-sm truncate cursor-pointer">

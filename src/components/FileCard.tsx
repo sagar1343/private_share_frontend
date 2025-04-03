@@ -1,16 +1,9 @@
 import useFileSize from "@/hooks/useFileSize";
 import { IFile } from "@/types/File";
-import { ChevronRight, Dot } from "lucide-react";
+import { ExternalLink, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
 
 interface Props {
   file: IFile;
@@ -27,36 +20,25 @@ export default function FileCard({ file, collectionId }: Props) {
   }, [file]);
 
   return (
-    <Card className="flex-row items-center justify-between border-primary">
-      <CardHeader className="grow">
-        <CardTitle>{file.file_name}</CardTitle>
-        <CardDescription className="flex items-center max-sm:hidden">
-          <span className="max-lg:hidden">
-            Added on {new Date(file.created_at).toDateString()}
-          </span>
-          <Dot className="max-lg:hidden" />
-          <span>{fileSize} MB</span>
-          {file.expiration_time && <Dot />}
-          <span className="text-primary">
-            {file.expiration_time ? (
-              <em>
-                Expires in {new Date(file.expiration_time).toDateString()}
-              </em>
-            ) : null}
-          </span>
-        </CardDescription>
-      </CardHeader>
-      <CardFooter>
-        <Button
-          variant="default"
-          className="cursor-pointer"
-          onClick={() =>
-            navigate(`/collections/${collectionId}/files/${file.id}`)
-          }
-        >
-          <ChevronRight />
-        </Button>
-      </CardFooter>
-    </Card>
+    <div className="flex items-center justify-between bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-5 rounded-lg w-full mb-4 shadow-md">
+      <div className="flex items-center overflow-hidden">
+        <FileText
+          className="text-zinc-500 bg-gray-200 dark:text-gray-300 p-2  dark:bg-gray-600 rounded-lg flex-shrink-0"
+          size={40}
+        />
+        <div className="ml-3 truncate">
+          <p className="font-normal text-lg truncate">{file.file_name}</p>
+          <span className="text-gray-400 text-sm">File size {fileSize} MB</span>
+        </div>
+      </div>
+      <Button
+        className="cursor-pointer"
+        onClick={() =>
+          navigate(`/collections/${collectionId}/files/${file.id}`)
+        }
+      >
+        <ExternalLink className="size-5" />
+      </Button>
+    </div>
   );
 }
