@@ -8,14 +8,15 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 export default function useFetchCollections(
-  actionStatus: CollectionActionStatus
+  actionStatus: CollectionActionStatus,
+  page: number
 ) {
   const { authenticatedUser } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (authenticatedUser?.id && actionStatus === CollectionActionStatus.IDLE) {
-      dispatch(fetchCollections(authenticatedUser.id));
+      dispatch(fetchCollections({ userId: authenticatedUser.id, page }));
     }
-  }, [authenticatedUser, actionStatus, dispatch]);
+  }, [authenticatedUser, actionStatus, dispatch, page]);
 }

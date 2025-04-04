@@ -1,5 +1,5 @@
-import FileSkeleton from "@/components/FileSkeleton";
 import Heading from "@/components/Heading";
+import Loader from "@/components/Loader";
 import ReceivedFileCard from "@/components/ReceivedFileCard";
 import useFetch from "@/hooks/useFetch";
 import { PaginatedResponse } from "@/types/Pagination";
@@ -15,15 +15,7 @@ export default function RecievedFiles() {
     setFiles(data?.results);
   }, [data]);
 
-  if (loading) {
-    return (
-      <div className="space-y-4 mt-12">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <FileSkeleton key={index} />
-        ))}
-      </div>
-    );
-  }
+  if (loading) return <Loader />;
 
   if (!files || files.length === 0) {
     return (

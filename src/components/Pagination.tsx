@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface Props {
   count: number;
   currentPage: number;
+  pageSize: number;
   handleNext: () => void;
   handlePrevious: () => void;
 }
@@ -13,8 +14,9 @@ export default function Pagination({
   count,
   handleNext,
   handlePrevious,
+  pageSize,
 }: Props) {
-  const totalPage = Math.ceil(count / 3);
+  const totalPage = Math.ceil(count / pageSize);
   return (
     <>
       {totalPage > 1 && (

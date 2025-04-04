@@ -1,12 +1,17 @@
+import DownLoadFileButton from "@/components/DownloadFileButton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { IReceivedFile } from "@/types/ReceivedFile";
 import { FileText } from "lucide-react";
-import DownLoadFileButton from "./DownloadFileButton";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 
 interface Props {
   file: IReceivedFile;
 }
+
 export default function ReceivedFileCard({ file }: Props) {
   return (
     <div className="flex items-center justify-between bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-5 rounded-lg w-full mb-4 shadow-md">
@@ -38,7 +43,7 @@ export default function ReceivedFileCard({ file }: Props) {
         </div>
       </div>
 
-      <DownLoadFileButton fileId={file.id} />
+      <DownLoadFileButton isProtected={file.is_protected} fileId={file.id} />
     </div>
   );
 }
