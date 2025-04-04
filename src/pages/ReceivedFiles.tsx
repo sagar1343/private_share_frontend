@@ -1,5 +1,6 @@
 import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
+import Pagination from "@/components/Pagination";
 import ReceivedFileCard from "@/components/ReceivedFileCard";
 import useFetch from "@/hooks/useFetch";
 import { PaginatedResponse } from "@/types/Pagination";
@@ -8,11 +9,20 @@ import { useEffect, useState } from "react";
 
 export default function RecievedFiles() {
   const [files, setFiles] = useState<IReceivedFile[]>();
-  const { data, loading } =
-    useFetch<PaginatedResponse<IReceivedFile>>("api/fileshare");
+  const [page, setPage] = useState(1);
+  const { data, loading } = useFetch<PaginatedResponse<IReceivedFile>>(
+    `api/fileshare?page=${page}`
+  );
+  const onNext = () => {
+    if (data && data.next) setPage((page) => page + 1);
+  };
+
+  const onPrevious = () => {
+    if (data && data.previous) setPage((page) => page - 1);
+  };
 
   useEffect(() => {
-    setFiles(data?.results);
+    if (data) setFiles(data.results);
   }, [data]);
 
   if (loading) return <Loader />;
@@ -30,6 +40,15 @@ export default function RecievedFiles() {
         {files.map((file) => (
           <ReceivedFileCard key={file.id} file={file} />
         ))}
+      </div>
+      <div className="flex justify-center my-12">
+        <Pagination
+          count={data?.count!}
+          currentPage={page}
+          handleNext={onNext}
+          handlePrevious={onPrevious}
+          pageSize={12}
+        />
       </div>
     </>
   );
