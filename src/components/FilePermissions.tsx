@@ -35,9 +35,9 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
   }, [users]);
 
   const debbounceHandlePermission = useCallback(
-    () =>
-      debounce(async function handlePermission(selectedUsers: string[]) {
-        if (users) {
+    debounce(async function handlePermission(selectedUsers: string[]) {
+      if (users) {
+        try {
           const data = getSelectedUsersIds(users, selectedUsers);
           const response = await api.patch<IFilePermission>(
             `/api/files/${fileId}/permission/`,
@@ -45,8 +45,11 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
           );
           setSelectedUsers(response.data.allowed_users);
           toast.success("Updated Permission");
+        } catch (error) {
+          toast.error("failed");
         }
-      }, 2000),
+      }
+    }, 2000),
     [fileId, users]
   );
 

@@ -22,26 +22,25 @@ export default function PasswordUpdateForm({ setProtected, setShow }: Props) {
   const { register, handleSubmit, formState } = useForm<FormData>();
 
   async function updatePassword(data: FieldValues) {
-    if (formState.isValid) {
-      try {
-        const response = await api.patch<IFile>(`/api/files/${id}/`, {
-          password: data.password ? data.password : null,
-        });
-        setProtected(response.data.is_protected);
-        toast.success("Updated password security");
-      } catch (error) {
-        toast.error("Failed to update password");
-      } finally {
-        setShow(false);
-      }
+    try {
+      const response = await api.patch<IFile>(`/api/files/${id}/`, {
+        password: data.password ? data.password : null,
+      });
+      setProtected(response.data.is_protected);
+      toast.success(
+        response.data.is_protected
+          ? "Updated password security"
+          : "Disabled password encryption"
+      );
+    } catch (error) {
+      toast.error("Failed to update password");
+    } finally {
+      setShow(false);
     }
   }
 
   async function handleUnsecure() {
     await updatePassword({ password: null });
-    setProtected(false);
-    setShow(false);
-    toast.success("Disabled password encryption");
   }
 
   useEffect(() => {
