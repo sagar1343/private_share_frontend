@@ -6,8 +6,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import api from "@/services/api";
+import { AxiosError } from "axios";
 import { CircleArrowDown } from "lucide-react";
 import { FormEvent, useRef } from "react";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -21,7 +24,7 @@ export default function DownLoadFileButton({ fileId, isProtected }: Props) {
 
   async function handleDownload(event?: FormEvent) {
     event?.preventDefault();
-    const password = passwordRef.current?.value?.trim(); // Ensure password is valid
+    const password = passwordRef.current?.value?.trim();
     await downloadFile(fileId, password);
   }
 
@@ -61,5 +64,24 @@ export default function DownLoadFileButton({ fileId, isProtected }: Props) {
 }
 
 async function downloadFile(fileId: number, password?: string) {
-  console.log(fileId, password, "downloading");
+  try {
+    const response = await api.get(`/api/fileshare/${fileId}`, {
+      params: password ? { password } : {},
+    });
+
+    const url = response.data;
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success("Downloaded");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message || "Failed to download file");
+    }
+  }
 }
