@@ -1,14 +1,22 @@
-import fileIllustration from "@/assets/side-image.png";
 import logo from "@/assets/logo.png";
+import fileIllustration from "@/assets/side-image.png";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
+import { useAuthContext } from "@/context/AuthContext";
+import { lazy, Suspense, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const GoogleLoginButton = lazy(() => import("@/components/GoogleLoginButton"));
 
 export default function Login() {
+  const { isAuthenticated } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
+
   return (
     <div className="h-screen grid grid-cols-1 lg:grid-cols-3">
       <div className="max-lg:hidden col-span-2 bg-black/80 dark:bg-white/80  flex flex-col justify-center items-center gap-10">

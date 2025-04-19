@@ -15,7 +15,7 @@ export default function GoogleLoginButton() {
       <div className="w-64">
         <GoogleLogin
           onSuccess={(credentialResponse: CredentialResponse) => {
-            login(credentialResponse).then(() => navigate("/"));
+            login(credentialResponse);
           }}
           theme="filled_black"
           ux_mode="popup"
