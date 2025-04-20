@@ -16,7 +16,7 @@ interface IAuthContext {
   isPending: boolean;
   isLoading: boolean;
   isAuthenticated: boolean;
-  authenticatedUser?: User;
+  authenticatedUser: User | null;
   login: (credentialResponse: CredentialResponse) => void;
   logout: () => void;
 }
@@ -55,6 +55,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   function logout() {
     localStorage.removeItem("tokens");
     queryClient.setQueryData(["authUser"], null);
+    queryClient.clear();
     toast.success("Logout Successful");
   }
 
@@ -69,7 +70,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         isPending,
         isLoading,
         isAuthenticated: !!authenticatedUser,
-        authenticatedUser,
+        authenticatedUser: authenticatedUser ?? null,
         login,
         logout,
       }}

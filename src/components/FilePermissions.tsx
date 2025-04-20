@@ -22,8 +22,8 @@ interface Option {
 export default function FilePermissions({ fileId }: { fileId: number }) {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [usersList, setUsersList] = useState<Option[]>();
-  const { data: users, loading } = useFetch<IUser[]>("/api/users");
-  const { data: permission, loading: permissionLoading } =
+  const { data: users, isLoading } = useFetch<IUser[]>("/api/users");
+  const { data: permission, isLoading: permissionLoading } =
     useFetch<IFilePermission>(`/api/files/${fileId}/permission/`);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
         Set file permissions
         <InfoButton message="Grant permission to limited users only." />
       </h2>
-      {loading && permissionLoading ? (
+      {isLoading && permissionLoading ? (
         <Skeleton className="max-w-80 h-10 mt-2" />
       ) : (
         <div className="max-w-80 mt-2">

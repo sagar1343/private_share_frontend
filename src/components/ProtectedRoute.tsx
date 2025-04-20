@@ -9,7 +9,9 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
     useAuthContext();
 
   useEffect(() => {
-    if (isPending && !isLoading && !isAuthenticated) navigate("/login");
+    const currentPath = window.location.pathname + window.location.search;
+    if (isPending && !isLoading && !isAuthenticated)
+      navigate(`/login?next=${encodeURIComponent(currentPath)}`);
   }, [authenticatedUser, isLoading]);
 
   return <>{isLoading ? <Loader /> : children}</>;

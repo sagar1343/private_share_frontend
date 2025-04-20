@@ -12,11 +12,11 @@ export default function CollectionDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { authenticatedUser } = useAuthContext();
-  const { data: collection, loading } = useFetch<ICollection>(
+  const { data: collection, isLoading } = useFetch<ICollection>(
     `api/users/${authenticatedUser?.id}/collections/${id}`
   );
 
-  if (loading) return <Loader />;
+  if (isLoading) return <Loader />;
   return (
     <div>
       <div className="flex items-center justify-between">

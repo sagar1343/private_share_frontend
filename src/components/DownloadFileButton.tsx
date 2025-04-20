@@ -17,9 +17,14 @@ import { Input } from "./ui/input";
 interface Props {
   fileId: number;
   isProtected: boolean;
+  size?: number;
 }
 
-export default function DownLoadFileButton({ fileId, isProtected }: Props) {
+export default function DownLoadFileButton({
+  fileId,
+  isProtected,
+  size,
+}: Props) {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   async function handleDownload(event?: FormEvent) {
@@ -34,8 +39,8 @@ export default function DownLoadFileButton({ fileId, isProtected }: Props) {
         <Dialog modal>
           <DialogTrigger>
             <CircleArrowDown
-              className="text-primary cursor-pointer flex-shrink-0 ml-8"
-              size={30}
+              className="text-primary cursor-pointer flex-shrink-0"
+              size={size ?? 30}
             />
           </DialogTrigger>
           <DialogContent>
@@ -55,8 +60,8 @@ export default function DownLoadFileButton({ fileId, isProtected }: Props) {
       ) : (
         <CircleArrowDown
           onClick={() => handleDownload()}
-          className="text-primary cursor-pointer flex-shrink-0 ml-8"
-          size={30}
+          className="text-primary cursor-pointer flex-shrink-0"
+          size={size ?? 30}
         />
       )}
     </div>

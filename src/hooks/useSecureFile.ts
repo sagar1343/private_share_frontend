@@ -1,4 +1,6 @@
+import { useAuthContext } from "@/context/AuthContext";
 import api from "@/services/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
@@ -15,24 +17,34 @@ interface Error {
 }
 
 export default function useSecureFile() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { collectionId }: Params = useParams();
   const [errors, setErrors] = useState<Error | null>();
-  async function onSubmit(data: FieldValues) {
-    setErrors(null);
-    try {
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["secure_file_upload"],
+    mutationFn: async (data: FieldValues) => {
       const response = await api.post("/api/files/", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      if (response.status === 201) {
-        navigate(`/collections/${collectionId}/files/${response.data.id}`);
-        toast.success("Secured file successfully");
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        setErrors(error.response?.data);
-      }
-    }
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["fetch"],
+      });
+      navigate(`/collections/${collectionId}/files/${data.id}`);
+      toast.success("Secured file successfully");
+    },
+    onError: (error: AxiosError<Error>) => {
+      setErrors(error.response?.data || null);
+    },
+  });
+
+  function onSubmit(data: FieldValues) {
+    mutate(data);
   }
-  return { onSubmit, errors };
+
+  return { onSubmit, isPending, errors };
 }

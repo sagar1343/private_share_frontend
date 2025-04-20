@@ -43,7 +43,7 @@ const items = [
   },
   {
     title: "Received Files",
-    url: "/received",
+    url: "/share",
     icon: Library,
   },
 ];

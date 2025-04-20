@@ -1,19 +1,19 @@
 import CopyLink from "@/components/CopyLink";
+import DownlaodSection from "@/components/DownlaodsSection";
+import ExpirationSection from "@/components/ExpirationSection";
 import FileDetailsHeader from "@/components/FileDetailsHeader";
+import FilePermissions from "@/components/FilePermissions";
 import Loader from "@/components/Loader";
+import MaxDownlaodSection from "@/components/MaxDownloadSection";
+import PasswordSection from "@/components/PasswordSection";
 import useFetch from "@/hooks/useFetch";
 import { IFile } from "@/types/File";
 import { useParams } from "react-router-dom";
-import DownlaodSection from "./DownlaodsSection";
-import ExpirationSection from "./ExpirationSection";
-import FilePermissions from "./FilePermissions";
-import MaxDownlaodSection from "./MaxDownloadSection";
-import PasswordSection from "./PasswordSection";
 
 export default function FileDetails() {
   const { id } = useParams();
-  const { data: file, loading } = useFetch<IFile>(`api/files/${id}`);
-  if (loading) return <Loader />;
+  const { data: file, isLoading } = useFetch<IFile>(`api/files/${id}`);
+  if (isLoading) return <Loader />;
   if (!file) return <p>File not found!</p>;
 
   return (

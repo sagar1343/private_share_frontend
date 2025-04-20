@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "received",
+        path: "share",
         element: (
           <ProtectedRoute>
             <ReceivedFiles />
