@@ -1,13 +1,7 @@
 import api from "@/services/api";
 import { CredentialResponse } from "@react-oauth/google";
-import { AxiosError } from "axios";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createContext, ReactNode, useContext } from "react";
 import { toast } from "sonner";
 
 interface User {
@@ -19,70 +13,67 @@ interface User {
 }
 
 interface IAuthContext {
-  loading: boolean;
-  authenticatedUser: User | null;
+  isPending: boolean;
+  isLoading: boolean;
   isAuthenticated: boolean;
-  login: (credentialResponse: CredentialResponse) => Promise<void>;
+  authenticatedUser: User | null;
+  login: (credentialResponse: CredentialResponse) => void;
   logout: () => void;
 }
 
 const authContext = createContext<IAuthContext | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
-  const [authenticatedUser, setAuthenticatedUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const login = async (credentialResponse: CredentialResponse) => {
-    try {
+  const {
+    data: authenticatedUser,
+    isLoading,
+    isPending,
+  } = useQuery({
+    queryKey: ["authUser"],
+    queryFn: fetchUser,
+    enabled: !!localStorage.getItem("tokens"),
+    retry: false,
+  });
+
+  const { mutate: login } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (credentialResponse: CredentialResponse) => {
       const response = await api.post("/auth/google-login/", {
         token: credentialResponse.credential,
       });
-
       localStorage.setItem("tokens", JSON.stringify(response.data));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      toast.success("Logged in!");
+    },
+    onError: () => toast.error("Login failed"),
+  });
 
-      await fetchUser();
-      toast.success("Login Successfull");
-    } catch (error: any) {
-      if (error instanceof AxiosError) {
-        toast.error(
-          `Login failed: ${error.response?.data?.message ?? "Server Error"}`
-        );
-      }
-    }
-  };
-
-  const fetchUser = async () => {
-    try {
-      setLoading(true);
-      const userResponse = await api.get("/auth/me");
-      setAuthenticatedUser(userResponse.data);
-      setAuthenticated(true);
-    } catch (error) {
-      console.error("Failed to fetch user:", error);
-      logout();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const logout = () => {
+  function logout() {
     localStorage.removeItem("tokens");
-    setAuthenticated(false);
-    setAuthenticatedUser(null);
-    toast.success("Logout Successfull");
-  };
+    queryClient.setQueryData(["authUser"], null);
+    queryClient.clear();
+    toast.success("Logout Successful");
+  }
 
-  useEffect(() => {
-    const token = localStorage.getItem("tokens");
-    if (token) {
-      fetchUser();
-    }
-  }, []);
+  async function fetchUser() {
+    const response = await api.get<User>("/auth/me");
+    return response.data;
+  }
 
   return (
     <authContext.Provider
-      value={{ loading, authenticatedUser, isAuthenticated, login, logout }}
+      value={{
+        isPending,
+        isLoading,
+        isAuthenticated: !!authenticatedUser,
+        authenticatedUser: authenticatedUser ?? null,
+        login,
+        logout,
+      }}
     >
       {children}
     </authContext.Provider>

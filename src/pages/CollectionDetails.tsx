@@ -12,18 +12,18 @@ export default function CollectionDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { authenticatedUser } = useAuthContext();
-  const { data: collection, loading } = useFetch<ICollection>(
+  const { data: collection, isLoading } = useFetch<ICollection>(
     `api/users/${authenticatedUser?.id}/collections/${id}`
   );
 
-  if (loading) return <Loader />;
+  if (isLoading) return <Loader />;
   return (
     <div>
-      <FileBreadCrumb
-        collectionId={parseInt(id!)}
-        collectionTitle={collection?.title!}
-      />
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between">
+        <FileBreadCrumb
+          collectionId={parseInt(id!)}
+          collectionTitle={collection?.title!}
+        />
         <Button
           onClick={() => navigate(`/collections/${collection?.id}/files`)}
           size="default"
@@ -32,7 +32,6 @@ export default function CollectionDetails() {
           <FilePlus /> Add File
         </Button>
       </div>
-      <hr className="my-12" />
       <FileContainer className="mt-12" collectionId={collection?.id!} />
     </div>
   );

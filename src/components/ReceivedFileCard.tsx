@@ -1,44 +1,29 @@
+import DownLoadFileButton from "@/components/DownloadFileButton";
 import { IReceivedFile } from "@/types/ReceivedFile";
 import { FileText } from "lucide-react";
-import DownLoadFileButton from "./DownloadFileButton";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 
 interface Props {
   file: IReceivedFile;
 }
+
 export default function ReceivedFileCard({ file }: Props) {
   return (
-    <div className="flex items-center justify-between bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-5 rounded-lg w-full mb-4 shadow-md">
+    <div className="space-x-2 flex items-center justify-between bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-4 rounded-lg w-full mb-4 shadow-md">
       <div className="flex items-center overflow-hidden">
         <FileText
           className="text-zinc-500 bg-gray-200 dark:text-gray-300 p-2  dark:bg-gray-600 rounded-lg flex-shrink-0"
           size={40}
         />
         <div className="ml-3 truncate">
-          <p className="font-normal text-lg truncate">{file.file_name}</p>
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <p className="text-gray-400 text-sm truncate cursor-pointer">
-                {file.sender.email}
-              </p>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-80">
-              <div className="flex gap-2 items-center">
-                <Avatar>
-                  <AvatarImage src={file.sender.profile_pic} />
-                  <AvatarFallback>
-                    {file.sender.first_name.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <p>{file.sender.email}</p>
-              </div>
-            </HoverCardContent>
-          </HoverCard>
+          <p className="font-normal text-lg truncate">
+            {file.file_name}{" "}
+            <span className="text-gray-400 text-sm"> ({file.size}) </span>
+          </p>
+          <p className="text-gray-400 text-sm truncate">{file.sender.email}</p>
         </div>
       </div>
 
-      <DownLoadFileButton fileId={file.id} />
+      <DownLoadFileButton isProtected={file.is_protected} fileId={file.id} />
     </div>
   );
 }

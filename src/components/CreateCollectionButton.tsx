@@ -14,8 +14,10 @@ export default function CreateCollectionButton() {
       onClick={() => dispatch(setActionStatus(CollectionActionStatus.CREATING))}
       className="hover:text-primary"
     >
-      <FolderPlus size={82} cursor="pointer" />
-      <p>Create New</p>
+      <figure className="flex flex-col items-center cursor-pointer p-2 rounded-xl">
+        <FolderPlus size={82} cursor="pointer" />
+        <figcaption className="h-9">Create New</figcaption>
+      </figure>
     </button>
   );
 }

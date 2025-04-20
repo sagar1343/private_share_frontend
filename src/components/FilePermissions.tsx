@@ -4,7 +4,7 @@ import { IFilePermission } from "@/types/FilePermission";
 import { IUser } from "@/types/User";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { debounce } from "lodash";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import InfoButton from "./InfoButton";
 import { Avatar, AvatarImage } from "./ui/avatar";
@@ -22,8 +22,8 @@ interface Option {
 export default function FilePermissions({ fileId }: { fileId: number }) {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [usersList, setUsersList] = useState<Option[]>();
-  const { data: users, loading } = useFetch<IUser[]>("/api/users");
-  const { data: permission, loading: permissionLoading } =
+  const { data: users, isLoading } = useFetch<IUser[]>("/api/users");
+  const { data: permission, isLoading: permissionLoading } =
     useFetch<IFilePermission>(`/api/files/${fileId}/permission/`);
 
   useEffect(() => {
@@ -34,20 +34,24 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
     if (users) setUsersList(() => MappedUser(users));
   }, [users]);
 
-  const debbounceHandlePermission = debounce(async function handlePermission(
-    selectedUsers: string[]
-  ) {
-    if (users) {
-      const data = getSelectedUsersIds(users, selectedUsers);
-      const response = await api.patch<IFilePermission>(
-        `/api/files/${fileId}/permission/`,
-        { allowed_users: data }
-      );
-      setSelectedUsers(response.data.allowed_users);
-      toast.success("Updated Permission");
-    }
-  },
-  2000);
+  const debbounceHandlePermission = useCallback(
+    debounce(async function handlePermission(selectedUsers: string[]) {
+      if (users) {
+        try {
+          const data = getSelectedUsersIds(users, selectedUsers);
+          const response = await api.patch<IFilePermission>(
+            `/api/files/${fileId}/permission/`,
+            { allowed_users: data }
+          );
+          setSelectedUsers(response.data.allowed_users);
+          toast.success("Updated Permission");
+        } catch (error) {
+          toast.error("failed");
+        }
+      }
+    }, 2000),
+    [fileId, users]
+  );
 
   return (
     <div className="mb-20">
@@ -55,7 +59,7 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
         Set file permissions
         <InfoButton message="Grant permission to limited users only." />
       </h2>
-      {loading && permissionLoading ? (
+      {isLoading && permissionLoading ? (
         <Skeleton className="max-w-80 h-10 mt-2" />
       ) : (
         <div className="max-w-80 mt-2">
