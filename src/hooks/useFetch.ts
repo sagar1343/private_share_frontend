@@ -1,9 +1,9 @@
 import api from "@/services/api";
-import { useQuery } from "@tanstack/react-query";
+import { QueryKey, useQuery } from "@tanstack/react-query";
 
-export default function useFetch<T>(endpoint: string) {
+export default function useFetch<T>(queryKey: QueryKey, endpoint: string) {
   return useQuery({
-    queryKey: ["fetch", endpoint],
+    queryKey,
     queryFn: async () => {
       const response = await api.get<T>(endpoint);
       return response.data;

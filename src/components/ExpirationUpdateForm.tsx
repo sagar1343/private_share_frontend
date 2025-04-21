@@ -1,6 +1,7 @@
 import { DateTimePicker } from "@/components/DateTimePicker";
 import { Button } from "@/components/ui/button";
 import api from "@/services/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SendHorizontal, X } from "lucide-react";
 import { useState } from "react";
 import { Params, useParams } from "react-router";
@@ -19,25 +20,36 @@ export default function ExpirationUpdateForm({
 }: Props) {
   const { id }: Params = useParams();
   const [currentTimer, setCurrentTimer] = useState(expiration_time);
+  const queryClient = useQueryClient();
 
-  async function updateExpirationTime() {
-    if (currentTimer === expiration_time) {
+  const expirationMutation = useMutation({
+    mutationFn: async (time: Date | undefined) => {
+      const response = await api.patch(`api/files/${id}/`, {
+        expiration_time: time || null,
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setExpiration_time(data.expiration_time);
+      setCurrentTimer(data.expiration_time);
+      toast.success("Updated expiration timer");
+      setShow(false);
+      queryClient.invalidateQueries({ queryKey: ["files", { id }] });
+    },
+    onError: () => {
+      toast.error("Failed to update the expiry");
+      setShow(false);
+    },
+  });
+
+  function handleUpdate() {
+    if (currentTimer?.toISOString() === expiration_time?.toISOString()) {
       toast.info("No changes detected");
       return;
     }
-    try {
-      const response = await api.patch(`api/files/${id}/`, {
-        expiration_time: expiration_time ? expiration_time : null,
-      });
-      setExpiration_time(response.data.expiration_time);
-      setCurrentTimer(response.data.expiration_time);
-      toast.success("Updated expiration timer");
-    } catch (error) {
-      toast.error("Failed to update the expiry");
-    } finally {
-      setShow(false);
-    }
+    expirationMutation.mutate(expiration_time);
   }
+
   return (
     <div className="mt-2 max-w-60 space-x-2 flex">
       <DateTimePicker
@@ -49,10 +61,15 @@ export default function ExpirationUpdateForm({
         variant="secondary"
         className="cursor-pointer"
         onClick={() => setExpiration_time(undefined)}
+        disabled={expirationMutation.isPending}
       >
         <X />
       </Button>
-      <Button className="cursor-pointer" onClick={updateExpirationTime}>
+      <Button
+        className="cursor-pointer"
+        onClick={handleUpdate}
+        disabled={expirationMutation.isPending}
+      >
         <SendHorizontal />
       </Button>
     </div>

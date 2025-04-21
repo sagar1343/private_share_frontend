@@ -25,6 +25,7 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
 
   const { authenticatedUser } = useAuthContext();
   const { data: collection } = useFetch<ICollection>(
+    ["collections", { userId: authenticatedUser?.id, collectionId }],
     `api/users/${authenticatedUser?.id}/collections/${collectionId}`
   );
 

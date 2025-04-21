@@ -12,7 +12,10 @@ import { useParams } from "react-router-dom";
 
 export default function FileDetails() {
   const { id } = useParams();
-  const { data: file, isLoading } = useFetch<IFile>(`api/files/${id}`);
+  const { data: file, isLoading } = useFetch<IFile>(
+    ["files", { id }],
+    `api/files/${id}`
+  );
   if (isLoading) return <Loader />;
   if (!file) return <p>File not found!</p>;
 
