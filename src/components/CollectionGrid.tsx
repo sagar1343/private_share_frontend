@@ -9,26 +9,29 @@ import { ICollection } from "@/types/Collection";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CollectionItem from "./CollectionItem";
+import EmptyStateModal from "./EmptyStateModal";
 import Pagination from "./Pagination";
+import SearchComponent from "./SearchComponent";
 
 export default function CollectionGrid() {
   const { paginatedCollections, isLoading, actionStatus } = useSelector(
     (state: RootState) => state.UserCollections
   );
+
   const [collections, setCollections] = useState<ICollection[]>();
   const [page, setPage] = useState(1);
   const [active, setActive] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const containerRef = useClickOutside<HTMLUListElement>(() => setActive(null));
   useFetchCollections(actionStatus, page);
 
   const handleNext = () => {
-    if (paginatedCollections && paginatedCollections.next)
-      setPage((page) => page + 1);
+    if (paginatedCollections?.next) setPage((page) => page + 1);
   };
 
   const handlePrevious = () => {
-    if (paginatedCollections && paginatedCollections.previous)
-      setPage((page) => page - 1);
+    if (paginatedCollections?.previous) setPage((page) => page - 1);
   };
 
   useEffect(() => {
@@ -37,22 +40,47 @@ export default function CollectionGrid() {
 
   if (isLoading) return <Loader />;
 
+  const filteredCollections = collections?.filter((collection) =>
+    collection.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
-      <ul
-        ref={containerRef}
-        className="mt-12 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 items-center justify-items-center gap-6"
-      >
-        <li>
-          {actionStatus === CollectionActionStatus.CREATING ? (
-            <CollectionCreatingItem />
-          ) : (
-            <CreateCollectionButton />
-          )}
-        </li>
-        {collections &&
-          collections.map((collection) => (
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
+        <SearchComponent
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder={"Search collections..."}
+        />
+        {filteredCollections && (
+          <Pagination
+            count={filteredCollections.length}
+            currentPage={page}
+            handleNext={handleNext}
+            handlePrevious={handlePrevious}
+            pageSize={17}
+          />
+        )}
+      </div>
+      <hr className="mb-6" />
+      {filteredCollections?.length == 0 && searchTerm ? (
+        <EmptyStateModal title={"collections"} searchTerm={searchTerm} />
+      ) : (
+        <ul
+          ref={containerRef}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center"
+        >
+          <li>
+            {actionStatus === CollectionActionStatus.CREATING ? (
+              <CollectionCreatingItem />
+            ) : (
+              <CreateCollectionButton />
+            )}
+          </li>
+
+          {filteredCollections?.map((collection) => (
             <CollectionItem
+              key={collection.id}
               collection={collection}
               isActive={
                 active === collection.id &&
@@ -63,17 +91,7 @@ export default function CollectionGrid() {
               }
             />
           ))}
-      </ul>
-      {paginatedCollections && (
-        <div className="flex justify-center my-12">
-          <Pagination
-            count={paginatedCollections.count}
-            currentPage={page}
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
-            pageSize={17}
-          />
-        </div>
+        </ul>
       )}
     </div>
   );
