@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Hashids from "hashids";
 import { ClipboardCheck, Link } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CopyLink({ id }: { id: number }) {
   const [copied, setCopied] = useState(false);
   const copyRef = useRef<HTMLInputElement | null>(null);
+  const [encodedId, setEncodedId] = useState<string | null>(null);
 
   const handleCopy = () => {
     if (copyRef.current) {
@@ -15,12 +17,21 @@ export default function CopyLink({ id }: { id: number }) {
     }
   };
 
+  useEffect(() => {
+    const hashids = new Hashids("private-share-salt", 10);
+    setEncodedId(hashids.encode(id));
+  }, []);
+
+  if (!encodedId) {
+    return null;
+  }
+
   return (
     <div className="my-12 flex gap-2 ">
       <Input
         ref={copyRef}
         className="max-w-2xs focus-visible:ring-0 focus-visible:border-inherit focus-visible:border-[1px]"
-        defaultValue={`http://localhost:8000/api/fileshare/${id}`}
+        defaultValue={`http://localhost:5173/share?id=${encodedId}`}
         readOnly
       />
       <Button

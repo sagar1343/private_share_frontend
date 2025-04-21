@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useSecureFile from "@/hooks/useSecureFile";
 import { FormData } from "@/types/FileCreateFormData";
-import { Lock, RotateCcw } from "lucide-react";
+import { Loader2, Lock, RotateCcw } from "lucide-react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useParams } from "react-router";
@@ -17,7 +17,7 @@ interface Params {
 
 export default function SecureFileForm() {
   const { collectionId }: Params = useParams();
-  const { onSubmit, errors } = useSecureFile();
+  const { onSubmit, errors, isPending } = useSecureFile();
   const { register, handleSubmit, control, setValue, reset, formState } =
     useForm<FormData>({
       defaultValues: {
@@ -114,12 +114,17 @@ export default function SecureFileForm() {
         <FileUplaod setValue={setValue} setDefault={errors === null} />
       </div>
       <div className="flex justify-between max-lg:mb-20 mt-4">
-        <Button type="reset" variant="secondary" className="cursor-pointer">
+        <Button
+          disabled={isPending}
+          type="reset"
+          variant="secondary"
+          className="cursor-pointer"
+        >
           <RotateCcw />
           Reset
         </Button>
-        <Button type="submit" className="cursor-pointer">
-          <Lock />
+        <Button disabled={isPending} type="submit" className="cursor-pointer">
+          {isPending ? <Loader2 className="animate-spin" /> : <Lock />}
           Secure File
         </Button>
       </div>

@@ -15,7 +15,7 @@ interface Props {
 export default function FileContainer({ className, collectionId }: Props) {
   const [files, setFiles] = useState<IFile[]>();
   const [page, setPage] = useState(1);
-  const { data, loading } = useFetch<PaginatedResponse<IFile>>(
+  const { data, isLoading } = useFetch<PaginatedResponse<IFile>>(
     collectionId ? `api/files/?collections=${collectionId}&page=${page}` : ""
   );
 
@@ -31,7 +31,7 @@ export default function FileContainer({ className, collectionId }: Props) {
     if (data) setFiles(data.results);
   }, [data]);
 
-  if (loading) return <FilesSkeleton />;
+  if (isLoading) return <FilesSkeleton />;
 
   if (!files || files.length === 0) {
     return <p className="mt-12 text-center text-gray-500">No files found.</p>;

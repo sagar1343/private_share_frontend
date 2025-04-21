@@ -3,11 +3,10 @@ import FileNameUpdate from "@/components/FileNameUpdate";
 import Heading from "@/components/Heading";
 import { useAuthContext } from "@/context/AuthContext";
 import useFetch from "@/hooks/useFetch";
-import useFileSize from "@/hooks/useFileSize";
 import { ICollection } from "@/types/Collection";
 import { IFile } from "@/types/File";
 import { Dot } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Params, useParams } from "react-router";
 import { Badge } from "./ui/badge";
 
@@ -21,19 +20,13 @@ const options: Intl.DateTimeFormatOptions = {
 };
 
 export default function FileDetailsHeader({ file }: { file: IFile }) {
-  const getFileSize = useFileSize();
   const [fileName, setFileName] = useState(file.file_name);
-  const [size, setSize] = useState<string | null>(null);
   const { collectionId }: Params = useParams();
 
   const { authenticatedUser } = useAuthContext();
   const { data: collection } = useFetch<ICollection>(
     `api/users/${authenticatedUser?.id}/collections/${collectionId}`
   );
-
-  useEffect(() => {
-    if (file) getFileSize(file.file).then((data) => setSize(data.toFixed(2)));
-  }, [file]);
 
   const date = new Date(file.created_at);
 
@@ -53,7 +46,7 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
         />
       </div>
       <div className="mt-2 text-sm font-normal flex flex-col sm:flex-row sm:items-center max-sm:space-y-2">
-        <Badge variant="secondary">File size {size} MB</Badge>
+        <Badge variant="secondary">File size {file.size}</Badge>
         <div className="flex items-center">
           <Dot size={30} className="hidden sm:inline text-green-500" />
           <Badge variant="secondary">
