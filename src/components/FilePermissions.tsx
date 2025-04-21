@@ -54,7 +54,7 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
   );
 
   return (
-    <div className="">
+    <div>
       <h2 className="font-semibold flex items-center gap-2">
         Set file permissions
         <InfoButton message="Grant permission to limited users only." />

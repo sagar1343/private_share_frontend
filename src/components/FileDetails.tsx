@@ -6,13 +6,16 @@ import FilePermissions from "@/components/FilePermissions";
 import Loader from "@/components/Loader";
 import MaxDownlaodSection from "@/components/MaxDownloadSection";
 import PasswordSection from "@/components/PasswordSection";
+import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/useFetch";
 import { IFile } from "@/types/File";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function FileDetails() {
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const { id, collectionId } = useParams();
   const { data: file, isLoading } = useFetch<IFile>(`api/files/${id}`);
+
   if (isLoading) return <Loader />;
   if (!file) return <p>File not found!</p>;
 
@@ -28,8 +31,20 @@ export default function FileDetails() {
           <DownlaodSection totalDownloads={file.download_count} />
           <MaxDownlaodSection maxDownloads={file.max_download_count} />
         </div>
-        <div className="lg:mt-12">
+        <div className="lg:mt-12 space-y-12">
           <FilePermissions fileId={file.id} />
+          <div className="flex items-center">
+            <h2 className="font-semibold flex items-center gap-2">File Logs</h2>
+            <Button
+              variant="link"
+              className="cursor-pointer"
+              onClick={() =>
+                navigate(`/collections/${collectionId}/files/${id}/logs`)
+              }
+            >
+              View file logs
+            </Button>
+          </div>
         </div>
       </div>
     </div>

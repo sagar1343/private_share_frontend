@@ -1,6 +1,5 @@
 import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
-import Pagination from "@/components/Pagination";
 import ReceivedFileCard from "@/components/ReceivedFileCard";
 import FileModal from "@/components/ReceivedFileModal";
 import useFetch from "@/hooks/useFetch";
@@ -14,17 +13,8 @@ export default function RecievedFiles() {
   const [files, setFiles] = useState<IReceivedFile[]>();
   const [selectedFile, setSelectedFile] = useState<IReceivedFile | null>(null);
 
-  const [page, setPage] = useState(1);
-  const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(
-    `api/fileshare?page=${page}`
-  );
-  const onNext = () => {
-    if (data && data.next) setPage((page) => page + 1);
-  };
-
-  const onPrevious = () => {
-    if (data && data.previous) setPage((page) => page - 1);
-  };
+  const { data, isLoading } =
+    useFetch<PaginatedResponse<IReceivedFile>>("api/fileshare");
 
   const [searchParams] = useSearchParams();
   const encodedId = searchParams.get("id");
@@ -32,7 +22,7 @@ export default function RecievedFiles() {
   const decodedId = encodedId ? decodeId(encodedId) : null;
 
   useEffect(() => {
-    if (data) setFiles(data.results);
+    setFiles(data?.results);
 
     if (data?.results && decodedId) {
       const file = data.results.find((f) => f.id === decodedId);
@@ -62,15 +52,6 @@ export default function RecievedFiles() {
       {selectedFile && (
         <FileModal file={selectedFile} onClose={() => setSelectedFile(null)} />
       )}
-      <div className="flex justify-center my-12">
-        <Pagination
-          count={data?.count!}
-          currentPage={page}
-          handleNext={onNext}
-          handlePrevious={onPrevious}
-          pageSize={12}
-        />
-      </div>
     </>
   );
 }
