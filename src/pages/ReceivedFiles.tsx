@@ -18,8 +18,10 @@ export default function RecievedFiles() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } =
-    useFetch<PaginatedResponse<IReceivedFile>>("api/fileshare");
+  const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(
+    ["fileshare"],
+    "api/fileshare"
+  );
 
   const [searchParams] = useSearchParams();
   const encodedId = searchParams.get("id");

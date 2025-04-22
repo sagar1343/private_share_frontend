@@ -1,8 +1,10 @@
 import { CollectionActionStatus } from "@/app/features/collection/collectionSlice";
 import { RootState } from "@/app/store";
 import CollectionCreatingItem from "@/components/CollectionCreatingItem";
+import CollectionItem from "@/components/CollectionItem";
 import CreateCollectionButton from "@/components/CreateCollectionButton";
 import Loader from "@/components/Loader";
+import Pagination from "@/components/Pagination";
 import useClickOutside from "@/hooks/useClickOutside";
 import useFetchCollections from "@/hooks/useFetchCollections";
 import { ICollection } from "@/types/Collection";
@@ -14,10 +16,7 @@ import Pagination from "./Pagination";
 import SearchComponent from "./SearchComponent";
 
 export default function CollectionGrid() {
-  const { paginatedCollections, isLoading, actionStatus } = useSelector(
-    (state: RootState) => state.UserCollections
-  );
-
+  const { paginatedCollections, isLoading, actionStatus } = useSelector((state: RootState) => state.UserCollections);
   const [collections, setCollections] = useState<ICollection[]>();
   const [page, setPage] = useState(1);
   const [active, setActive] = useState<number | null>(null);
@@ -27,11 +26,11 @@ export default function CollectionGrid() {
   useFetchCollections(actionStatus, page);
 
   const handleNext = () => {
-    if (paginatedCollections?.next) setPage((page) => page + 1);
+    if (paginatedCollections && paginatedCollections.next) setPage((page) => page + 1);
   };
 
   const handlePrevious = () => {
-    if (paginatedCollections?.previous) setPage((page) => page - 1);
+    if (paginatedCollections && paginatedCollections.previous) setPage((page) => page - 1);
   };
 
   useEffect(() => {

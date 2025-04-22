@@ -12,10 +12,11 @@ import { IFile } from "@/types/File";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function FileDetails() {
-  const navigate = useNavigate();
-  const { id, collectionId } = useParams();
-  const { data: file, isLoading } = useFetch<IFile>(`api/files/${id}`);
-
+  const { id } = useParams();
+  const { data: file, isLoading } = useFetch<IFile>(
+    ["files", { id }],
+    `api/files/${id}`
+  );
   if (isLoading) return <Loader />;
   if (!file) return <p>File not found!</p>;
 

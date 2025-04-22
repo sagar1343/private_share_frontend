@@ -11,10 +11,12 @@ import { Pencil, SendHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface FormData {
   file_name: string;
 }
+
 interface Props {
   fileId: number;
   fileName: string;
@@ -27,26 +29,38 @@ export default function FileNameUpdate({
   setFileName,
 }: Props) {
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, formState } = useForm<FormData>({
+  const { register, handleSubmit, formState, reset } = useForm<FormData>({
     defaultValues: { file_name: fileName },
   });
-  async function onSubmit(data: FieldValues) {
-    console.log(fileName, data.file_name);
+  const queryClient = useQueryClient();
+
+  const nameMutation = useMutation({
+    mutationFn: async (data: FieldValues) => {
+      const response = await api.patch<IFile>(`/api/files/${fileId}/`, data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setFileName(data.file_name);
+      toast.success("File name updated");
+      setOpen(false);
+      reset({ file_name: data.file_name });
+      queryClient.invalidateQueries({ queryKey: ["files", { id: fileId }] });
+    },
+    onError: () => {
+      toast.error("Failed to update the name");
+      setOpen(false);
+    },
+  });
+
+  function onSubmit(data: FieldValues) {
     if (data.file_name.trim() === fileName) {
       toast.info("No changes detected");
       setOpen(false);
       return;
     }
-    try {
-      const response = await api.patch<IFile>(`/api/files/${fileId}/`, data);
-      setFileName(response.data.file_name);
-      toast.success("File name updated");
-    } catch (error) {
-      toast.error("Failed to update the name");
-    } finally {
-      setOpen(false);
-    }
+    nameMutation.mutate(data);
   }
+
   useEffect(() => {
     if (formState.errors.file_name)
       toast.error(formState.errors.file_name.message);
@@ -72,8 +86,13 @@ export default function FileNameUpdate({
               },
             })}
             type="text"
+            disabled={nameMutation.isPending}
           />
-          <Button className="cursor-pointer" disabled={formState.isSubmitting}>
+          <Button
+            className="cursor-pointer"
+            disabled={formState.isSubmitting || nameMutation.isPending}
+            type="submit"
+          >
             <SendHorizontal />
           </Button>
         </form>

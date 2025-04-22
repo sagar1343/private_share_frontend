@@ -7,6 +7,7 @@ import { ScrollArea } from "./ui/scroll-area";
 
 export default function AccessLogs({ fileId }: { fileId: number }) {
   const { data } = useFetch<PaginatedResponse<IAccessLogs>>(
+    ["logs", { fileId }],
     `api/files/${fileId}/logs`
   );
   const [logs, setLogs] = useState<IAccessLogs[]>([]);

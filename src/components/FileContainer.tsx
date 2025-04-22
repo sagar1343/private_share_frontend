@@ -19,6 +19,7 @@ export default function FileContainer({ className, collectionId }: Props) {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading } = useFetch<PaginatedResponse<IFile>>(
+    ["files", { collectionId, page }],
     collectionId ? `api/files/?collections=${collectionId}&page=${page}` : ""
   );
 
