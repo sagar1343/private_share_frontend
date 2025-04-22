@@ -45,9 +45,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       });
       localStorage.setItem("tokens", JSON.stringify(response.data));
     },
-    onSuccess: () => {
-      queryClient.clear();
-    },
+    onSuccess: () => queryClient.clear(),
     onError: () => toast.error("Login failed"),
   });
 
