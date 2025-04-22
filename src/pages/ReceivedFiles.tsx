@@ -18,10 +18,7 @@ export default function RecievedFiles() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(
-    ["fileshare"],
-    "api/fileshare"
-  );
+  const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(["fileshare"], "api/fileshare");
 
   const [searchParams] = useSearchParams();
   const encodedId = searchParams.get("id");
@@ -46,39 +43,22 @@ export default function RecievedFiles() {
   if (isLoading) return <Loader />;
 
   if (!files || files.length === 0) {
-    return (
-      <p className="mt-12 text-center text-gray-500">No files received yet.</p>
-    );
+    return <p className="mt-12 text-center text-gray-500">No files received yet.</p>;
   }
 
-  const filteredFiles = files?.filter((file) =>
-    file.file_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredFiles = files?.filter((file) => file.file_name.toLowerCase().includes(searchTerm.toLowerCase()));
   return (
     <>
       <Heading asHeading>Received Files</Heading>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
-        <SearchComponent
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={"Search files..."}
-        />
-        {filteredFiles && (
-          <Pagination
-            count={filteredFiles.length}
-            currentPage={page}
-            handleNext={onNext}
-            handlePrevious={onPrevious}
-            pageSize={12}
-          />
-        )}
+        <SearchComponent value={searchTerm} onChange={setSearchTerm} placeholder={"Search files..."} />
+        {filteredFiles && <Pagination count={filteredFiles.length} currentPage={page} handleNext={onNext} handlePrevious={onPrevious} pageSize={12} />}
       </div>
 
-      <hr className="mb-6" />
       {filteredFiles.length == 0 ? (
         <EmptyStateModal title={"files"} searchTerm={searchTerm} />
       ) : (
-        <div className="space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
           {filteredFiles.map((file) => (
             <div key={file.id}>
               <ReceivedFileCard file={file} />
@@ -86,9 +66,7 @@ export default function RecievedFiles() {
           ))}
         </div>
       )}
-      {selectedFile && (
-        <FileModal file={selectedFile} onClose={() => setSelectedFile(null)} />
-      )}
+      {selectedFile && <FileModal file={selectedFile} onClose={() => setSelectedFile(null)} />}
     </>
   );
 }

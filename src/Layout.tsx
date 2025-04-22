@@ -7,7 +7,7 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="my-2 w-full">
+      <main className="my-12 w-full">
         <div className="fixed top-2">
           <SidebarTrigger className="cursor-pointer" />
         </div>

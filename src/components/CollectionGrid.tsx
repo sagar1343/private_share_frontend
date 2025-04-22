@@ -48,7 +48,7 @@ export default function CollectionGrid() {
       {filteredCollections?.length == 0 && searchTerm ? (
         <EmptyStateModal title={"collections"} searchTerm={searchTerm} />
       ) : (
-        <ul ref={containerRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
+        <ul ref={containerRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 justify-items-center">
           <li>{actionStatus === CollectionActionStatus.CREATING ? <CollectionCreatingItem /> : <CreateCollectionButton />}</li>
 
           {filteredCollections?.map((collection) => (

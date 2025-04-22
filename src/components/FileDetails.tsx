@@ -23,7 +23,6 @@ export default function FileDetails() {
     <div>
       <FileDetailsHeader file={file} />
       <CopyLink id={file.id} />
-      <hr />
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8 max-lg:space-y-12">
         <div className="mt-12 space-y-12">
           <ExpirationSection date={file.expiration_time} />

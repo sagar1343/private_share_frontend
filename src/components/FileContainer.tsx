@@ -18,10 +18,7 @@ export default function FileContainer({ className, collectionId }: Props) {
   const [files, setFiles] = useState<IFile[]>();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, isLoading } = useFetch<PaginatedResponse<IFile>>(
-    ["files", { collectionId, page }],
-    collectionId ? `api/files/?collections=${collectionId}&page=${page}` : ""
-  );
+  const { data, isLoading } = useFetch<PaginatedResponse<IFile>>(["files", { collectionId, page }], collectionId ? `api/files/?collections=${collectionId}&page=${page}` : "");
 
   const onNext = () => {
     if (data && data.next) setPage((page) => page + 1);
@@ -40,38 +37,19 @@ export default function FileContainer({ className, collectionId }: Props) {
   if (!files || files.length === 0) {
     return <p className="mt-12 text-center text-gray-500">No files found.</p>;
   }
-  const filteredFiles = files?.filter((file) =>
-    file.file_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredFiles = files?.filter((file) => file.file_name.toLowerCase().includes(searchTerm.toLowerCase()));
+
   return (
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
-        <SearchComponent
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={"Search files..."}
-        />
-        {filteredFiles && (
-          <Pagination
-            count={filteredFiles.length}
-            currentPage={page}
-            handleNext={onNext}
-            handlePrevious={onPrevious}
-            pageSize={12}
-          />
-        )}
+        <SearchComponent value={searchTerm} onChange={setSearchTerm} placeholder={"Search files..."} />
+        {data && <Pagination count={searchTerm ? searchTerm.length : data.count} currentPage={page} handleNext={onNext} handlePrevious={onPrevious} pageSize={12} />}
       </div>
 
-      <hr className="mb-6" />
       {filteredFiles.length == 0 ? (
         <EmptyStateModal title={"files"} searchTerm={searchTerm} />
       ) : (
-        <div
-          className={clsx(
-            "space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",
-            className
-          )}
-        >
+        <div className={clsx("space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4", className)}>
           {filteredFiles.map((file) => (
             <FileCard key={file.id} file={file} collectionId={collectionId} />
           ))}
