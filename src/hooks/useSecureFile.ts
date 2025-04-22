@@ -31,7 +31,7 @@ export default function useSecureFile() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["fetch"],
+        queryKey: ["collections", { id: collectionId }],
       });
       navigate(`/collections/${collectionId}/files/${data.id}`);
       toast.success("Secured file successfully");
