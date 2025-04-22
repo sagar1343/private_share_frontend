@@ -3,17 +3,15 @@ import { RootState } from "@/app/store";
 import CollectionCreatingItem from "@/components/CollectionCreatingItem";
 import CollectionItem from "@/components/CollectionItem";
 import CreateCollectionButton from "@/components/CreateCollectionButton";
+import EmptyStateModal from "@/components/EmptyStateModal";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
+import SearchComponent from "@/components/SearchComponent";
 import useClickOutside from "@/hooks/useClickOutside";
 import useFetchCollections from "@/hooks/useFetchCollections";
 import { ICollection } from "@/types/Collection";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import CollectionItem from "./CollectionItem";
-import EmptyStateModal from "./EmptyStateModal";
-import Pagination from "./Pagination";
-import SearchComponent from "./SearchComponent";
 
 export default function CollectionGrid() {
   const { paginatedCollections, isLoading, actionStatus } = useSelector((state: RootState) => state.UserCollections);
@@ -39,56 +37,22 @@ export default function CollectionGrid() {
 
   if (isLoading) return <Loader />;
 
-  const filteredCollections = collections?.filter((collection) =>
-    collection.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCollections = collections?.filter((collection) => collection.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="w-full">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
-        <SearchComponent
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={"Search collections..."}
-        />
-        {filteredCollections && (
-          <Pagination
-            count={filteredCollections.length}
-            currentPage={page}
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
-            pageSize={17}
-          />
-        )}
+        <SearchComponent value={searchTerm} onChange={setSearchTerm} placeholder={"Search collections..."} />
+        {filteredCollections && <Pagination count={filteredCollections.length} currentPage={page} handleNext={handleNext} handlePrevious={handlePrevious} pageSize={17} />}
       </div>
-      <hr className="mb-6" />
       {filteredCollections?.length == 0 && searchTerm ? (
         <EmptyStateModal title={"collections"} searchTerm={searchTerm} />
       ) : (
-        <ul
-          ref={containerRef}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center"
-        >
-          <li>
-            {actionStatus === CollectionActionStatus.CREATING ? (
-              <CollectionCreatingItem />
-            ) : (
-              <CreateCollectionButton />
-            )}
-          </li>
+        <ul ref={containerRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
+          <li>{actionStatus === CollectionActionStatus.CREATING ? <CollectionCreatingItem /> : <CreateCollectionButton />}</li>
 
           {filteredCollections?.map((collection) => (
-            <CollectionItem
-              key={collection.id}
-              collection={collection}
-              isActive={
-                active === collection.id &&
-                actionStatus !== CollectionActionStatus.RENAMING
-              }
-              onClick={() =>
-                setActive(active === collection.id ? null : collection.id)
-              }
-            />
+            <CollectionItem key={collection.id} collection={collection} isActive={active === collection.id && actionStatus !== CollectionActionStatus.RENAMING} onClick={() => setActive(active === collection.id ? null : collection.id)} />
           ))}
         </ul>
       )}
