@@ -8,6 +8,7 @@ import FileCreate from "./pages/FileCreate";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ReceivedFiles from "./pages/ReceivedFiles";
+import AccessLogs from "./pages/AccessLogs";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <FileDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "collections/:collectionId/files/:id/logs",
+        element: (
+          <ProtectedRoute>
+            <AccessLogs />
           </ProtectedRoute>
         ),
       },

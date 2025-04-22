@@ -37,12 +37,12 @@ export default function FileBreadCrumb({
           </>
         )}
         {collectionId && (
-          <BreadcrumbItem className="max-md:hidden">
+          <BreadcrumbItem>
             <Link to={`/collections/${collectionId}`}>
               {fileId ? (
                 <>
                   {collectionTitle ? (
-                    <Heading className="max-w-[12ch] truncate">
+                    <Heading className="max-w-[12ch] truncate max-md:hidden">
                       {collectionTitle}
                     </Heading>
                   ) : (
@@ -50,15 +50,17 @@ export default function FileBreadCrumb({
                   )}
                 </>
               ) : (
-                <BreadcrumbPage>
-                  {collectionTitle ? (
-                    <Heading className="max-w-[12ch] truncate">
-                      {collectionTitle}
-                    </Heading>
-                  ) : (
-                    <Ellipsis size="28" />
-                  )}
-                </BreadcrumbPage>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    {collectionTitle ? (
+                      <Heading className="max-w-[12ch] truncate">
+                        {collectionTitle}
+                      </Heading>
+                    ) : (
+                      <Ellipsis size="28" />
+                    )}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
               )}
             </Link>
           </BreadcrumbItem>
