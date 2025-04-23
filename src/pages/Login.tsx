@@ -17,7 +17,7 @@ export default function Login() {
   useEffect(() => {
     if (isAuthenticated) {
       const next = searchParams.get("next");
-      navigate(next || "/");
+      navigate(next ?? "/collections");
     }
   }, [isAuthenticated]);
 
