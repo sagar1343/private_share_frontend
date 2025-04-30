@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:8000";
+const url = "http://15.206.128.181";
 
 const api = axios.create({
   baseURL: url,
@@ -19,10 +19,8 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
     const errorData = error.response?.data;
-
-    const isTokenExpired = error.response?.status === 401 && errorData?.code === "token_not_valid" && errorData?.messages?.some((msg: any) => msg?.message?.toLowerCase().includes("expired") && msg?.token_class === "AccessToken") && !originalRequest._retry;
+    const isTokenExpired = error.response?.status === 401 && errorData?.code === "token_not_valid" && errorData?.messages?.some((msg: any) => msg?.message?.toLowerCase().includes("invalid") && msg?.token_class === "AccessToken") && !originalRequest._retry;
 
     if (isTokenExpired && localStorage.getItem("tokens")) {
       originalRequest._retry = true;
