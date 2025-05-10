@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const url = "http://15.206.128.181";
+// const url = "http://15.206.128.181";
+const dev_url = "http://localhost:8000";
 
 const api = axios.create({
-  baseURL: url,
+  baseURL: dev_url,
 });
 
 api.interceptors.request.use((config) => {
