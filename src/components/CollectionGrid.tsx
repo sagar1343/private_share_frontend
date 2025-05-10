@@ -4,10 +4,8 @@ import CollectionCreatingItem from "@/components/CollectionCreatingItem";
 import CollectionItem from "@/components/CollectionItem";
 import CreateCollectionButton from "@/components/CreateCollectionButton";
 import EmptyStateModal from "@/components/EmptyStateModal";
-import EmptyStateModal from "@/components/EmptyStateModal";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
-import SearchComponent from "@/components/SearchComponent";
 import SearchComponent from "@/components/SearchComponent";
 import SortDropdown from "@/components/SortDropdown";
 import useClickOutside from "@/hooks/useClickOutside";
@@ -73,15 +71,33 @@ export default function CollectionGrid() {
         />
         <SortDropdown sort={sort} setSort={setSort} context="collections" />
       </div>
-      {filteredCollections?.length == 0 && searchTerm ? (
       {sortedCollections.length === 0 && searchTerm ? (
         <EmptyStateModal title={"collections"} searchTerm={searchTerm} />
       ) : (
-        <ul ref={containerRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 justify-items-center">
-          <li>{actionStatus === CollectionActionStatus.CREATING ? <CollectionCreatingItem /> : <CreateCollectionButton />}</li>
+        <ul
+          ref={containerRef}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 justify-items-center"
+        >
+          <li>
+            {actionStatus === CollectionActionStatus.CREATING ? (
+              <CollectionCreatingItem />
+            ) : (
+              <CreateCollectionButton />
+            )}
+          </li>
 
           {filteredCollections?.map((collection) => (
-            <CollectionItem key={collection.id} collection={collection} isActive={active === collection.id && actionStatus !== CollectionActionStatus.RENAMING} onClick={() => setActive(active === collection.id ? null : collection.id)} />
+            <CollectionItem
+              key={collection.id}
+              collection={collection}
+              isActive={
+                active === collection.id &&
+                actionStatus !== CollectionActionStatus.RENAMING
+              }
+              onClick={() =>
+                setActive(active === collection.id ? null : collection.id)
+              }
+            />
           ))}
         </ul>
       )}
