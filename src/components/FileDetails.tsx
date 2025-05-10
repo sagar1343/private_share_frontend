@@ -12,11 +12,10 @@ import { IFile } from "@/types/File";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function FileDetails() {
-  const { id } = useParams();
-  const { data: file, isLoading } = useFetch<IFile>(
-    ["files", { id }],
-    `api/files/${id}`
-  );
+  const { id, collectionId } = useParams();
+  const navigate = useNavigate();
+
+  const { data: file, isLoading } = useFetch<IFile>(["files", { id }], `api/files/${id}`);
   if (isLoading) return <Loader />;
   if (!file) return <p>File not found!</p>;
 
@@ -24,7 +23,6 @@ export default function FileDetails() {
     <div>
       <FileDetailsHeader file={file} />
       <CopyLink id={file.id} />
-      <hr />
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8 max-lg:space-y-12">
         <div className="mt-12 space-y-12">
           <ExpirationSection date={file.expiration_time} />
@@ -36,13 +34,7 @@ export default function FileDetails() {
           <FilePermissions fileId={file.id} />
           <div className="flex items-center">
             <h2 className="font-semibold flex items-center gap-2">File Logs</h2>
-            <Button
-              variant="link"
-              className="cursor-pointer"
-              onClick={() =>
-                navigate(`/collections/${collectionId}/files/${id}/logs`)
-              }
-            >
+            <Button variant="link" className="cursor-pointer" onClick={() => navigate(`/collections/${collectionId}/files/${id}/logs`)}>
               View file logs
             </Button>
           </div>

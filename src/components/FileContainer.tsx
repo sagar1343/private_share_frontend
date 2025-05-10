@@ -64,6 +64,7 @@ export default function FileContainer({ className, collectionId }: Props) {
       return parseFileSize(b.size) - parseFileSize(a.size);
     return 0;
   });
+
   return (
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
@@ -75,13 +76,12 @@ export default function FileContainer({ className, collectionId }: Props) {
         <SortDropdown sort={sort} setSort={setSort} context="files" />
       </div>
 
-      <hr className="mb-6" />
       {filteredFiles.length == 0 ? (
         <EmptyStateModal title={"files"} searchTerm={searchTerm} />
       ) : (
         <div
           className={clsx(
-            "space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",
+            "space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4",
             className
           )}
         >

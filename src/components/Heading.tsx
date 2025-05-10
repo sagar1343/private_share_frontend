@@ -7,19 +7,10 @@ interface Props {
   asHeading?: boolean;
 }
 
-export default function Heading({
-  children,
-  className,
-  asHeading = false,
-}: Props) {
+export default function Heading({ children, className }: Props) {
   return (
     <>
-      <h1
-        className={clsx("my-6 text-2xl sm:text-3xl font-extrabold", className)}
-      >
-        {children}
-      </h1>
-      {asHeading && <hr />}
+      <h1 className={clsx("mt-6 mb-12 text-3xl sm:text-5xl font-bold", className)}>{children}</h1>
     </>
   );
 }

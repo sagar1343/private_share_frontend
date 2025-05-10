@@ -78,11 +78,10 @@ export default function RecievedFiles() {
         <SortDropdown sort={sort} setSort={setSort} context="received" />
       </div>
 
-      <hr className="mb-6" />
       {filteredFiles.length == 0 ? (
         <EmptyStateModal title={"files"} searchTerm={searchTerm} />
       ) : (
-        <div className="space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
           {sortedFiles.map((file) => (
             <div key={file.id}>
               <ReceivedFileCard file={file} />
