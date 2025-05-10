@@ -1,68 +1,80 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import api from "@/services/api";
 import { AxiosError } from "axios";
-import { CircleArrowDown } from "lucide-react";
-import { FormEvent, useRef } from "react";
+import { Download, Eye, EyeOff, Lock } from "lucide-react";
+import { useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 
-interface Props {
+interface DownloadFileButtonProps {
   fileId: number;
   isProtected: boolean;
   size?: number;
+  className?: string;
 }
 
-export default function DownLoadFileButton({
-  fileId,
-  isProtected,
-  size,
-}: Props) {
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+export default function DownloadFileButton({ fileId, isProtected, size = 30, className }: DownloadFileButtonProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [open, setOpen] = useState(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   async function handleDownload(event?: FormEvent) {
     event?.preventDefault();
+    setIsLoading(true);
     const password = passwordRef.current?.value?.trim();
     await downloadFile(fileId, password);
+    setOpen(false);
+    setIsLoading(false);
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <div>
+    <div className={cn("inline-flex", className)}>
       {isProtected ? (
-        <Dialog modal>
-          <DialogTrigger>
-            <CircleArrowDown
-              className="text-primary cursor-pointer flex-shrink-0"
-              size={size ?? 30}
-            />
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button size="icon">
+              <Lock size={size} aria-label="Download protected file" />
+            </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>This file is encrypted with a password</DialogTitle>
-              <DialogDescription asChild>
-                <form onSubmit={handleDownload} className="flex gap-3 mt-4">
-                  <Input ref={passwordRef} placeholder="Enter Password" />
-                  <Button type="submit" className="cursor-pointer">
-                    Confirm
-                  </Button>
-                </form>
-              </DialogDescription>
+              <DialogTitle className="flex items-center gap-2">
+                <Lock size={18} className="text-primary" />
+                Password Protected File
+              </DialogTitle>
+              <DialogDescription>This file is encrypted. Please enter the password to download.</DialogDescription>
             </DialogHeader>
+            <form onSubmit={handleDownload} className="space-y-4 pt-2">
+              <div className="relative">
+                <Input ref={passwordRef} type={showPassword ? "text" : "password"} placeholder="Enter password" className="pr-10" autoFocus disabled={isLoading} />
+                <Button type="button" variant="ghost" size="icon" className="absolute right-0 top-0 h-full px-3" onClick={togglePasswordVisibility}>
+                  {showPassword ? <EyeOff size={16} className="text-muted-foreground" /> : <Eye size={16} className="text-muted-foreground" />}
+                  <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                </Button>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Downloading..." : "Download"}
+                </Button>
+              </div>
+            </form>
           </DialogContent>
         </Dialog>
       ) : (
-        <CircleArrowDown
-          onClick={() => handleDownload()}
-          className="text-primary cursor-pointer flex-shrink-0"
-          size={size ?? 30}
-        />
+        <Button size="icon" onClick={() => handleDownload()} disabled={isLoading}>
+          <Download size={size} aria-label="Download file" />
+          {isLoading && <span className="sr-only">Downloading...</span>}
+        </Button>
       )}
     </div>
   );
@@ -83,10 +95,14 @@ async function downloadFile(fileId: number, password?: string) {
     link.click();
     document.body.removeChild(link);
 
-    toast.success("Downloaded");
+    toast.success("File downloaded successfully");
   } catch (error) {
     if (error instanceof AxiosError) {
-      toast.error(error.response?.data.message || "Failed to download file");
+      const errorMessage = error.response?.data.message || "Failed to download file";
+      toast.error(errorMessage);
+    } else {
+      toast.error("An unexpected error occurred");
     }
+    throw error;
   }
 }

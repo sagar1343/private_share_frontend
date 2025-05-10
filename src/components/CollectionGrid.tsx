@@ -18,7 +18,6 @@ export default function CollectionGrid() {
   const { paginatedCollections, isLoading, actionStatus } = useSelector(
     (state: RootState) => state.UserCollections
   );
-
   const [collections, setCollections] = useState<ICollection[]>();
   const [page, setPage] = useState(1);
   const [active, setActive] = useState<number | null>(null);
@@ -29,11 +28,13 @@ export default function CollectionGrid() {
   useFetchCollections(actionStatus, page);
 
   const handleNext = () => {
-    if (paginatedCollections?.next) setPage((page) => page + 1);
+    if (paginatedCollections && paginatedCollections.next)
+      setPage((page) => page + 1);
   };
 
   const handlePrevious = () => {
-    if (paginatedCollections?.previous) setPage((page) => page - 1);
+    if (paginatedCollections && paginatedCollections.previous)
+      setPage((page) => page - 1);
   };
 
   useEffect(() => {

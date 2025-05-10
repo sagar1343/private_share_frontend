@@ -22,15 +22,10 @@ const initialState: ICollectionState = {
   actionStatus: CollectionActionStatus.IDLE,
 };
 
-export const fetchCollections = createAsyncThunk(
-  "fetchCollections",
-  async ({ userId, page = 1 }: { userId: number; page: number }) => {
-    const response = await api.get<PaginatedResponse<ICollection>>(
-      `api/users/${userId}/collections/?page=${page}`
-    );
-    return response.data;
-  }
-);
+export const fetchCollections = createAsyncThunk("fetchCollections", async ({ userId, page = 1 }: { userId: number; page: number }) => {
+  const response = await api.get<PaginatedResponse<ICollection>>(`api/users/${userId}/collections/?page=${page}`);
+  return response.data;
+});
 
 export const CollectionSlice = createSlice({
   name: "collection",
