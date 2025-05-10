@@ -2,7 +2,6 @@ import CircularProgressIndicator from "@/components/CircularProgress";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import api from "@/services/api";
-import { IFile } from "@/types/File";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import clsx from "clsx";
