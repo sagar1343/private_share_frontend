@@ -1,17 +1,18 @@
 import { CollectionActionStatus } from "@/app/features/collection/collectionSlice";
 import { RootState } from "@/app/store";
 import CollectionCreatingItem from "@/components/CollectionCreatingItem";
+import CollectionItem from "@/components/CollectionItem";
 import CreateCollectionButton from "@/components/CreateCollectionButton";
+import EmptyStateModal from "@/components/EmptyStateModal";
 import Loader from "@/components/Loader";
+import Pagination from "@/components/Pagination";
+import SearchComponent from "@/components/SearchComponent";
+import SortDropdown from "@/components/SortDropdown";
 import useClickOutside from "@/hooks/useClickOutside";
 import useFetchCollections from "@/hooks/useFetchCollections";
 import { ICollection } from "@/types/Collection";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import CollectionItem from "./CollectionItem";
-import EmptyStateModal from "./EmptyStateModal";
-import Pagination from "./Pagination";
-import SearchComponent from "./SearchComponent";
 
 export default function CollectionGrid() {
   const { paginatedCollections, isLoading, actionStatus } = useSelector(
@@ -22,6 +23,7 @@ export default function CollectionGrid() {
   const [page, setPage] = useState(1);
   const [active, setActive] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sort, setSort] = useState("date-desc");
 
   const containerRef = useClickOutside<HTMLUListElement>(() => setActive(null));
   useFetchCollections(actionStatus, page);
@@ -44,6 +46,20 @@ export default function CollectionGrid() {
     collection.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const sortedCollections = [...(filteredCollections || [])].sort((a, b) => {
+    if (sort === "title-asc") return a.title.localeCompare(b.title);
+    if (sort === "title-desc") return b.title.localeCompare(a.title);
+    if (sort === "date-asc")
+      return (
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
+    if (sort === "date-desc")
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+    return 0;
+  });
+
   return (
     <div className="w-full">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
@@ -52,18 +68,9 @@ export default function CollectionGrid() {
           onChange={setSearchTerm}
           placeholder={"Search collections..."}
         />
-        {filteredCollections && (
-          <Pagination
-            count={filteredCollections.length}
-            currentPage={page}
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
-            pageSize={17}
-          />
-        )}
+        <SortDropdown sort={sort} setSort={setSort} context="collections" />
       </div>
-      <hr className="mb-6" />
-      {filteredCollections?.length == 0 && searchTerm ? (
+      {sortedCollections.length === 0 && searchTerm ? (
         <EmptyStateModal title={"collections"} searchTerm={searchTerm} />
       ) : (
         <ul
@@ -78,7 +85,7 @@ export default function CollectionGrid() {
             )}
           </li>
 
-          {filteredCollections?.map((collection) => (
+          {sortedCollections.map((collection) => (
             <CollectionItem
               key={collection.id}
               collection={collection}
@@ -92,6 +99,17 @@ export default function CollectionGrid() {
             />
           ))}
         </ul>
+      )}
+      {paginatedCollections && (
+        <div className="flex justify-center my-12">
+          <Pagination
+            count={sortedCollections.length}
+            currentPage={page}
+            handleNext={handleNext}
+            handlePrevious={handlePrevious}
+            pageSize={17}
+          />
+        </div>
       )}
     </div>
   );

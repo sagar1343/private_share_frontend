@@ -5,8 +5,10 @@ import Pagination from "@/components/Pagination";
 import ReceivedFileCard from "@/components/ReceivedFileCard";
 import FileModal from "@/components/ReceivedFileModal";
 import SearchComponent from "@/components/SearchComponent";
+import SortDropdown from "@/components/SortDropdown";
 import useFetch from "@/hooks/useFetch";
 import useHashId from "@/hooks/useHash";
+import parseFileSize from "@/lib/parseFileSize";
 import { PaginatedResponse } from "@/types/Pagination";
 import { IReceivedFile } from "@/types/ReceivedFile";
 import { useEffect, useState } from "react";
@@ -17,6 +19,7 @@ export default function RecievedFiles() {
   const [selectedFile, setSelectedFile] = useState<IReceivedFile | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState("title-asc");
 
   const { data, isLoading } =
     useFetch<PaginatedResponse<IReceivedFile>>("api/fileshare");
@@ -52,6 +55,15 @@ export default function RecievedFiles() {
   const filteredFiles = files?.filter((file) =>
     file.file_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const sortedFiles = [...(filteredFiles || [])].sort((a, b) => {
+    if (sort === "title-asc") return a.file_name.localeCompare(b.file_name);
+    if (sort === "title-desc") return b.file_name.localeCompare(a.file_name);
+    if (sort === "size-asc")
+      return parseFileSize(a.size) - parseFileSize(b.size);
+    if (sort === "size-desc")
+      return parseFileSize(b.size) - parseFileSize(a.size);
+    return 0;
+  });
   return (
     <>
       <Heading asHeading>Received Files</Heading>
@@ -61,15 +73,7 @@ export default function RecievedFiles() {
           onChange={setSearchTerm}
           placeholder={"Search files..."}
         />
-        {filteredFiles && (
-          <Pagination
-            count={filteredFiles.length}
-            currentPage={page}
-            handleNext={onNext}
-            handlePrevious={onPrevious}
-            pageSize={12}
-          />
-        )}
+        <SortDropdown sort={sort} setSort={setSort} context="received" />
       </div>
 
       <hr className="mb-6" />
@@ -77,7 +81,7 @@ export default function RecievedFiles() {
         <EmptyStateModal title={"files"} searchTerm={searchTerm} />
       ) : (
         <div className="space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredFiles.map((file) => (
+          {sortedFiles.map((file) => (
             <div key={file.id}>
               <ReceivedFileCard file={file} />
             </div>
@@ -86,6 +90,17 @@ export default function RecievedFiles() {
       )}
       {selectedFile && (
         <FileModal file={selectedFile} onClose={() => setSelectedFile(null)} />
+      )}
+      {sortedFiles && (
+        <div className="flex justify-center my-12">
+          <Pagination
+            count={filteredFiles.length}
+            currentPage={page}
+            handleNext={onNext}
+            handlePrevious={onPrevious}
+            pageSize={12}
+          />
+        </div>
       )}
     </>
   );
