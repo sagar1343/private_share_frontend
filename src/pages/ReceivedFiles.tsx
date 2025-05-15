@@ -11,6 +11,7 @@ import useHashId from "@/hooks/useHash";
 import parseFileSize from "@/lib/parseFileSize";
 import { PaginatedResponse } from "@/types/Pagination";
 import { IReceivedFile } from "@/types/ReceivedFile";
+import { orderBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -50,22 +51,30 @@ export default function RecievedFiles() {
 
   if (!files || files.length === 0) {
     return (
-      <p className="mt-12 text-center text-gray-500">No files received yet.</p>
+      <>
+        <Heading asHeading>Received Files</Heading>
+        <p className="mt-12 text-center text-gray-500">
+          No files received yet.
+        </p>
+      </>
     );
   }
 
   const filteredFiles = files?.filter((file) =>
     file.file_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const sortedFiles = [...(filteredFiles || [])].sort((a, b) => {
-    if (sort === "title-asc") return a.file_name.localeCompare(b.file_name);
-    if (sort === "title-desc") return b.file_name.localeCompare(a.file_name);
-    if (sort === "size-asc")
-      return parseFileSize(a.size) - parseFileSize(b.size);
-    if (sort === "size-desc")
-      return parseFileSize(b.size) - parseFileSize(a.size);
-    return 0;
-  });
+  const sortedFiles = orderBy(
+    filteredFiles || [],
+    [
+      (file) => {
+        if (sort.startsWith("title")) return file.file_name.toLowerCase();
+        if (sort.startsWith("size")) return parseFileSize(file.size);
+        return file.file_name.toLowerCase();
+      },
+    ],
+    [sort.endsWith("asc") ? "asc" : "desc"]
+  );
+
   return (
     <>
       <Heading asHeading>Received Files</Heading>
