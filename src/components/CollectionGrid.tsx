@@ -85,7 +85,6 @@ export default function CollectionGrid() {
         />
         <SortDropdown sort={sort} setSort={setSort} context="collections" />
       </div>
-
       {sortedCollections.length === 0 && searchTerm ? (
         <EmptyStateModal title={"collections"} searchTerm={searchTerm} />
       ) : (
@@ -116,11 +115,10 @@ export default function CollectionGrid() {
           ))}
         </ul>
       )}
-
       {sortedCollections.length > 0 && (
         <div className="flex justify-center my-12">
           <Pagination
-            count={sortedCollections.length}
+            count={paginatedCollections?.count ?? 0}
             currentPage={page}
             handleNext={handleNext}
             handlePrevious={handlePrevious}

@@ -11,9 +11,9 @@ import useHashId from "@/hooks/useHash";
 import parseFileSize from "@/lib/parseFileSize";
 import { PaginatedResponse } from "@/types/Pagination";
 import { IReceivedFile } from "@/types/ReceivedFile";
-import { orderBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { orderBy } from "lodash";
 
 export default function RecievedFiles() {
   const [files, setFiles] = useState<IReceivedFile[]>();
