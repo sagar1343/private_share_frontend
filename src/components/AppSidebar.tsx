@@ -27,6 +27,7 @@ import {
   LogIn,
   LogOut,
   Settings,
+  Shield,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -104,6 +105,14 @@ export function AppSidebar() {
                     <DropdownMenuSeparator />
                   </>
                 )}
+                <DropdownMenuItem>
+                  <Link
+                    to="/privacy-policy"
+                    className="flex items-center flex-nowrap gap-2"
+                  >
+                    <Shield className="h-4 w-4" /> Privacy Policy
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                   {isAuthenticated ? (
                     <button
