@@ -1,10 +1,7 @@
 import axios from "axios";
 
-// const url = "http://15.206.128.181";
-const dev_url = "http://localhost:8000";
-
 const api = axios.create({
-  baseURL: dev_url,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 api.interceptors.request.use((config) => {
