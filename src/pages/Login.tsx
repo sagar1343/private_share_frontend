@@ -69,7 +69,7 @@ export default function Login() {
       <div className="flex flex-col items-center justify-center gap-8 py-12 px-4">
         <div className="w-full max-w-sm space-y-6">
           <div className="flex flex-col items-center gap-4">
-            <img src={logo} alt="logo" className="size-16" />
+            <img src={logo} alt="logo" className="w-20" />
             <div className="text-center space-y-2">
               <h1 className="font-semibold">Private Share</h1>
             </div>
