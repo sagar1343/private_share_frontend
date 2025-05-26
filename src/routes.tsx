@@ -7,6 +7,7 @@ import Collections from "@/pages/Collections";
 import FileCreate from "@/pages/FileCreate";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import ReceivedFiles from "@/pages/ReceivedFiles";
 import { createBrowserRouter } from "react-router-dom";
@@ -78,6 +79,11 @@ const router = createBrowserRouter([
     path: "/privacy-policy",
     element: <PrivacyPolicy />,
   },
+  {
+    path:"*",
+    element: <NotFound />,
+  }
+  
 ]);
 
 export default router;
