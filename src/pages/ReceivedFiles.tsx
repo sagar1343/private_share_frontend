@@ -24,7 +24,7 @@ export default function RecievedFiles() {
 
   const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(
     ["fileshare"],
-    "api/fileshare"
+    `api/fileshare?page=${page}`
   );
 
   const [searchParams] = useSearchParams();

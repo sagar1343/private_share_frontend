@@ -36,11 +36,10 @@ export default function CollectionGrid() {
   }, [paginatedCollections]);
 
   useEffect(() => {
-    setPage(1);
+    setPage(page);
   }, [sort, searchTerm]);
 
   if (isLoading) return <Loader />;
-
   const filteredCollections = collections?.filter((collection) =>
     collection.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -58,19 +57,12 @@ export default function CollectionGrid() {
     [sort.endsWith("asc") ? "asc" : "desc"]
   );
 
-  const paginatedResults = sortedCollections.slice(
-    (page - 1) * pageSize,
-    page * pageSize
-  );
-
-  const handleNext = () => {
-    if (page * pageSize < sortedCollections.length) {
+  const onNext = () => {
+    if (paginatedCollections && paginatedCollections.next)
       setPage((page) => page + 1);
-    }
   };
-
-  const handlePrevious = () => {
-    if (page > 1) {
+  const onPrevious = () => {
+    if (paginatedCollections && paginatedCollections.previous) {
       setPage((page) => page - 1);
     }
   };
@@ -100,7 +92,7 @@ export default function CollectionGrid() {
             )}
           </li>
 
-          {paginatedResults.map((collection) => (
+          {sortedCollections.map((collection) => (
             <CollectionItem
               key={collection.id}
               collection={collection}
@@ -120,8 +112,8 @@ export default function CollectionGrid() {
           <Pagination
             count={paginatedCollections?.count ?? 0}
             currentPage={page}
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
+            handleNext={onNext}
+            handlePrevious={onPrevious}
             pageSize={pageSize}
           />
         </div>
