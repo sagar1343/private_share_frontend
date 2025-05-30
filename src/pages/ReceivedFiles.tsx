@@ -31,7 +31,7 @@ export default function RecievedFiles() {
   const encodedId = searchParams.get("id");
   const { decodeId } = useHashId();
   const decodedId = encodedId ? decodeId(encodedId) : null;
-
+  console.log(data);
   useEffect(() => {
     setFiles(data?.results);
 

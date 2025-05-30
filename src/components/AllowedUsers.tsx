@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
+import UserItem from "@/components/UserItem";
 import { Eye } from "lucide-react";
-import UserItem from "./UserItem";
 
 interface Props {
   allowedUsers: string[];

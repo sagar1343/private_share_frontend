@@ -1,15 +1,15 @@
+import AllowedUsers from "@/components/AllowedUsers";
+import EmailInput from "@/components/EmailInput";
 import InfoButton from "@/components/InfoButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import useFetch from "@/hooks/useFetch";
+import { isValidEmail } from "@/lib/utils";
 import api from "@/services/api";
 import type { IFilePermission } from "@/types/FilePermission";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useCallback, useState, type KeyboardEvent } from "react";
 import { toast } from "sonner";
-import EmailInput from "./EmailInput";
-import AllowedUsers from "./AllowedUsers";
-import { isValidEmail } from "../lib/utils";
 
 export default function FilePermissions({ fileId }: { fileId: number }) {
   const queryClient = useQueryClient();
