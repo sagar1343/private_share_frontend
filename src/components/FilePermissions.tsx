@@ -1,40 +1,34 @@
+import AllowedUsers from "@/components/AllowedUsers";
+import EmailInput from "@/components/EmailInput";
 import InfoButton from "@/components/InfoButton";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { MultiSelect } from "@/components/ui/multiselect";
 import { Skeleton } from "@/components/ui/skeleton";
 import useFetch from "@/hooks/useFetch";
+import { isValidEmail } from "@/lib/utils";
 import api from "@/services/api";
-import { IFilePermission } from "@/types/FilePermission";
-import { IUser } from "@/types/User";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+import type { IFilePermission } from "@/types/FilePermission";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState, type KeyboardEvent } from "react";
 import { toast } from "sonner";
-
-interface Option {
-  label: string;
-  value: string;
-  icon?: React.ComponentType<{
-    className?: string;
-  }>;
-}
 
 export default function FilePermissions({ fileId }: { fileId: number }) {
   const queryClient = useQueryClient();
-  const [usersList, setUsersList] = useState<Option[]>([]);
+  const [emailInput, setEmailInput] = useState("");
+  const [showAll, setShowAll] = useState(false);
 
-  const { data: users, isLoading: isUsersLoading } = useFetch<IUser[]>(["users"], "/api/users");
-  const { data: permission, isLoading: isPermissionLoading } = useFetch<IFilePermission>(["permission", { fileId }], `/api/files/${fileId}/permission/`);
+  const { data: permission, isLoading: isPermissionLoading } =
+    useFetch<IFilePermission>(
+      ["permission", { fileId }],
+      `/api/files/${fileId}/permission/`
+    );
 
-  useEffect(() => {
-    if (users) setUsersList(MappedUser(users));
-  }, [users]);
+  const allowedUsers = permission?.allowed_users || [];
 
   const mutation = useMutation({
     mutationFn: (emails: string[]) => {
-      const userIds = getSelectedUsersIds(users || [], emails);
-      return api.patch(`/api/files/${fileId}/permission/`, { allowed_users: userIds });
+      return api.patch(`/api/files/${fileId}/permission/`, {
+        allowed_users: emails,
+      });
     },
     onSuccess: () => {
       toast.success("Updated Permission");
@@ -50,45 +44,66 @@ export default function FilePermissions({ fileId }: { fileId: number }) {
     debounce((emails: string[]) => {
       mutation.mutate(emails);
     }, 1500),
-    [users, fileId]
+    [fileId]
   );
 
+  const addEmail = () => {
+    const trimmedEmail = emailInput.trim().toLowerCase();
+
+    if (!trimmedEmail) return;
+    if (!isValidEmail(trimmedEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    if (allowedUsers.includes(trimmedEmail)) {
+      toast.error("Email already added");
+      return;
+    }
+
+    const updatedUsers = [...allowedUsers, trimmedEmail];
+    debouncedPermissionChange(updatedUsers);
+    setEmailInput("");
+  };
+
+  const removeEmail = (emailToRemove: string) => {
+    const updatedUsers = allowedUsers.filter(
+      (email) => email !== emailToRemove
+    );
+    debouncedPermissionChange(updatedUsers);
+  };
+
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addEmail();
+    }
+  };
+
   return (
-    <div>
+    <div className="space-y-4">
       <h2 className="font-semibold flex items-center gap-2">
         Set file permission
         <InfoButton message="Grant permission to limited users only." />
       </h2>
 
-      {isUsersLoading || isPermissionLoading ? (
-        <Skeleton className="max-w-80 h-10 mt-2" />
+      {isPermissionLoading ? (
+        <Skeleton className="max-w-80 h-10" />
       ) : (
-        <div className="max-w-80 mt-2">
-          <MultiSelect options={usersList} onValueChange={(emails) => debouncedPermissionChange(emails)} defaultValue={permission?.allowed_users} placeholder="Select Users" variant="secondary" maxCount={2} />
+        <div className="max-w-80 space-y-3">
+          <EmailInput
+            emailInput={emailInput}
+            setEmailInput={setEmailInput}
+            onAddEmail={addEmail}
+            onKeyPress={handleKeyPress}
+          />
+          <AllowedUsers
+            allowedUsers={allowedUsers}
+            removeEmail={removeEmail}
+            showAll={showAll}
+            setShowAll={setShowAll}
+          />
         </div>
       )}
     </div>
   );
-}
-
-function UserIcon(user: IUser) {
-  return (
-    <Avatar>
-      <AvatarImage src={user.profile_pic ?? undefined} />
-      <AvatarFallback>{user.email.slice(0, 1).toUpperCase()}</AvatarFallback>
-    </Avatar>
-  );
-}
-
-function MappedUser(users: IUser[]) {
-  return users.map((user) => ({
-    label: user.email,
-    value: user.email,
-    icon: () => UserIcon(user),
-  }));
-}
-
-function getSelectedUsersIds(allUsers: IUser[], selectedUsers: string[]) {
-  const selectedSet = new Set(selectedUsers);
-  return allUsers.filter((user) => selectedSet.has(user.email)).map((user) => user.id);
 }

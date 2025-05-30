@@ -9,19 +9,35 @@ interface Props {
   handlePrevious: () => void;
 }
 
-export default function Pagination({ currentPage, count, handleNext, handlePrevious, pageSize }: Props) {
+export default function Pagination({
+  currentPage,
+  count,
+  handleNext,
+  handlePrevious,
+  pageSize,
+}: Props) {
   const totalPage = Math.ceil(count / pageSize);
   return (
     <>
       {totalPage > 1 && (
         <div className="flex items-center space-x-3">
-          <Button variant="secondary" onClick={handlePrevious} className="cursor-pointer" disabled={currentPage === 1}>
+          <Button
+            variant="secondary"
+            onClick={handlePrevious}
+            className="cursor-pointer"
+            disabled={currentPage === 1}
+          >
             <ChevronLeft />
           </Button>
           <span>
             Page {currentPage} of {totalPage}
           </span>
-          <Button variant="secondary" onClick={handleNext} disabled={currentPage === totalPage} className="cursor-pointer">
+          <Button
+            variant="secondary"
+            onClick={handleNext}
+            disabled={currentPage === totalPage}
+            className="cursor-pointer"
+          >
             <ChevronRight />
           </Button>
         </div>

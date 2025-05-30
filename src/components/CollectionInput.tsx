@@ -15,9 +15,17 @@ export default function CollectionInput({
     defaultValues: defaultValues ?? { title: "" },
   });
 
+  const handleFormSubmit = async (data: CollectionFormData) => {
+    const formattedData = {
+      ...data,
+      title: data.title.charAt(0).toUpperCase() + data.title.slice(1),
+    };
+    await onSubmit(formattedData);
+  };
+
   return (
     <figure className="flex flex-col items-center">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Input
           {...register("title")}
           autoFocus
