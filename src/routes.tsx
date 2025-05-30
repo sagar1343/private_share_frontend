@@ -1,14 +1,16 @@
+import FileDetails from "@/components/FileDetails";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import Layout from "@/Layout";
+import AccessLogs from "@/pages/AccessLogs";
+import CollectionDetails from "@/pages/CollectionDetails";
+import Collections from "@/pages/Collections";
+import FileCreate from "@/pages/FileCreate";
+import Home from "@/pages/Home";
+import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import ReceivedFiles from "@/pages/ReceivedFiles";
 import { createBrowserRouter } from "react-router-dom";
-import FileDetails from "./components/FileDetails";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Layout from "./Layout";
-import CollectionDetails from "./pages/CollectionDetails";
-import Collections from "./pages/Collections";
-import FileCreate from "./pages/FileCreate";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import ReceivedFiles from "./pages/ReceivedFiles";
-import AccessLogs from "./pages/AccessLogs";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +75,15 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
+  },
+  {
+    path:"*",
+    element: <NotFound />,
+  }
+  
 ]);
 
 export default router;

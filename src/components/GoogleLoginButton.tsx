@@ -1,9 +1,5 @@
 import { useAuthContext } from "@/context/AuthContext";
-import {
-  CredentialResponse,
-  GoogleLogin,
-  GoogleOAuthProvider,
-} from "@react-oauth/google";
+import { CredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function GoogleLoginButton() {
   const { login } = useAuthContext();
