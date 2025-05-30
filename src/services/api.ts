@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "https://api.private-share.sagarcodes.me/",
 });
 
 api.interceptors.request.use((config) => {

@@ -11,9 +11,9 @@ import useHashId from "@/hooks/useHash";
 import parseFileSize from "@/lib/parseFileSize";
 import { PaginatedResponse } from "@/types/Pagination";
 import { IReceivedFile } from "@/types/ReceivedFile";
+import { orderBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { orderBy } from "lodash";
 
 export default function RecievedFiles() {
   const [files, setFiles] = useState<IReceivedFile[]>();
@@ -23,7 +23,7 @@ export default function RecievedFiles() {
   const [sort, setSort] = useState("title-asc");
 
   const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(
-    ["fileshare"],
+    ["fileshare", { page }],
     `api/fileshare?page=${page}`
   );
 
@@ -31,7 +31,7 @@ export default function RecievedFiles() {
   const encodedId = searchParams.get("id");
   const { decodeId } = useHashId();
   const decodedId = encodedId ? decodeId(encodedId) : null;
-  console.log(data);
+
   useEffect(() => {
     setFiles(data?.results);
 
@@ -40,6 +40,7 @@ export default function RecievedFiles() {
       if (file) setSelectedFile(file);
     }
   }, [data, decodedId]);
+
   const onNext = () => {
     if (data && data.next) setPage((page) => page + 1);
   };
@@ -104,7 +105,7 @@ export default function RecievedFiles() {
       {sortedFiles && (
         <div className="flex justify-center my-12">
           <Pagination
-            count={filteredFiles.length}
+            count={data?.count ?? 0}
             currentPage={page}
             handleNext={onNext}
             handlePrevious={onPrevious}

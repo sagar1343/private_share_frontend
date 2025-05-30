@@ -69,7 +69,7 @@ export default function CollectionGrid() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
+      <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
         <SearchComponent
           value={searchTerm}
           onChange={setSearchTerm}
