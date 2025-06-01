@@ -8,6 +8,7 @@ import FileCreate from "@/pages/FileCreate";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
+import Notifications from "@/pages/Notifications";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import ReceivedFiles from "@/pages/ReceivedFiles";
 import { createBrowserRouter } from "react-router-dom";
@@ -69,6 +70,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "notifications",
+        element: (
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
@@ -80,10 +89,9 @@ const router = createBrowserRouter([
     element: <PrivacyPolicy />,
   },
   {
-    path:"*",
+    path: "*",
     element: <NotFound />,
-  }
-  
+  },
 ]);
 
 export default router;
