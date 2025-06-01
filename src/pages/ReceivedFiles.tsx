@@ -13,6 +13,7 @@ import { PaginatedResponse } from "@/types/Pagination";
 import { IReceivedFile } from "@/types/ReceivedFile";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { orderBy } from "lodash";
 
 export default function RecievedFiles() {
   const [files, setFiles] = useState<IReceivedFile[]>();
@@ -23,14 +24,14 @@ export default function RecievedFiles() {
 
   const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(
     ["fileshare"],
-    "api/fileshare"
+    `api/fileshare?page=${page}`
   );
 
   const [searchParams] = useSearchParams();
   const encodedId = searchParams.get("id");
   const { decodeId } = useHashId();
   const decodedId = encodedId ? decodeId(encodedId) : null;
-
+  console.log(data);
   useEffect(() => {
     setFiles(data?.results);
 
@@ -50,22 +51,30 @@ export default function RecievedFiles() {
 
   if (!files || files.length === 0) {
     return (
-      <p className="mt-12 text-center text-gray-500">No files received yet.</p>
+      <>
+        <Heading asHeading>Received Files</Heading>
+        <p className="mt-12 text-center text-gray-500">
+          No files received yet.
+        </p>
+      </>
     );
   }
 
   const filteredFiles = files?.filter((file) =>
     file.file_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const sortedFiles = [...(filteredFiles || [])].sort((a, b) => {
-    if (sort === "title-asc") return a.file_name.localeCompare(b.file_name);
-    if (sort === "title-desc") return b.file_name.localeCompare(a.file_name);
-    if (sort === "size-asc")
-      return parseFileSize(a.size) - parseFileSize(b.size);
-    if (sort === "size-desc")
-      return parseFileSize(b.size) - parseFileSize(a.size);
-    return 0;
-  });
+  const sortedFiles = orderBy(
+    filteredFiles || [],
+    [
+      (file) => {
+        if (sort.startsWith("title")) return file.file_name.toLowerCase();
+        if (sort.startsWith("size")) return parseFileSize(file.size);
+        return file.file_name.toLowerCase();
+      },
+    ],
+    [sort.endsWith("asc") ? "asc" : "desc"]
+  );
+
   return (
     <>
       <Heading asHeading>Received Files</Heading>

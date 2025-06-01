@@ -1,6 +1,12 @@
 import CircularProgressIndicator from "@/components/CircularProgress";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import api from "@/services/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -58,7 +64,9 @@ export default function FileUploadDialog({ collectionId }: Props) {
         },
         onUploadProgress(progressEvent) {
           if (progressEvent.total) {
-            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+            const percent = Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            );
             setProgress(percent);
           }
         },
@@ -86,12 +94,19 @@ export default function FileUploadDialog({ collectionId }: Props) {
       onSuccess: (response) => {
         toast.success("File uploaded successfully");
         setUploadComplete(true);
-        queryClient.invalidateQueries({ queryKey: ["files", { collectionId }], exact: false });
+        queryClient.invalidateQueries({
+          queryKey: ["files", { collectionId }],
+          exact: false,
+        });
         navigate(`/collections/${collectionId}/files/${response.data.id}`);
       },
       onError: (error) => {
         console.log(error);
-        toast.error(error instanceof AxiosError ? error.response?.data.file : "Failed to upload the file");
+        toast.error(
+          error instanceof AxiosError
+            ? error.response?.data.file
+            : "Failed to upload the file"
+        );
       },
     });
   }
@@ -109,23 +124,33 @@ export default function FileUploadDialog({ collectionId }: Props) {
         </DialogHeader>
         {upload.isPending || uploadComplete ? (
           <div className="flex flex-col items-center justify-center w-full py-10">
-            <CircularProgressIndicator progress={progress} fileName={fileName || ""} complete={uploadComplete} />
+            <CircularProgressIndicator
+              progress={progress}
+              fileName={fileName || ""}
+              complete={uploadComplete}
+            />
           </div>
         ) : (
           <div className="flex items-center justify-center w-full mt-4">
-            <label
-              htmlFor="dropzone-file"
+            <div
               {...getRootProps()}
-              className={clsx("flex flex-col items-center justify-center w-full min-h-[300px] border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200", {
-                "border-muted-foreground/30 bg-muted/50 hover:bg-muted/80 hover:border-muted-foreground/50": !isDragActive,
-                "border-primary bg-primary/10": isDragActive,
-              })}
+              className={clsx(
+                "flex flex-col items-center justify-center w-full min-h-[300px] border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200",
+                {
+                  "border-muted-foreground/30 bg-muted/50 hover:bg-muted/80 hover:border-muted-foreground/50":
+                    !isDragActive,
+                  "border-primary bg-primary/10": isDragActive,
+                }
+              )}
             >
               <div
-                className={clsx("flex flex-col items-center justify-center pt-5 pb-6", {
-                  "text-muted-foreground": !isDragActive,
-                  "text-primary": isDragActive,
-                })}
+                className={clsx(
+                  "flex flex-col items-center justify-center pt-5 pb-6",
+                  {
+                    "text-muted-foreground": !isDragActive,
+                    "text-primary": isDragActive,
+                  }
+                )}
               >
                 <CloudUpload
                   className={clsx("size-16 mb-4", {
@@ -134,13 +159,17 @@ export default function FileUploadDialog({ collectionId }: Props) {
                   })}
                 />
                 <p className="mb-2 text-sm font-medium">
-                  <span className="font-semibold">{isDragActive ? "Drop the file here" : "Click to upload"}</span>
+                  <span className="font-semibold">
+                    {isDragActive ? "Drop the file here" : "Click to upload"}
+                  </span>
                   {!isDragActive && " or drag and drop"}
                 </p>
-                <p className="text-xs text-muted-foreground">SVG, PNG, JPG, PDF etc. (MAX SIZE 100MB)</p>
+                <p className="text-xs text-muted-foreground">
+                  SVG, PNG, JPG, PDF etc. (MAX SIZE 100MB)
+                </p>
               </div>
-              <input {...getInputProps()} id="dropzone-file" type="file" className="hidden" />
-            </label>
+              <input {...getInputProps()} className="hidden" />
+            </div>
           </div>
         )}
       </DialogContent>

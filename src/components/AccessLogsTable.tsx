@@ -4,7 +4,20 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle, Calendar, Clock, Logs, Search } from "lucide-react";
+import {
+  AlertCircle,
+  Calendar,
+  ChevronRight,
+  Clock,
+  Search,
+} from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "./ui/breadcrumb";
+import { Link, useParams } from "react-router-dom";
 
 type TabKey = "all" | "today" | "yesterday";
 
@@ -43,7 +56,8 @@ export default function AccessLogsTable({
       .toUpperCase()
       .slice(0, 2);
   };
-
+  const { collectionId, id: fileId } = useParams();
+  const fileTitle = groupedLogs.earlier[0].private_file;
   const formatRelativeTime = (timeString: string) => {
     const date = new Date(timeString);
     const now = new Date();
@@ -139,14 +153,30 @@ export default function AccessLogsTable({
 
   return (
     <div className="w-full mt-8">
-      <Card>
+      <Card className="border-0">
         <CardHeader className="pb-0">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <CardTitle className="flex items-center gap-2">
-              <Heading className="flex items-center gap-2">
-                <Logs className="size-6" />
-                Access Logs
-              </Heading>
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem className="max-md:hidden">
+                    <Link to={`/collections/${collectionId}/files/${fileId}`}>
+                      {" "}
+                      <Heading className="max-w-[12ch] truncate max-md:hidden">
+                        {fileTitle}
+                      </Heading>
+                    </Link>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem className="items-center max-md:hidden">
+                    <ChevronRight size="28" />
+                  </BreadcrumbItem>
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>
+                      <Heading>Access Logs</Heading>
+                    </BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
             </CardTitle>
 
             <div className="relative w-full sm:w-64">

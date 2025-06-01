@@ -32,7 +32,11 @@ export default function PasswordUpdateForm({ setProtected, setShow }: Props) {
     },
     onSuccess: (data) => {
       setProtected(data.is_protected);
-      toast.success(data.is_protected ? "Updated password security" : "Disabled password encryption");
+      toast.success(
+        data.is_protected
+          ? "Updated password security"
+          : "Disabled password encryption"
+      );
       setShow(false);
       queryClient.invalidateQueries({ queryKey: ["files", { id }] });
     },
@@ -51,7 +55,8 @@ export default function PasswordUpdateForm({ setProtected, setShow }: Props) {
   }
 
   useEffect(() => {
-    if (formState.errors.password) toast.error(formState.errors.password?.message);
+    if (formState.errors.password)
+      toast.error(formState.errors.password?.message);
   }, [formState]);
 
   return (
@@ -73,10 +78,20 @@ export default function PasswordUpdateForm({ setProtected, setShow }: Props) {
         })}
         className="max-w-60 mt-2"
       />
-      <Button onClick={handleUnsecure} className="cursor-pointer" variant="secondary" type="button" disabled={passwordMutation.isPending}>
+      <Button
+        onClick={handleUnsecure}
+        className="cursor-pointer"
+        variant="secondary"
+        type="button"
+        disabled={passwordMutation.isPending}
+      >
         <LockOpen />
       </Button>
-      <Button type="submit" className="cursor-pointer" disabled={passwordMutation.isPending}>
+      <Button
+        type="submit"
+        className="cursor-pointer"
+        disabled={passwordMutation.isPending}
+      >
         <SendHorizonal />
       </Button>
     </form>
