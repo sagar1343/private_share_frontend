@@ -31,7 +31,7 @@ export default function useNotifications(): [
       console.log("Attempting to connect to WebSocket...");
       console.log("Token:", tokens.access);
 
-      const wsUrl = `ws/notifications/?token=${tokens.access}`;
+      const wsUrl = `${import.meta.env.VITE_WS_URL}ws/notifications/?token=${tokens.access}`;
       console.log("WebSocket URL:", wsUrl);
 
       if (wsRef.current) {
