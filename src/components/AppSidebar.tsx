@@ -1,9 +1,26 @@
 import logo from "@/assets/logo.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import { useAuthContext } from "@/context/AuthContext";
-import { FolderClosed, Home, Library, LogIn, LogOut, Settings, Shield } from "lucide-react";
+import { Bell, FolderClosed, Home, Library, LogIn, LogOut, Settings, Shield } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const items = [
@@ -21,6 +38,11 @@ const items = [
     title: "Received Files",
     url: "/share",
     icon: Library,
+  },
+  {
+    title: "Notifications",
+    url: "/notifications",
+    icon: Bell,
   },
 ];
 
@@ -69,7 +91,9 @@ export function AppSidebar() {
                     <DropdownMenuLabel className="flex gap-2 items-center">
                       <Avatar>
                         <AvatarImage src={authenticatedUser?.profile_pic} />
-                        <AvatarFallback>{authenticatedUser?.first_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback>
+                          {authenticatedUser?.first_name.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
                       </Avatar>
                       <p>{authenticatedUser?.email}</p>
                     </DropdownMenuLabel>
