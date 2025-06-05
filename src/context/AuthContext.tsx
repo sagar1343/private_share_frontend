@@ -57,8 +57,12 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function fetchUser() {
-    const response = await api.get<User>("/auth/me");
-    return response.data;
+    try {
+      const response = await api.get<User>("/auth/me");
+      return response.data;
+    } catch (error) {
+      logout();
+    }
   }
 
   return (

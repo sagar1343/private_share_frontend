@@ -1,4 +1,5 @@
 import store from "@/app/store.ts";
+import Toast from "@/components/Toast";
 import AuthProvider from "@/context/AuthContext.tsx";
 import { ThemeProvider } from "@/context/ThemeContext.tsx";
 import "@/global.css";
@@ -9,7 +10,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
-import { Toaster } from "sonner";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -29,7 +29,7 @@ createRoot(document.getElementById("root")!).render(
           </ThemeProvider>
         </AuthProvider>
       </Provider>
-      <Toaster richColors />
+      <Toast />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>
