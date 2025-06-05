@@ -49,8 +49,7 @@ export default function CollectionGrid() {
     [
       (collection) => {
         if (sort.startsWith("title")) return collection.title.toLowerCase();
-        if (sort.startsWith("date"))
-          return new Date(collection.created_at).getTime();
+        if (sort.startsWith("date")) return new Date(collection.created_at).getTime();
         return collection.title.toLowerCase();
       },
     ],
@@ -58,8 +57,7 @@ export default function CollectionGrid() {
   );
 
   const onNext = () => {
-    if (paginatedCollections && paginatedCollections.next)
-      setPage((page) => page + 1);
+    if (paginatedCollections && paginatedCollections.next) setPage((page) => page + 1);
   };
   const onPrevious = () => {
     if (paginatedCollections && paginatedCollections.previous) {
@@ -82,7 +80,7 @@ export default function CollectionGrid() {
       ) : (
         <ul
           ref={containerRef}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 justify-items-center"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 justify-items-center md:justify-items-start"
         >
           <li>
             {actionStatus === CollectionActionStatus.CREATING ? (
@@ -97,12 +95,9 @@ export default function CollectionGrid() {
               key={collection.id}
               collection={collection}
               isActive={
-                active === collection.id &&
-                actionStatus !== CollectionActionStatus.RENAMING
+                active === collection.id && actionStatus !== CollectionActionStatus.RENAMING
               }
-              onClick={() =>
-                setActive(active === collection.id ? null : collection.id)
-              }
+              onClick={() => setActive(active === collection.id ? null : collection.id)}
             />
           ))}
         </ul>
