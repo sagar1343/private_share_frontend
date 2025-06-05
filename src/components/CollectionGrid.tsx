@@ -28,13 +28,11 @@ export default function CollectionGrid() {
   useFetchCollections(actionStatus, page);
 
   const handleNext = () => {
-    if (paginatedCollections && paginatedCollections.next)
-      setPage((page) => page + 1);
+    if (paginatedCollections && paginatedCollections.next) setPage((page) => page + 1);
   };
 
   const handlePrevious = () => {
-    if (paginatedCollections && paginatedCollections.previous)
-      setPage((page) => page - 1);
+    if (paginatedCollections && paginatedCollections.previous) setPage((page) => page - 1);
   };
 
   useEffect(() => {
@@ -51,13 +49,9 @@ export default function CollectionGrid() {
     if (sort === "title-asc") return a.title.localeCompare(b.title);
     if (sort === "title-desc") return b.title.localeCompare(a.title);
     if (sort === "date-asc")
-      return (
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      );
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
     if (sort === "date-desc")
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     return 0;
   });
 
@@ -76,7 +70,7 @@ export default function CollectionGrid() {
       ) : (
         <ul
           ref={containerRef}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 justify-items-center"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 justify-items-start"
         >
           <li>
             {actionStatus === CollectionActionStatus.CREATING ? (
@@ -91,12 +85,9 @@ export default function CollectionGrid() {
               key={collection.id}
               collection={collection}
               isActive={
-                active === collection.id &&
-                actionStatus !== CollectionActionStatus.RENAMING
+                active === collection.id && actionStatus !== CollectionActionStatus.RENAMING
               }
-              onClick={() =>
-                setActive(active === collection.id ? null : collection.id)
-              }
+              onClick={() => setActive(active === collection.id ? null : collection.id)}
             />
           ))}
         </ul>
