@@ -78,41 +78,51 @@ export default function RecievedFiles() {
 
   return (
     <>
-      <Heading asHeading>Received Files</Heading>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
-        <SearchComponent
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={"Search files..."}
-        />
-        <SortDropdown sort={sort} setSort={setSort} context="received" />
+      <div className="h-[30vh] sm:h-auto flex sm:block items-center justify-center">
+        <Heading asHeading>Received Files</Heading>
       </div>
-
-      {filteredFiles.length == 0 ? (
-        <EmptyStateModal title={"files"} searchTerm={searchTerm} />
-      ) : (
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
-          {sortedFiles.map((file) => (
-            <div key={file.id}>
-              <ReceivedFileCard file={file} />
+      <div className="h-[70vh] w-full flex flex-col">
+        <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
+          <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 sm:pt-0">
+            <SearchComponent
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder={"Search files..."}
+            />
+            <SortDropdown sort={sort} setSort={setSort} context="files" />
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto sm:overflow-visible">
+          {filteredFiles.length == 0 ? (
+            <EmptyStateModal title={"files"} searchTerm={searchTerm} />
+          ) : (
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
+              {sortedFiles.map((file) => (
+                <div key={file.id}>
+                  <ReceivedFileCard file={file} />
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+          {selectedFile && (
+            <FileModal
+              file={selectedFile}
+              onClose={() => setSelectedFile(null)}
+            />
+          )}
+          {sortedFiles && (
+            <div className="flex justify-center my-12">
+              <Pagination
+                count={data?.count ?? 0}
+                currentPage={page}
+                handleNext={onNext}
+                handlePrevious={onPrevious}
+                pageSize={12}
+              />
+            </div>
+          )}
         </div>
-      )}
-      {selectedFile && (
-        <FileModal file={selectedFile} onClose={() => setSelectedFile(null)} />
-      )}
-      {sortedFiles && (
-        <div className="flex justify-center my-12">
-          <Pagination
-            count={data?.count ?? 0}
-            currentPage={page}
-            handleNext={onNext}
-            handlePrevious={onPrevious}
-            pageSize={12}
-          />
-        </div>
-      )}
+      </div>
     </>
   );
 }
