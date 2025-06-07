@@ -42,7 +42,7 @@ export default function FileBreadCrumb({
               {fileId ? (
                 <>
                   {collectionTitle ? (
-                    <Heading className="max-w-[12ch] truncate max-md:hidden">
+                    <Heading className="max-w-[12ch] truncate leading-relaxed max-md:hidden">
                       {collectionTitle}
                     </Heading>
                   ) : (
@@ -53,7 +53,7 @@ export default function FileBreadCrumb({
                 <BreadcrumbItem>
                   <BreadcrumbPage>
                     {collectionTitle ? (
-                      <Heading className="max-w-[12ch] truncate">
+                      <Heading className="max-w-[12ch] truncate leading-relaxed">
                         {collectionTitle}
                       </Heading>
                     ) : (
@@ -73,7 +73,7 @@ export default function FileBreadCrumb({
             <BreadcrumbItem>
               <Link to={`/collections/${collectionId}/files/${fileId}`}>
                 <BreadcrumbPage>
-                  <Heading className="max-w-[12ch] truncate">
+                  <Heading className="max-w-[12ch] truncate leading-relaxed">
                     {fileTitle}
                   </Heading>
                 </BreadcrumbPage>

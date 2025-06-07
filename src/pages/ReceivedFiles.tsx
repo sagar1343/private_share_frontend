@@ -11,9 +11,9 @@ import useHashId from "@/hooks/useHash";
 import parseFileSize from "@/lib/parseFileSize";
 import { PaginatedResponse } from "@/types/Pagination";
 import { IReceivedFile } from "@/types/ReceivedFile";
+import { orderBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { orderBy } from "lodash";
 
 export default function RecievedFiles() {
   const [files, setFiles] = useState<IReceivedFile[]>();
@@ -23,7 +23,7 @@ export default function RecievedFiles() {
   const [sort, setSort] = useState("title-asc");
 
   const { data, isLoading } = useFetch<PaginatedResponse<IReceivedFile>>(
-    ["fileshare"],
+    ["fileshare", { page }],
     `api/fileshare?page=${page}`
   );
 
@@ -31,7 +31,7 @@ export default function RecievedFiles() {
   const encodedId = searchParams.get("id");
   const { decodeId } = useHashId();
   const decodedId = encodedId ? decodeId(encodedId) : null;
-  console.log(data);
+
   useEffect(() => {
     setFiles(data?.results);
 
@@ -40,6 +40,7 @@ export default function RecievedFiles() {
       if (file) setSelectedFile(file);
     }
   }, [data, decodedId]);
+
   const onNext = () => {
     if (data && data.next) setPage((page) => page + 1);
   };
@@ -77,41 +78,51 @@ export default function RecievedFiles() {
 
   return (
     <>
-      <Heading asHeading>Received Files</Heading>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
-        <SearchComponent
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={"Search files..."}
-        />
-        <SortDropdown sort={sort} setSort={setSort} context="received" />
+      <div className="h-[30vh] sm:h-auto flex sm:block items-center justify-center">
+        <Heading asHeading>Received Files</Heading>
       </div>
-
-      {filteredFiles.length == 0 ? (
-        <EmptyStateModal title={"files"} searchTerm={searchTerm} />
-      ) : (
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
-          {sortedFiles.map((file) => (
-            <div key={file.id}>
-              <ReceivedFileCard file={file} />
+      <div className="h-[70vh] w-full flex flex-col">
+        <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
+          <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 sm:pt-0">
+            <SearchComponent
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder={"Search files..."}
+            />
+            <SortDropdown sort={sort} setSort={setSort} context="files" />
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto sm:overflow-visible">
+          {filteredFiles.length == 0 ? (
+            <EmptyStateModal title={"files"} searchTerm={searchTerm} />
+          ) : (
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
+              {sortedFiles.map((file) => (
+                <div key={file.id}>
+                  <ReceivedFileCard file={file} />
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+          {selectedFile && (
+            <FileModal
+              file={selectedFile}
+              onClose={() => setSelectedFile(null)}
+            />
+          )}
+          {sortedFiles && (
+            <div className="flex justify-center my-12">
+              <Pagination
+                count={data?.count ?? 0}
+                currentPage={page}
+                handleNext={onNext}
+                handlePrevious={onPrevious}
+                pageSize={12}
+              />
+            </div>
+          )}
         </div>
-      )}
-      {selectedFile && (
-        <FileModal file={selectedFile} onClose={() => setSelectedFile(null)} />
-      )}
-      {sortedFiles && (
-        <div className="flex justify-center my-12">
-          <Pagination
-            count={filteredFiles.length}
-            currentPage={page}
-            handleNext={onNext}
-            handlePrevious={onPrevious}
-            pageSize={12}
-          />
-        </div>
-      )}
+      </div>
     </>
   );
 }

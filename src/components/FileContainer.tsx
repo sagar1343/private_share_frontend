@@ -67,13 +67,15 @@ export default function FileContainer({ className, collectionId }: Props) {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-6">
-        <SearchComponent
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={"Search files..."}
-        />
-        <SortDropdown sort={sort} setSort={setSort} context="files" />
+      <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
+        <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 sm:pt-0">
+          <SearchComponent
+            value={searchTerm}
+            onChange={setSearchTerm}
+            placeholder={"Search files..."}
+          />
+          <SortDropdown sort={sort} setSort={setSort} context="files" />
+        </div>
       </div>
 
       {filteredFiles.length == 0 ? (

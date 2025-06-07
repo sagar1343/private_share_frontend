@@ -28,11 +28,11 @@ export default function EmailInput({
       />
       <Button
         onClick={onAddEmail}
-        size="sm"
-        variant="outline"
+        variant="secondary"
+        className="cursor-pointer"
         disabled={!emailInput.trim()}
       >
-        <Plus className="h-4 w-4" />
+        <Plus />
       </Button>
     </div>
   );

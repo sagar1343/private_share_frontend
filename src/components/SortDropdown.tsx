@@ -1,3 +1,7 @@
+"use client";
+
+import type React from "react";
+
 import {
   Select,
   SelectContent,
@@ -8,6 +12,7 @@ import {
 import {
   ArrowDownAZ,
   ArrowUpAZ,
+  ArrowUpDown,
   Calendar,
   FileUp,
   FileDown,
@@ -88,12 +93,16 @@ export default function SortDropdown({
   return (
     <div className={`relative ${className}`}>
       <Select value={sort} onValueChange={setSort}>
-        <SelectTrigger className="w-full min-w-[180px] bg-white  hover:bg-gray-50 transition-colors">
+        <SelectTrigger className="w-full sm:min-w-[180px] min-w-[44px] bg-white hover:bg-gray-50 transition-colors">
           <div className="flex items-center">
-            <SortAsc className="h-4 w-4 mr-2 text-gray-500" />
-            <SelectValue placeholder="Sort by">
-              {selectedOption?.label}
-            </SelectValue>
+            <ArrowUpDown className="h-4 w-4 sm:hidden" />
+
+            <div className="hidden sm:flex items-center">
+              <SortAsc className="h-4 w-4 mr-2 text-gray-500" />
+              <SelectValue placeholder="Sort by">
+                {selectedOption?.label}
+              </SelectValue>
+            </div>
           </div>
         </SelectTrigger>
         <SelectContent className="min-w-[180px]">
