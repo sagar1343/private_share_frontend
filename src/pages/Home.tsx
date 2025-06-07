@@ -46,7 +46,7 @@ const steps = [
   {
     step: 1,
     title: "Upload Your File",
-    description: "Upload any file type to PrivateShare with our drag-and-drop interface.",
+    description: "Upload any file type to Private Share with our drag-and-drop interface.",
   },
   {
     step: 2,
@@ -70,7 +70,7 @@ export default function Home() {
               <div className="space-y-2">
                 <Badge className="inline-flex bg-[#008CFC]/10 text-[#008CFC] border-[#008CFC]/20 hover:bg-[#008CFC]/20">Secure File Sharing</Badge>
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">Share Files Privately & Securely</h1>
-                <p className="mt-6 max-w-[600px] text-slate-500 dark:text-slate-400 md:text-xl">PrivateShare gives you complete control with password protection, expiration timers, and download limits.</p>
+                <p className="mt-6 max-w-[600px] text-slate-500 dark:text-slate-400 md:text-xl">Private Share gives you complete control with password protection, expiration timers, and download limits.</p>
               </div>
               <div className="mt-4">
                 <ScrollLink smooth to="features-section">
@@ -84,7 +84,7 @@ export default function Home() {
               <div className="relative w-full max-w-[500px] aspect-square">
                 <div className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl border border-slate-200 drop-shadow-lg dark:border-slate-800">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#008CFC]/5 to-[#008CFC]/10 dark:from-[#008CFC]/10 dark:to-[#008CFC]/20" />
-                  <img src={heroImage} alt="PrivateShare Dashboard" width={500} height={500} className="rounded-xl object-cover" />
+                  <img src={heroImage} alt="Private Share Dashboard" width={500} height={500} className="rounded-xl object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -right-6 bg-white dark:bg-[#0A0A0A] p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800">
                   <div className="flex items-center gap-2">
@@ -116,7 +116,7 @@ export default function Home() {
         <div className="container px-4 md:px-6 text-center">
           <Badge className="bg-[#008CFC]/10 text-[#008CFC] border-[#008CFC]/20 hover:bg-[#008CFC]/20">How It Works</Badge>
           <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight my-2">Simple, Secure File Sharing in 3 Steps</h2>
-          <p className="max-w-[700px] mx-auto text-slate-500 dark:text-slate-400 md:text-xl/relaxed">PrivateShare makes it easy to share files securely with anyone, anywhere.</p>
+          <p className="max-w-[700px] mx-auto text-slate-500 dark:text-slate-400 md:text-xl/relaxed">Private Share makes it easy to share files securely with anyone, anywhere.</p>
 
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-12 md:grid-cols-3">
             {steps.map((s, i) => (

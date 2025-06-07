@@ -48,6 +48,7 @@
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.55.0",
     "react-redux": "^9.2.0",
+    "react-responsive": "^10.0.1",
     "react-router-dom": "^7.3.0",
     "react-scroll": "^1.9.3",
     "sonner": "^2.0.1",

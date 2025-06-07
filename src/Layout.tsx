@@ -1,9 +1,11 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import ThemeToggle from "@/components/ThemeToggle";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import useNotifications from "@/hooks/useNotifications";
 import { Outlet } from "react-router-dom";
 
 export default function Layout() {
+  const [notifications, setNotifications] = useNotifications();
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -12,7 +14,7 @@ export default function Layout() {
           <SidebarTrigger className="cursor-pointer" />
         </div>
         <div className="mx-4 sm:mx-8">
-          <Outlet />
+          <Outlet context={{ notifications, setNotifications }} />
         </div>
         <div className="fixed top-2 right-2 sm:right-8">
           <ThemeToggle />
