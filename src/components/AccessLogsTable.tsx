@@ -18,21 +18,16 @@ import {
   BreadcrumbPage,
 } from "./ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
+import { IAccessLogs } from "@/types/AccessLogs";
 
 type TabKey = "all" | "today" | "yesterday";
 
-export interface Log {
-  id: number;
-  private_file: string;
-  access_by: string;
-  access_time: string;
-}
-
 interface Props {
+  fileTitle: String | undefined;
   groupedLogs: {
-    today: Log[];
-    yesterday: Log[];
-    earlier: Log[];
+    today: IAccessLogs[];
+    yesterday: IAccessLogs[];
+    earlier: IAccessLogs[];
   };
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
@@ -41,6 +36,7 @@ interface Props {
 }
 
 export default function AccessLogsTable({
+  fileTitle,
   groupedLogs,
   filter,
   setFilter,
@@ -57,7 +53,6 @@ export default function AccessLogsTable({
       .slice(0, 2);
   };
   const { collectionId, id: fileId } = useParams();
-  const fileTitle = groupedLogs.earlier[0].private_file;
   const formatRelativeTime = (timeString: string) => {
     const date = new Date(timeString);
     const now = new Date();
@@ -79,7 +74,7 @@ export default function AccessLogsTable({
     });
   };
 
-  const renderLogItem = (log: Log) => {
+  const renderLogItem = (log: IAccessLogs) => {
     const date = new Date(log.access_time);
     const formattedTime = date.toLocaleTimeString("en-US", {
       hour: "numeric",
@@ -114,7 +109,7 @@ export default function AccessLogsTable({
     );
   };
 
-  const renderSection = (title: string, logs: Log[]) => {
+  const renderSection = (title: string, logs: IAccessLogs[]) => {
     if (logs.length === 0) return null;
 
     return (
@@ -152,7 +147,7 @@ export default function AccessLogsTable({
     groupedLogs.earlier.length === 0;
 
   return (
-    <div className="w-full mt-8">
+    <div className="w-full">
       <Card className="border-0">
         <CardHeader className="pb-0">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -162,7 +157,7 @@ export default function AccessLogsTable({
                   <BreadcrumbItem className="max-md:hidden">
                     <Link to={`/collections/${collectionId}/files/${fileId}`}>
                       {" "}
-                      <Heading className="max-w-[12ch] truncate max-md:hidden">
+                      <Heading className="max-w-[12ch] truncate leading-relaxed max-md:hidden">
                         {fileTitle}
                       </Heading>
                     </Link>
@@ -178,47 +173,49 @@ export default function AccessLogsTable({
                 </BreadcrumbList>
               </Breadcrumb>
             </CardTitle>
-
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-              <Input
-                placeholder="Search by email..."
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="pl-8"
-              />
-            </div>
           </div>
         </CardHeader>
 
-        <CardContent className="pt-6">
+        <CardContent>
           <Tabs
             defaultValue="all"
             value={activeTab}
             onValueChange={(value) => setActiveTab(value as TabKey)}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 sm:w-auto mb-6 ">
-              <TabsTrigger
-                value="all"
-                className="data-[state=active]:bg-primary dark:data-[state=active]:bg-primary data-[state=active]:text-primary-foreground cursor-pointer"
-              >
-                All Logs
-              </TabsTrigger>
-              <TabsTrigger
-                value="today"
-                className="data-[state=active]:bg-primary dark:data-[state=active]:bg-primary data-[state=active]:text-primary-foreground cursor-pointer"
-              >
-                Today
-              </TabsTrigger>
-              <TabsTrigger
-                value="yesterday"
-                className="data-[state=active]:bg-primary dark:data-[state=active]:bg-primary data-[state=active]:text-primary-foreground cursor-pointer"
-              >
-                Yesterday
-              </TabsTrigger>
-            </TabsList>
-
+            <div className="flex flex-col justify-between sm:flex-row gap-6">
+              <div className="relative sm:w-1/3 w-full">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                <Input
+                  placeholder="Search by email..."
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className="pl-8"
+                />
+              </div>
+              <div className="w-full sm:w-1/2">
+                <TabsList className="grid w-full grid-cols-3 sm:w-auto mb-6 ">
+                  <TabsTrigger
+                    value="all"
+                    className="data-[state=active]:bg-primary dark:data-[state=active]:bg-primary data-[state=active]:text-primary-foreground cursor-pointer"
+                  >
+                    All Logs
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="today"
+                    className="data-[state=active]:bg-primary dark:data-[state=active]:bg-primary data-[state=active]:text-primary-foreground cursor-pointer"
+                  >
+                    Today
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="yesterday"
+                    className="data-[state=active]:bg-primary dark:data-[state=active]:bg-primary data-[state=active]:text-primary-foreground cursor-pointer"
+                  >
+                    Yesterday
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            </div>
             <TabsContent value="all" className="mt-0 ">
               {allEmpty ? (
                 <EmptyState />

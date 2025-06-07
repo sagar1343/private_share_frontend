@@ -1,4 +1,5 @@
 import AccessLogsTable from "@/components/AccessLogsTable";
+import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import useFetch from "@/hooks/useFetch";
@@ -22,7 +23,7 @@ export default function AccessLogs() {
   const [activeTab, setActiveTab] = useState<TabKey>("all");
 
   const { data, isLoading } = useFetch<PaginatedResponse<IAccessLogs>>(
-    ["logs", { fileId: id }],
+    ["logs", { fileId: id, page }],
     `api/files/${id}/logs/?page=${page}`
   );
   const [logs, setLogs] = useState<IAccessLogs[]>([]);
@@ -77,15 +78,19 @@ export default function AccessLogs() {
 
   if (logs.length === 0) {
     return (
-      <p className="mt-12 text-center text-gray-500">
-        No access logs available.
-      </p>
+      <>
+        <Heading>Access Logs</Heading>
+        <p className="mt-12 text-center text-gray-500">
+          No access logs available.
+        </p>
+      </>
     );
   }
 
   return (
     <>
       <AccessLogsTable
+        fileTitle={data?.results[0].private_file}
         groupedLogs={activeGroupedLogs}
         filter={filter}
         setFilter={setFilter}
