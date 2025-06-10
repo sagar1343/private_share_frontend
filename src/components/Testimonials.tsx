@@ -49,7 +49,7 @@ export default function Testimonials() {
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   "Password protection and download limits are exactly what I needed! Now I can
                   share assignments with specific classmates without worrying about unauthorized
-                  sharing. Thanks Sagar & Rohit !"
+                  sharing. Thanks Sagar & Rohit!"
                 </p>
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#008CFC]/30 to-[#008CFC]/10 flex items-center justify-center">
