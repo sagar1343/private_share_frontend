@@ -7,7 +7,7 @@ export default function Collections() {
       <div className="h-[30vh] sm:h-auto flex sm:block items-center justify-center">
         <Heading asHeading>Collections</Heading>
       </div>
-      <div className="h-[70vh]">
+      <div>
         <CollectionGrid />
       </div>
     </div>

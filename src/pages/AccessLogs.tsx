@@ -48,12 +48,8 @@ export default function AccessLogs() {
   const yesterday = new Date(Date.now() - 86400000).toDateString();
 
   const groupedLogs: GroupedLogs = {
-    today: filteredLogs.filter(
-      (log) => new Date(log.access_time).toDateString() === today
-    ),
-    yesterday: filteredLogs.filter(
-      (log) => new Date(log.access_time).toDateString() === yesterday
-    ),
+    today: filteredLogs.filter((log) => new Date(log.access_time).toDateString() === today),
+    yesterday: filteredLogs.filter((log) => new Date(log.access_time).toDateString() === yesterday),
     earlier: filteredLogs.filter((log) => {
       const logDate = new Date(log.access_time).toDateString();
       return logDate !== today && logDate !== yesterday;
@@ -80,9 +76,7 @@ export default function AccessLogs() {
     return (
       <>
         <Heading>Access Logs</Heading>
-        <p className="mt-12 text-center text-gray-500">
-          No access logs available.
-        </p>
+        <p className="mt-12 text-center text-gray-500">No access logs available.</p>
       </>
     );
   }

@@ -51,17 +51,11 @@ export default function FileContainer({ className, collectionId }: Props) {
     if (sort === "title-asc") return a.file_name.localeCompare(b.file_name);
     if (sort === "title-desc") return b.file_name.localeCompare(a.file_name);
     if (sort === "date-asc")
-      return (
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      );
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
     if (sort === "date-desc")
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-    if (sort === "size-asc")
-      return parseFileSize(a.size) - parseFileSize(b.size);
-    if (sort === "size-desc")
-      return parseFileSize(b.size) - parseFileSize(a.size);
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    if (sort === "size-asc") return parseFileSize(a.size) - parseFileSize(b.size);
+    if (sort === "size-desc") return parseFileSize(b.size) - parseFileSize(a.size);
     return 0;
   });
 
@@ -81,12 +75,7 @@ export default function FileContainer({ className, collectionId }: Props) {
       {filteredFiles.length == 0 ? (
         <EmptyStateModal title={"files"} searchTerm={searchTerm} />
       ) : (
-        <div
-          className={clsx(
-            "space-y-4 mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4",
-            className
-          )}
-        >
+        <div className={clsx("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4", className)}>
           {sortedFiles.map((file) => (
             <FileCard key={file.id} file={file} collectionId={collectionId} />
           ))}

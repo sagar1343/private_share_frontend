@@ -40,19 +40,13 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
           fileTitle={fileName}
           collectionTitle={collection?.title}
         />
-        <FileNameUpdate
-          fileName={fileName}
-          fileId={file.id}
-          setFileName={setFileName}
-        />
+        <FileNameUpdate fileName={fileName} fileId={file.id} setFileName={setFileName} />
       </div>
       <div className="mt-2 text-sm font-normal flex flex-col sm:flex-row sm:items-center max-sm:space-y-2">
         <Badge variant="secondary">File size {file.size}</Badge>
         <div className="flex items-center">
           <Dot size={30} className="hidden sm:inline text-green-500" />
-          <Badge variant="secondary">
-            Added on {date.toLocaleString("en-US", options)}
-          </Badge>
+          <Badge variant="secondary">Added on {date.toLocaleString("en-US", options)}</Badge>
         </div>
       </div>
     </Heading>

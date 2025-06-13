@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { INotification } from "@/types/Notification";
-import { AlertTriangle, Bell, CheckCircle, Clock, Info, MoreHorizontal } from "lucide-react";
+import { AlertTriangle, Bell, CheckCircle, Clock, Info, MoreVertical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -81,7 +81,7 @@ export default function NotificationCard({
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <MoreHorizontal className="h-4 w-4" />
+                              <MoreVertical className="h-4 w-4" />
                               <span className="sr-only">More options</span>
                             </Button>
                           </DropdownMenuTrigger>

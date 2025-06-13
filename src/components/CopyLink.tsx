@@ -28,7 +28,12 @@ export default function CopyLink({ id }: { id: number }) {
 
   return (
     <div className="my-12 flex gap-2 ">
-      <Input ref={copyRef} className="max-w-2xs focus-visible:ring-0 focus-visible:border-inherit focus-visible:border-[1px]" defaultValue={`${import.meta.env.VITE_HOST_URL}share?id=${encodedId}`} readOnly />
+      <Input
+        ref={copyRef}
+        className="max-w-2xs focus-visible:ring-0 focus-visible:border-inherit focus-visible:border-[1px]"
+        defaultValue={`${import.meta.env.VITE_HOST_URL}/share?id=${encodedId}`}
+        readOnly
+      />
       <Button type="submit" onClick={handleCopy} variant="default" className="cursor-pointer">
         {!copied ? (
           <span className="flex gap-1 items-center">

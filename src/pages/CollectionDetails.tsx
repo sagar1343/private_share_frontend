@@ -34,7 +34,7 @@ export default function CollectionDetails() {
         </div>
       </div>
       <div className="h-[80vh] sm:h-auto overflow-y-auto sm:overflow-visible px-4 sm:px-0">
-        <FileContainer className="mt-12" collectionId={collection?.id!} />
+        <FileContainer className="sm:mt-12" collectionId={collection?.id!} />
       </div>
     </div>
   );

@@ -4,19 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  AlertCircle,
-  Calendar,
-  ChevronRight,
-  Clock,
-  Search,
-} from "lucide-react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "./ui/breadcrumb";
+import { AlertCircle, Calendar, ChevronRight, Clock, Search } from "lucide-react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "./ui/breadcrumb";
 import { Link, useParams } from "react-router-dom";
 import { IAccessLogs } from "@/types/AccessLogs";
 
@@ -63,8 +52,7 @@ export default function AccessLogsTable({
 
     if (diffMins < 1) return "Just now";
     if (diffMins < 60) return `${diffMins} min${diffMins === 1 ? "" : "s"} ago`;
-    if (diffHours < 24)
-      return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
     if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
 
     return date.toLocaleDateString("en-US", {
@@ -153,11 +141,11 @@ export default function AccessLogsTable({
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <CardTitle className="flex items-center gap-2">
               <Breadcrumb>
-                <BreadcrumbList>
+                <BreadcrumbList className="mt-6 mb-12 flex items-center">
                   <BreadcrumbItem className="max-md:hidden">
                     <Link to={`/collections/${collectionId}/files/${fileId}`}>
                       {" "}
-                      <Heading className="max-w-[12ch] truncate leading-relaxed max-md:hidden">
+                      <Heading className="mt-0! mb-0! max-w-[12ch] truncate leading-relaxed max-md:hidden">
                         {fileTitle}
                       </Heading>
                     </Link>
@@ -167,7 +155,7 @@ export default function AccessLogsTable({
                   </BreadcrumbItem>
                   <BreadcrumbItem>
                     <BreadcrumbPage>
-                      <Heading>Access Logs</Heading>
+                      <Heading className="mt-0! mb-0!">Access Logs</Heading>
                     </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>

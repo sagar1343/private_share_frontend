@@ -1,12 +1,7 @@
 import Heading from "@/components/Heading";
 import { ChevronRight, Ellipsis } from "lucide-react";
 import { Link } from "react-router";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "./ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "./ui/breadcrumb";
 
 interface Props {
   fileId?: number;
@@ -23,12 +18,12 @@ export default function FileBreadCrumb({
 }: Props) {
   return (
     <Breadcrumb>
-      <BreadcrumbList>
+      <BreadcrumbList className="mt-6 mb-12 flex items-center">
         {!fileId && (
           <>
             <BreadcrumbItem className="max-md:hidden">
               <Link to="/collections">
-                <Heading>Collections</Heading>
+                <Heading className="mt-0! mb-0!">Collections</Heading>
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem className="items-center max-md:hidden">
@@ -42,7 +37,7 @@ export default function FileBreadCrumb({
               {fileId ? (
                 <>
                   {collectionTitle ? (
-                    <Heading className="max-w-[12ch] truncate leading-relaxed max-md:hidden">
+                    <Heading className="mt-0! mb-0! max-w-[12ch] truncate leading-relaxed max-md:hidden">
                       {collectionTitle}
                     </Heading>
                   ) : (
@@ -53,7 +48,7 @@ export default function FileBreadCrumb({
                 <BreadcrumbItem>
                   <BreadcrumbPage>
                     {collectionTitle ? (
-                      <Heading className="max-w-[12ch] truncate leading-relaxed">
+                      <Heading className="mt-0! mb-0! max-w-[12ch] truncate leading-relaxed">
                         {collectionTitle}
                       </Heading>
                     ) : (
@@ -73,7 +68,7 @@ export default function FileBreadCrumb({
             <BreadcrumbItem>
               <Link to={`/collections/${collectionId}/files/${fileId}`}>
                 <BreadcrumbPage>
-                  <Heading className="max-w-[12ch] truncate leading-relaxed">
+                  <Heading className="mt-0! mb-0! max-w-[12ch] truncate leading-relaxed">
                     {fileTitle}
                   </Heading>
                 </BreadcrumbPage>

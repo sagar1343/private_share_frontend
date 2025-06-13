@@ -10,8 +10,12 @@ export default function NotFound() {
         <div className="space-y-4">
           <h1 className="text-9xl font-bold text-primary">404</h1>
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Oops! Page Not Found</h2>
-            <p className="text-slate-500 dark:text-slate-400">The page you're looking for doesn't exist or has been moved.</p>
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+              Oops! Page Not Found
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400">
+              The page you're looking for doesn't exist or has been moved.
+            </p>
           </div>
         </div>
 
@@ -24,7 +28,10 @@ export default function NotFound() {
           <Button onClick={() => navigate(-1)} variant="outline" className="w-full sm:w-auto">
             Go Back
           </Button>
-          <Button onClick={() => navigate("/")} className="w-full sm:w-auto bg-primary hover:bg-primary/90">
+          <Button
+            onClick={() => navigate("/")}
+            className="w-full sm:w-auto bg-primary hover:bg-primary/90"
+          >
             Return Home
           </Button>
         </div>

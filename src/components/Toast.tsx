@@ -8,6 +8,7 @@ export default function Toast() {
       richColors
       position={isMobile ? "top-center" : "bottom-right"}
       swipeDirections={["right"]}
+      mobileOffset={{ top: 30 }}
     />
   );
 }

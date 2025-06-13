@@ -54,9 +54,7 @@ export default function RecievedFiles() {
     return (
       <>
         <Heading asHeading>Received Files</Heading>
-        <p className="mt-12 text-center text-gray-500">
-          No files received yet.
-        </p>
+        <p className="mt-12 text-center text-gray-500">No files received yet.</p>
       </>
     );
   }
@@ -96,7 +94,7 @@ export default function RecievedFiles() {
           {filteredFiles.length == 0 ? (
             <EmptyStateModal title={"files"} searchTerm={searchTerm} />
           ) : (
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
               {sortedFiles.map((file) => (
                 <div key={file.id}>
                   <ReceivedFileCard file={file} />
@@ -104,12 +102,7 @@ export default function RecievedFiles() {
               ))}
             </div>
           )}
-          {selectedFile && (
-            <FileModal
-              file={selectedFile}
-              onClose={() => setSelectedFile(null)}
-            />
-          )}
+          {selectedFile && <FileModal file={selectedFile} onClose={() => setSelectedFile(null)} />}
           {sortedFiles && (
             <div className="flex justify-center my-12">
               <Pagination

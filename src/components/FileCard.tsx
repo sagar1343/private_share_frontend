@@ -25,9 +25,7 @@ export default function FileCard({ file, collectionId }: Props) {
       </div>
       <Button
         className="cursor-pointer"
-        onClick={() =>
-          navigate(`/collections/${collectionId}/files/${file.id}`)
-        }
+        onClick={() => navigate(`/collections/${collectionId}/files/${file.id}`)}
       >
         <ExternalLink className="size-5" />
       </Button>

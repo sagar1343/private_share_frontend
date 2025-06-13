@@ -34,7 +34,11 @@ export default function FileDetails() {
           <FilePermissions fileId={file.id} />
           <div className="flex items-center">
             <h2 className="font-semibold flex items-center gap-2">File Logs</h2>
-            <Button variant="link" className="cursor-pointer" onClick={() => navigate(`/collections/${collectionId}/files/${id}/logs`)}>
+            <Button
+              variant="link"
+              className="cursor-pointer"
+              onClick={() => navigate(`/collections/${collectionId}/files/${id}/logs`)}
+            >
               View file logs
             </Button>
           </div>

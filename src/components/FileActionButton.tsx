@@ -9,11 +9,7 @@ export default function FileActionButton({ show, setShow, editLabel }: Props) {
   return (
     <>
       {!show ? (
-        <Button
-          onClick={() => setShow(true)}
-          variant="link"
-          className="cursor-pointer"
-        >
+        <Button onClick={() => setShow(true)} variant="link" className="cursor-pointer">
           {editLabel ?? "Edit"}
         </Button>
       ) : (

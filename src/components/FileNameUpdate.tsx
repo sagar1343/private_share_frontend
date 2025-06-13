@@ -1,17 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import api from "@/services/api";
-import { IFile } from "@/types/File";
-import { Pencil, SendHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
-import { toast } from "sonner";
+import type { IFile } from "@/types/File";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Pencil } from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { type FieldValues, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface FormData {
   file_name: string;
@@ -23,11 +20,7 @@ interface Props {
   setFileName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function FileNameUpdate({
-  fileName,
-  fileId,
-  setFileName,
-}: Props) {
+export default function FileNameUpdate({ fileName, fileId, setFileName }: Props) {
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, formState, reset } = useForm<FormData>({
     defaultValues: { file_name: fileName },
@@ -62,40 +55,59 @@ export default function FileNameUpdate({
   }
 
   useEffect(() => {
-    if (formState.errors.file_name)
-      toast.error(formState.errors.file_name.message);
+    if (formState.errors.file_name) toast.error(formState.errors.file_name.message);
   }, [formState]);
 
   return (
     <Popover open={open} onOpenChange={() => setOpen((prev) => !prev)}>
-      <PopoverTrigger>
-        <Pencil className="hover:text-primary cursor-pointer" />
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
+          <Pencil className="h-4 w-4 text-primary hover:text-primary/80" />
+          <span className="sr-only">Rename file</span>
+        </Button>
       </PopoverTrigger>
-      <PopoverContent align="start">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-4">
-          <Input
-            {...register("file_name", {
-              required: "File name is required",
-              minLength: {
-                value: 3,
-                message: "File name must be at least 3 characters",
-              },
-              maxLength: {
-                value: 120,
-                message: "File name must be at most 120 characters",
-              },
-            })}
-            type="text"
-            disabled={nameMutation.isPending}
-          />
-          <Button
-            className="cursor-pointer"
-            disabled={formState.isSubmitting || nameMutation.isPending}
-            type="submit"
-          >
-            <SendHorizontal />
-          </Button>
-        </form>
+      <PopoverContent className="w-72 p-3" align="start">
+        <div className="space-y-2">
+          <h4 className="font-medium text-sm">Rename File</h4>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            <Input
+              {...register("file_name", {
+                required: "File name is required",
+                minLength: {
+                  value: 3,
+                  message: "File name must be at least 3 characters",
+                },
+                maxLength: {
+                  value: 120,
+                  message: "File name must be at most 120 characters",
+                },
+              })}
+              className="border-primary/20 focus-visible:ring-primary"
+              placeholder="Enter file name"
+              autoFocus
+              disabled={nameMutation.isPending}
+            />
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setOpen(false)}
+                disabled={nameMutation.isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                className="bg-primary hover:bg-primary/90"
+                disabled={formState.isSubmitting || nameMutation.isPending}
+              >
+                {nameMutation.isPending ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          </form>
+        </div>
       </PopoverContent>
     </Popover>
   );
