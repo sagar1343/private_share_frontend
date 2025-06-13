@@ -2,6 +2,7 @@ import CopyLink from "@/components/CopyLink";
 import DownlaodSection from "@/components/DownlaodsSection";
 import ExpirationSection from "@/components/ExpirationSection";
 import FileDetailsHeader from "@/components/FileDetailsHeader";
+import FileNotFound from "@/components/FileNotFound";
 import FilePermissions from "@/components/FilePermissions";
 import Loader from "@/components/Loader";
 import MaxDownlaodSection from "@/components/MaxDownloadSection";
@@ -17,7 +18,7 @@ export default function FileDetails() {
 
   const { data: file, isLoading } = useFetch<IFile>(["files", { id }], `api/files/${id}`);
   if (isLoading) return <Loader />;
-  if (!file) return <p>File not found!</p>;
+  if (!file) return <FileNotFound />;
 
   return (
     <div>
