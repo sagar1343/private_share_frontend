@@ -7,17 +7,13 @@ interface Props {
   isActive: boolean;
   onClick: () => void;
 }
-export default function CollectionItem({
-  collection,
-  isActive,
-  onClick,
-}: Props) {
+export default function CollectionItem({ collection, isActive, onClick }: Props) {
   return (
     <li
       onClick={onClick}
       className={clsx(
         "rounded-md cursor-pointer transition-all",
-        isActive ? "bg-black/10 dark:bg-white/20 shadow-lg" : "bg-transparent"
+        isActive ? "bg-primary/30 dark:bg-primary/30 shadow-lg" : "bg-transparent"
       )}
     >
       <Collection isActive={isActive} collection={collection} />

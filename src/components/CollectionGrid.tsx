@@ -87,7 +87,7 @@ export default function CollectionGrid() {
           <>
             <ul
               ref={containerRef}
-              className="grid grid-cols-3  lg:grid-cols-6 gap-x-6 justify-items-center sm:justify-items-start"
+              className="grid grid-cols-3 lg:grid-cols-6 gap-x-6 justify-items-center items-center sm:justify-items-start"
             >
               {page == 1 && (
                 <li>

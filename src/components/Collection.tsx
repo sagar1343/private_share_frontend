@@ -18,12 +18,9 @@ export default function Collection({ collection, isActive }: Props) {
   const navigate = useNavigate();
   const [renameId, setRenameId] = useState<number | null>(null);
   const { handleRename } = useManageCollection();
-  const { actionStatus } = useSelector(
-    (state: RootState) => state.UserCollections
-  );
+  const { actionStatus } = useSelector((state: RootState) => state.UserCollections);
   function handleDoubleClick() {
-    if (actionStatus !== CollectionActionStatus.RENAMING)
-      navigate(`/collections/${collection.id}`);
+    if (actionStatus !== CollectionActionStatus.RENAMING) navigate(`/collections/${collection.id}`);
   }
   return (
     <ContextMenuComponent
@@ -43,7 +40,7 @@ export default function Collection({ collection, isActive }: Props) {
             onSubmit={(data) => handleRename(collection, setRenameId, data)}
           />
         ) : (
-          <figcaption className="max-w-[100px] h-9 overflow-hidden whitespace-nowrap overflow-ellipsis">
+          <figcaption className="max-w-[100px] overflow-hidden whitespace-nowrap overflow-ellipsis">
             {collection.title}
           </figcaption>
         )}
