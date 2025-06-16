@@ -1,4 +1,4 @@
-import CopyLink from "@/components/CopyLink";
+import Share from "@/components/Share";
 import DownlaodSection from "@/components/DownlaodsSection";
 import ExpirationSection from "@/components/ExpirationSection";
 import FileDetailsHeader from "@/components/FileDetailsHeader";
@@ -23,7 +23,9 @@ export default function FileDetails() {
   return (
     <div>
       <FileDetailsHeader file={file} />
-      <CopyLink id={file.id} />
+      <div>
+        <Share id={file.id} />
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8 max-lg:space-y-12">
         <div className="mt-12 space-y-12">
           <ExpirationSection date={file.expiration_time} />

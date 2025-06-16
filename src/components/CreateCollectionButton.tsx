@@ -13,7 +13,7 @@ export default function CreateCollectionButton() {
     >
       <figure className="flex flex-col items-center cursor-pointer p-2 rounded-xl">
         <FolderPlus size={82} cursor="pointer" />
-        <figcaption className="h-9">New</figcaption>
+        <figcaption>New Folder</figcaption>
       </figure>
     </button>
   );

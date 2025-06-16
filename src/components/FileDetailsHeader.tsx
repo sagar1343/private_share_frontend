@@ -8,6 +8,7 @@ import { IFile } from "@/types/File";
 import { Dot } from "lucide-react";
 import { useState } from "react";
 import { Params, useParams } from "react-router";
+import FileDeleteButton from "./FileDeleteButton";
 import { Badge } from "./ui/badge";
 
 const options: Intl.DateTimeFormatOptions = {
@@ -33,14 +34,17 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
 
   return (
     <Heading>
-      <div className="flex items-center gap-4">
+      <div className="flex justify-between items-center gap-4">
         <FileBreadCrumb
           collectionId={parseInt(collectionId!)}
           fileId={file.id}
           fileTitle={fileName}
           collectionTitle={collection?.title}
         />
-        <FileNameUpdate fileName={fileName} fileId={file.id} setFileName={setFileName} />
+        <div className="flex gap-2 items-center">
+          <FileNameUpdate fileName={fileName} fileId={file.id} setFileName={setFileName} />
+          <FileDeleteButton fileId={file.id} collectionId={collection?.id!} />
+        </div>
       </div>
       <div className="mt-2 text-sm font-normal flex flex-col sm:flex-row sm:items-center max-sm:space-y-2">
         <Badge variant="secondary">File size {file.size}</Badge>
