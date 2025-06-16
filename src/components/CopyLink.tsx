@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ClipboardCheck, Copy, Link } from "lucide-react";
+import { ClipboardCheck, Copy } from "lucide-react";
 import { useRef, useState } from "react";
 
 export default function CopyLink({ encodedURL }: { encodedURL: string }) {
