@@ -73,7 +73,7 @@ export default function Share({ id }: { id: number }) {
 
           <QRCode link={encodedURL} />
 
-          <DialogFooter className="flex space-x-2 justify-center">
+          <DialogFooter className="flex max-sm:flex-row space-x-2 justify-center">
             {SOCIALS.map(({ name, Button: ShareBtn, Icon }) => (
               <ShareBtn url={encodedURL} key={name}>
                 <Icon className="rounded-full size-10" />
