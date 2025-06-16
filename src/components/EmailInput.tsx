@@ -1,6 +1,6 @@
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { SendHorizonal } from "lucide-react";
 import type { KeyboardEvent } from "react";
 
 interface Props {
@@ -10,12 +10,7 @@ interface Props {
   onKeyPress: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
-export default function EmailInput({
-  emailInput,
-  setEmailInput,
-  onAddEmail,
-  onKeyPress,
-}: Props) {
+export default function EmailInput({ emailInput, setEmailInput, onAddEmail, onKeyPress }: Props) {
   return (
     <div className="flex gap-2">
       <Input
@@ -26,13 +21,8 @@ export default function EmailInput({
         onKeyPress={onKeyPress}
         className="flex-1"
       />
-      <Button
-        onClick={onAddEmail}
-        variant="secondary"
-        className="cursor-pointer"
-        disabled={!emailInput.trim()}
-      >
-        <Plus />
+      <Button onClick={onAddEmail} className="cursor-pointer" disabled={!emailInput.trim()}>
+        <SendHorizonal />
       </Button>
     </div>
   );
