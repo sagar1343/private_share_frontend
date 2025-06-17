@@ -92,8 +92,9 @@ export default function Home() {
                 <div className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl border border-slate-200 drop-shadow-lg dark:border-slate-800">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#008CFC]/5 to-[#008CFC]/10 dark:from-[#008CFC]/10 dark:to-[#008CFC]/20" />
                   <img
+                    loading="eager"
                     src={heroImage}
-                    alt="Private Share Dashboard"
+                    alt="Private Share"
                     width={500}
                     height={500}
                     className="rounded-xl object-cover"

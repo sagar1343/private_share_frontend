@@ -1,12 +1,11 @@
-import logo from "@/assets/logo.png";
 import heroImage from "@/assets/hero.webp";
+import logo from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import { useAuthContext } from "@/context/AuthContext";
+import { Clock, Lock, Users } from "lucide-react";
 import { lazy, Suspense, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Lock, Clock, Users } from "lucide-react";
 
 const GoogleLoginButton = lazy(() => import("@/components/GoogleLoginButton"));
 
@@ -33,7 +32,14 @@ export default function Login() {
           <div className="relative w-full max-w-[500px] aspect-square">
             <div className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl border border-slate-200 drop-shadow-lg dark:border-slate-800">
               <div className="absolute inset-0 bg-gradient-to-br from-[#008CFC]/5 to-[#008CFC]/10 dark:from-[#008CFC]/10 dark:to-[#008CFC]/20" />
-              <img src={heroImage} alt="Private Share Dashboard" width={500} height={500} className="rounded-xl object-cover" />
+              <img
+                src={heroImage}
+                loading="eager"
+                alt="Private Share"
+                width={500}
+                height={500}
+                className="rounded-xl object-cover"
+              />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-background p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2">

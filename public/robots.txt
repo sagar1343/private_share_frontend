@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /api/
+Disallow: /collections/
+Disallow: /share/
+Allow: /
+
+Sitemap: https://sagarcodes.me/sitemap.xml
