@@ -1,4 +1,4 @@
-import heroImage from "@/assets/hero.jpg";
+import heroImage from "@/assets/hero.webp";
 import FeatureCard from "@/components/FeatureCard";
 import Footer from "@/components/Footer";
 import ReadyToStart from "@/components/ReadToStart";

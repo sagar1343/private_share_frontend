@@ -1,5 +1,5 @@
 import logo from "@/assets/logo.png";
-import heroImage from "@/assets/hero.jpg";
+import heroImage from "@/assets/hero.webp";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
