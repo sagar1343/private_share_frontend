@@ -4,7 +4,7 @@ import Heading from "@/components/Heading";
 export default function Collections() {
   return (
     <div>
-      <Heading asHeading>Collections</Heading>
+      <Heading heading="Collections" content="Organize your files into collections" />
       <div>
         <CollectionGrid />
       </div>

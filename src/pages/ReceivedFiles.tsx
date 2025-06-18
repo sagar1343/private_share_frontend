@@ -53,7 +53,7 @@ export default function RecievedFiles() {
   if (!files || files.length === 0) {
     return (
       <>
-        <Heading asHeading>Received Files</Heading>
+        <Heading heading="Received Files" content="Files shared with you by other users." />
         <p className="mt-12 text-center text-gray-500">No files received yet.</p>
       </>
     );
@@ -76,10 +76,8 @@ export default function RecievedFiles() {
 
   return (
     <>
-      <div className="h-[30vh] sm:h-auto flex sm:block items-center justify-center">
-        <Heading asHeading>Received Files</Heading>
-      </div>
-      <div className="h-[70vh] w-full flex flex-col">
+      <Heading heading="Received Files" content="Files shared with you by other users." />
+      <div className="w-full flex flex-col">
         <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
           <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 sm:pt-0">
             <SearchComponent

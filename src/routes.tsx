@@ -4,6 +4,7 @@ import Layout from "@/Layout";
 import AccessLogs from "@/pages/AccessLogs";
 import CollectionDetails from "@/pages/CollectionDetails";
 import Collections from "@/pages/Collections";
+import Dashboard from "@/pages/Dashboard";
 import FileCreate from "@/pages/FileCreate";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
@@ -11,6 +12,9 @@ import NotFound from "@/pages/NotFound";
 import Notifications from "@/pages/Notifications";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import ReceivedFiles from "@/pages/ReceivedFiles";
+import Recent from "@/pages/Recent";
+import Settings from "@/pages/Settings";
+import Starred from "@/pages/Starred";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -23,60 +27,94 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "collections",
-        element: (
-          <ProtectedRoute>
-            <Collections />
-          </ProtectedRoute>
-        ),
+        path: "/settings",
+        element: <Settings />,
       },
       {
-        path: "collections/:id",
-        element: (
-          <ProtectedRoute>
-            <CollectionDetails />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/collections/:collectionId/files",
-        element: (
-          <ProtectedRoute>
-            <FileCreate />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "collections/:collectionId/files/:id",
-        element: (
-          <ProtectedRoute>
-            <FileDetails />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "collections/:collectionId/files/:id/logs",
-        element: (
-          <ProtectedRoute>
-            <AccessLogs />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "share",
-        element: (
-          <ProtectedRoute>
-            <ReceivedFiles />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "notifications",
-        element: (
-          <ProtectedRoute>
-            <Notifications />
-          </ProtectedRoute>
-        ),
+        path: "dashboard",
+        children: [
+          {
+            index: true,
+            path: "overview",
+            element: (
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "collections",
+            element: (
+              <ProtectedRoute>
+                <Collections />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "collections/:id",
+            element: (
+              <ProtectedRoute>
+                <CollectionDetails />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "collections/:collectionId/files",
+            element: (
+              <ProtectedRoute>
+                <FileCreate />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "collections/:collectionId/files/:id",
+            element: (
+              <ProtectedRoute>
+                <FileDetails />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "collections/:collectionId/files/:id/logs",
+            element: (
+              <ProtectedRoute>
+                <AccessLogs />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "share",
+            element: (
+              <ProtectedRoute>
+                <ReceivedFiles />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "notifications",
+            element: (
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "recent-files",
+            element: (
+              <ProtectedRoute>
+                <Recent />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "starred",
+            element: (
+              <ProtectedRoute>
+                <Starred />
+              </ProtectedRoute>
+            ),
+          },
+        ],
       },
     ],
   },
@@ -88,6 +126,7 @@ const router = createBrowserRouter([
     path: "/privacy-policy",
     element: <PrivacyPolicy />,
   },
+
   {
     path: "*",
     element: <NotFound />,

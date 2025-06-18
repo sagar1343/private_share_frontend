@@ -51,51 +51,50 @@ const navigationItems = [
   },
   {
     title: "Dashboard",
-    url: "/collections",
+    url: "dashboard/overview",
     icon: LayoutDashboard,
   },
   {
     title: "My Collections",
-    url: "/collections",
+    url: "dashboard/collections",
     icon: FolderOpen,
   },
   {
     title: "Received Files",
-    url: "/share",
+    url: "dashboard/share",
     icon: Library,
   },
   {
     title: "Notifications",
-    url: "/notifications",
+    url: "dashboard/notifications",
     icon: Bell,
   },
   {
     title: "Recent Files",
-    url: "/recent-files",
+    url: "dashboard/recent-files",
     icon: Clock,
   },
   {
     title: "Starred",
-    url: "/starred",
+    url: "dashboard/starred",
     icon: Star,
   },
 ];
 const quickActions = [
   {
     title: "Upload File",
-    url: "/",
     icon: Upload,
   },
   {
     title: "New Collection",
-    url: "/",
     icon: Folder,
   },
 ];
+
 const managementItem = [
   {
     title: "Settings",
-    url: "/",
+    url: "/settings",
     icon: Settings2,
   },
   {
@@ -148,10 +147,10 @@ export function AppSidebar() {
                 {quickActions.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <Link to={item.url}>
+                      <div>
                         <item.icon />
                         <span>{item.title}</span>
-                      </Link>
+                      </div>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

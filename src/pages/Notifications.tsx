@@ -1,14 +1,9 @@
+import Heading from "@/components/Heading";
 import NotificationCard from "@/components/NotificationCard";
-import { INotification } from "@/types/Notification";
-import { useOutletContext } from "react-router-dom";
-
-interface NotificationsContext {
-  notifications: INotification[];
-  setNotifications: React.Dispatch<React.SetStateAction<INotification[]>>;
-}
+import useNotifications from "@/hooks/useNotifications";
 
 export default function Notifications() {
-  const { notifications, setNotifications } = useOutletContext<NotificationsContext>();
+  const [notifications, setNotifications] = useNotifications();
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (id: string) => {
@@ -20,11 +15,14 @@ export default function Notifications() {
   };
 
   return (
-    <NotificationCard
-      unreadCount={unreadCount}
-      notifications={notifications}
-      markAsRead={markAsRead}
-      deleteNotification={deleteNotification}
-    />
+    <>
+      <Heading heading="Notifications" content="Get real-time updates — never miss a thing." />
+      <NotificationCard
+        unreadCount={unreadCount}
+        notifications={notifications}
+        markAsRead={markAsRead}
+        deleteNotification={deleteNotification}
+      />
+    </>
   );
 }

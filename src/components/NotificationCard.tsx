@@ -1,4 +1,3 @@
-import Heading from "@/components/Heading";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,98 +15,81 @@ interface Props {
   markAsRead: (id: string) => void;
   deleteNotification: (id: string) => void;
 }
-export default function NotificationCard({
-  unreadCount,
-  notifications,
-  markAsRead,
-  deleteNotification,
-}: Props) {
+export default function NotificationCard({ notifications, markAsRead, deleteNotification }: Props) {
   const navigate = useNavigate();
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
-        <Heading className="flex items-center gap-2">
-          Notifications
-          {unreadCount > 0 && (
-            <span className="inline-flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-              {unreadCount} unread
-            </span>
-          )}
-        </Heading>
-      </div>
-      <>
-        {notifications.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Bell className="h-12 w-12 text-muted-foreground mb-4" />
-            <h2 className="text-xl font-medium mb-2">No notifications</h2>
-            <p className="text-muted-foreground">You don't have any notifications yet</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {notifications.map((notification) => (
-              <div
-                key={notification.id}
-                className={`group relative p-4 rounded-lg border ${
-                  !notification.read ? "bg-blue-50/50 dark:bg-blue-950/20" : ""
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 mt-1">{getNotificationIcon(notification.type)}</div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1">
-                        <p className="text-base font-medium">{notification.title}</p>
-                        <p className="text-sm text-muted-foreground mt-1">{notification.message}</p>
-                        <div className="flex items-center gap-4 mt-3">
-                          <p className="text-xs text-muted-foreground">
-                            {formatTimestamp(notification.timestamp)}
-                          </p>
-                          {notification.action_url && (
-                            <Button
-                              variant="link"
-                              size="sm"
-                              className="h-auto p-0 text-xs"
-                              onClick={() => {
-                                markAsRead(notification.id);
-                                navigate(notification.action_url!);
-                              }}
-                            >
-                              View details
-                            </Button>
-                          )}
-                        </div>
+      {notifications.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <Bell className="h-12 w-12 text-muted-foreground mb-4" />
+          <h2 className="text-xl font-medium mb-2">No notifications</h2>
+          <p className="text-muted-foreground">You don't have any notifications yet</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {notifications.map((notification) => (
+            <div
+              key={notification.id}
+              className={`group relative p-4 rounded-lg border ${
+                !notification.read ? "bg-blue-50/50 dark:bg-blue-950/20" : ""
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 mt-1">{getNotificationIcon(notification.type)}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <p className="text-base font-medium">{notification.title}</p>
+                      <p className="text-sm text-muted-foreground mt-1">{notification.message}</p>
+                      <div className="flex items-center gap-4 mt-3">
+                        <p className="text-xs text-muted-foreground">
+                          {formatTimestamp(notification.timestamp)}
+                        </p>
+                        {notification.action_url && (
+                          <Button
+                            variant="link"
+                            size="sm"
+                            className="h-auto p-0 text-xs"
+                            onClick={() => {
+                              markAsRead(notification.id);
+                              navigate(notification.action_url!);
+                            }}
+                          >
+                            View details
+                          </Button>
+                        )}
                       </div>
-                      <div className="flex items-center">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <MoreVertical className="h-4 w-4" />
-                              <span className="sr-only">More options</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-40">
-                            {!notification.read && (
-                              <DropdownMenuItem onClick={() => markAsRead(notification.id)}>
-                                Mark as read
-                              </DropdownMenuItem>
-                            )}
-                            <DropdownMenuItem
-                              onClick={() => deleteNotification(notification.id)}
-                              className="text-red-600 dark:text-red-400"
-                            >
-                              Delete
+                    </div>
+                    <div className="flex items-center">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <MoreVertical className="h-4 w-4" />
+                            <span className="sr-only">More options</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-40">
+                          {!notification.read && (
+                            <DropdownMenuItem onClick={() => markAsRead(notification.id)}>
+                              Mark as read
                             </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                          )}
+                          <DropdownMenuItem
+                            onClick={() => deleteNotification(notification.id)}
+                            className="text-red-600 dark:text-red-400"
+                          >
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-      </>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }
