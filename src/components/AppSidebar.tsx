@@ -15,6 +15,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -23,19 +24,40 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuthContext } from "@/context/AuthContext";
 import clsx from "clsx";
-import { Bell, ChevronUp, FolderClosed, Home, Library, LogIn, LogOut, Shield } from "lucide-react";
+import {
+  Bell,
+  ChevronUp,
+  Clock,
+  Folder,
+  FolderOpen,
+  Home,
+  LayoutDashboard,
+  Library,
+  LogIn,
+  LogOut,
+  Settings2,
+  Shield,
+  Star,
+  SunMoon,
+  Upload,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-const items = [
+const navigationItems = [
   {
     title: "Home",
     url: "/",
     icon: Home,
   },
   {
-    title: "Collections",
+    title: "Dashboard",
     url: "/collections",
-    icon: FolderClosed,
+    icon: LayoutDashboard,
+  },
+  {
+    title: "My Collections",
+    url: "/collections",
+    icon: FolderOpen,
   },
   {
     title: "Received Files",
@@ -47,6 +69,40 @@ const items = [
     url: "/notifications",
     icon: Bell,
   },
+  {
+    title: "Recent Files",
+    url: "/recent-files",
+    icon: Clock,
+  },
+  {
+    title: "Starred",
+    url: "/starred",
+    icon: Star,
+  },
+];
+const quickActions = [
+  {
+    title: "Upload File",
+    url: "/",
+    icon: Upload,
+  },
+  {
+    title: "New Collection",
+    url: "/",
+    icon: Folder,
+  },
+];
+const managementItem = [
+  {
+    title: "Settings",
+    url: "/",
+    icon: Settings2,
+  },
+  {
+    title: "Display Settings",
+    url: "/",
+    icon: SunMoon,
+  },
 ];
 
 export function AppSidebar() {
@@ -54,18 +110,24 @@ export function AppSidebar() {
   const navigate = useNavigate();
   const { open } = useSidebar();
   return (
-    <Sidebar collapsible="icon" variant="floating">
+    <Sidebar collapsible="icon" variant="sidebar">
       <SidebarContent>
         <SidebarHeader>
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo || "/placeholder.svg"} alt="logo" className="w-10" />
-            <h1 className="whitespace-nowrap">Private Share</h1>
+            <Button size="icon" variant="secondary">
+              <img src={logo} alt="logo" className="w-8" />
+            </Button>
+            <div>
+              <h1 className="whitespace-nowrap font-semibold">Private Share</h1>
+              <p className="text-xs text-nowrap">Share Files Privately & Securely</p>
+            </div>
           </Link>
         </SidebarHeader>
         <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
@@ -76,6 +138,44 @@ export function AppSidebar() {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Quick Actions</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {quickActions.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Management</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {managementItem.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
@@ -89,14 +189,19 @@ export function AppSidebar() {
                   className={clsx("min-h-12", open ? "" : "flex items-center justify-center")}
                 >
                   <SidebarMenuButton className="cursor-pointer data-[state=open]:bg-sidebar-accent">
-                    <Avatar className="rounded-none h-6 w-6">
+                    <Avatar className="rounded-md h-8 w-8">
                       <AvatarImage src={authenticatedUser?.profile_pic} />
-                      <AvatarFallback className="bg-primary">
+                      <AvatarFallback className="bg-primary/10 hover:bg-primary/20 rounded-md text-primary">
                         {authenticatedUser?.first_name?.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <div className={clsx("flex items-center", open ? "" : "hidden")}>
-                      <div className="flex flex-col items-start text-left min-w-0">
+                    <div
+                      className={clsx(
+                        "grow flex items-center justify-between",
+                        open ? "" : "hidden"
+                      )}
+                    >
+                      <div className="w-full flex flex-col items-start text-left min-w-0">
                         <span className="truncate text-sm font-medium">
                           {authenticatedUser?.first_name} {authenticatedUser?.last_name}
                         </span>
@@ -115,9 +220,9 @@ export function AppSidebar() {
                 >
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                      <Avatar className="size-8">
+                      <Avatar className="size-8 rounded-md">
                         <AvatarImage src={authenticatedUser?.profile_pic} />
-                        <AvatarFallback className="bg-primary">
+                        <AvatarFallback className="bg-primary/10 hover:bg-primary/20 rounded-md text-primary">
                           {authenticatedUser?.first_name?.slice(0, 2).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>

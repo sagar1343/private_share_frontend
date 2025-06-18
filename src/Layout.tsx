@@ -1,5 +1,13 @@
 import { AppSidebar } from "@/components/AppSidebar";
-import ThemeToggle from "@/components/ThemeToggle";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import useNotifications from "@/hooks/useNotifications";
 import { Outlet } from "react-router-dom";
@@ -9,17 +17,28 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="my-12 w-full">
-        <div className="fixed top-2">
-          <SidebarTrigger className="cursor-pointer" />
-        </div>
-        <div className="mx-4 sm:mx-8">
-          <Outlet context={{ notifications, setNotifications }} />
-        </div>
-        <div className="fixed top-2 right-2 sm:right-8">
-          <ThemeToggle />
-        </div>
-      </main>
+      <div className="w-full">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="h-5!" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Overview</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+        <main>
+          <div className="mx-4 sm:mx-8">
+            <Outlet context={{ notifications, setNotifications }} />
+          </div>
+        </main>
+      </div>
     </SidebarProvider>
   );
 }
