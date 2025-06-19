@@ -20,10 +20,8 @@ export default function ExpirationSection({ date }: { date: string | Date }) {
         <ExpirationAction show={show} setShow={setShow} />
       </h2>
       {!show ? (
-        <p className="text-sm h-[44px] text-foreground/70">
-          {expiration_time
-            ? new Date(expiration_time).toLocaleString()
-            : "No expiration"}
+        <p className="text-sm text-foreground/70">
+          {expiration_time ? new Date(expiration_time).toLocaleString() : "No expiration"}
         </p>
       ) : (
         <ExpirationUpdateForm

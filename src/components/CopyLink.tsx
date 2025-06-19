@@ -16,10 +16,10 @@ export default function CopyLink({ encodedURL }: { encodedURL: string }) {
   };
 
   return (
-    <div className="my-12 flex gap-2 ">
+    <div className="flex gap-2 ">
       <Input
         ref={copyRef}
-        className="sm:w-2xs focus-visible:ring-0 focus-visible:border-inherit focus-visible:border-[1px]"
+        className="w-full sm:w-2xs focus-visible:ring-0 focus-visible:border-inherit focus-visible:border-[1px]"
         defaultValue={encodedURL}
         readOnly
       />

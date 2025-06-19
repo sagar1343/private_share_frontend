@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import api from "@/services/api";
 import type { IFile } from "@/types/File";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Pencil } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { type FieldValues, useForm } from "react-hook-form";
@@ -69,9 +68,7 @@ export default function FileNameUpdate({ fileName, fileId, setFileName }: Props)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="icon">
-          <Pencil />
-        </Button>
+        <Button variant="link">Edit</Button>
       </DialogTrigger>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

@@ -20,7 +20,7 @@ export default function Collection({ collection, isActive }: Props) {
   const { handleRename } = useManageCollection();
   const { actionStatus } = useSelector((state: RootState) => state.UserCollections);
   function handleDoubleClick() {
-    if (actionStatus !== CollectionActionStatus.RENAMING) navigate(`/collections/${collection.id}`);
+    if (actionStatus !== CollectionActionStatus.RENAMING) navigate(`/dashboard/collections/${collection.id}`);
   }
   return (
     <ContextMenuComponent

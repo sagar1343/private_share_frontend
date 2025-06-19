@@ -33,7 +33,7 @@ export default function useSecureFile() {
       queryClient.invalidateQueries({
         queryKey: ["collections", { id: collectionId }],
       });
-      navigate(`/collections/${collectionId}/files/${data.id}`);
+      navigate(`/dashboard/collections/${collectionId}/files/${data.id}`);
       toast.success("Secured file successfully");
     },
     onError: (error: AxiosError<Error>) => {

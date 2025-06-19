@@ -13,7 +13,7 @@ export default function ReadyToStart() {
             <p className="max-w-[700px] text-slate-500 dark:text-slate-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">Join thousands of professionals who trust Private Share for their secure file sharing needs.</p>
           </div>
           <div>
-            <Button onClick={() => navigate("/collections")} className="bg-[#008CFC] hover:bg-[#008CFC]/90">
+            <Button onClick={() => navigate("/dashboard/collections")} className="bg-[#008CFC] hover:bg-[#008CFC]/90">
               Get Started Now <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

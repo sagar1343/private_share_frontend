@@ -98,7 +98,7 @@ export default function FileUploadDialog({ collectionId }: Props) {
           queryKey: ["files", { collectionId }],
           exact: false,
         });
-        navigate(`/collections/${collectionId}/files/${response.data.id}`);
+        navigate(`/dashboard/collections/${collectionId}/files/${response.data.id}`);
       },
       onError: (error) => {
         console.log(error);

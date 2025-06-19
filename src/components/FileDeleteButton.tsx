@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import api from "@/services/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -31,7 +30,7 @@ export default function FileDeleteButton({ fileId, collectionId }: Props) {
     onSuccess: () => {
       toast.success("Succefully deleted");
       setOpen(false);
-      navigate(`/collections/${collectionId}`, { replace: true });
+      navigate(`/dashboards/collections/${collectionId}`, { replace: true });
 
       queryClient.refetchQueries({
         queryKey: ["files"],
@@ -46,9 +45,7 @@ export default function FileDeleteButton({ fileId, collectionId }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="icon">
-          <Trash2 className="w-4 h-4" />
-        </Button>
+        <Button variant="link">Delete</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>

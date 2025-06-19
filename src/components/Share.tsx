@@ -60,7 +60,6 @@ export default function Share({ id }: { id: number }) {
   return (
     <div className="flex items-center gap-2">
       <CopyLink encodedURL={encodedURL} />
-
       <Dialog>
         <DialogTrigger asChild>
           <Button>Share</Button>
