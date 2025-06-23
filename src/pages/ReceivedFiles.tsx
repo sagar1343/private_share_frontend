@@ -77,9 +77,9 @@ export default function RecievedFiles() {
   return (
     <>
       <Heading heading="Received Files" content="Files shared with you by other users." />
-      <div className="w-full flex flex-col">
+      <div className="mt-8 w-full flex flex-col">
         <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
-          <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 sm:pt-0">
+          <div className="flex gap-2">
             <SearchComponent
               value={searchTerm}
               onChange={setSearchTerm}
@@ -92,7 +92,7 @@ export default function RecievedFiles() {
           {filteredFiles.length == 0 ? (
             <EmptyStateModal title={"files"} searchTerm={searchTerm} />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4">
+            <div className="flex flex-col gap-4">
               {sortedFiles.map((file) => (
                 <div key={file.id}>
                   <ReceivedFileCard file={file} />

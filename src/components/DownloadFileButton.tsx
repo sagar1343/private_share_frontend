@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import api from "@/services/api";
@@ -15,19 +22,27 @@ interface DownloadFileButtonProps {
   className?: string;
 }
 
-export default function DownloadFileButton({ fileId, isProtected, size = 30, className }: DownloadFileButtonProps) {
-  const [isLoading, setIsLoading] = useState(false);
+export default function DownloadFileButton({
+  fileId,
+  isProtected,
+  size = 30,
+  className,
+}: DownloadFileButtonProps) {
+  const [isLoading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   async function handleDownload(event?: FormEvent) {
     event?.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
     const password = passwordRef.current?.value?.trim();
-    await downloadFile(fileId, password);
-    setOpen(false);
-    setIsLoading(false);
+    try {
+      await downloadFile(fileId, password);
+    } finally {
+      setOpen(false);
+      setLoading(false);
+    }
   }
 
   const togglePasswordVisibility = () => {
@@ -39,8 +54,8 @@ export default function DownloadFileButton({ fileId, isProtected, size = 30, cla
       {isProtected ? (
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button size="icon">
-              <Lock size={size} aria-label="Download protected file" />
+            <Button>
+              <Download size={size} aria-label="Download file" />
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
@@ -49,18 +64,44 @@ export default function DownloadFileButton({ fileId, isProtected, size = 30, cla
                 <Lock size={18} className="text-primary" />
                 Password Protected File
               </DialogTitle>
-              <DialogDescription>This file is encrypted. Please enter the password to download.</DialogDescription>
+              <DialogDescription>
+                This file is encrypted. Please enter the password to download.
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleDownload} className="space-y-4 pt-2">
               <div className="relative">
-                <Input ref={passwordRef} type={showPassword ? "text" : "password"} placeholder="Enter password" className="pr-10" autoFocus disabled={isLoading} />
-                <Button type="button" variant="ghost" size="icon" className="absolute right-0 top-0 h-full px-3" onClick={togglePasswordVisibility}>
-                  {showPassword ? <EyeOff size={16} className="text-muted-foreground" /> : <Eye size={16} className="text-muted-foreground" />}
-                  <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                <Input
+                  ref={passwordRef}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter password"
+                  className="pr-10"
+                  autoFocus
+                  disabled={isLoading}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-full px-3"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <EyeOff size={16} className="text-muted-foreground" />
+                  ) : (
+                    <Eye size={16} className="text-muted-foreground" />
+                  )}
+                  <span className="sr-only">
+                    {showPassword ? "Hide password" : "Show password"}
+                  </span>
                 </Button>
               </div>
               <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                  disabled={isLoading}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isLoading}>
@@ -71,9 +112,8 @@ export default function DownloadFileButton({ fileId, isProtected, size = 30, cla
           </DialogContent>
         </Dialog>
       ) : (
-        <Button size="icon" onClick={() => handleDownload()} disabled={isLoading}>
+        <Button onClick={() => handleDownload()} disabled={isLoading}>
           <Download size={size} aria-label="Download file" />
-          {isLoading && <span className="sr-only">Downloading...</span>}
         </Button>
       )}
     </div>

@@ -1,5 +1,5 @@
 import Heading from "@/components/Heading";
-import NotificationCard from "@/components/NotificationCard";
+import NotificationContainer from "@/components/NotificationContainer";
 import useNotifications from "@/hooks/useNotifications";
 
 export default function Notifications() {
@@ -17,12 +17,14 @@ export default function Notifications() {
   return (
     <>
       <Heading heading="Notifications" content="Get real-time updates — never miss a thing." />
-      <NotificationCard
-        unreadCount={unreadCount}
-        notifications={notifications}
-        markAsRead={markAsRead}
-        deleteNotification={deleteNotification}
-      />
+      <div className="mt-8">
+        <NotificationContainer
+          unreadCount={unreadCount}
+          notifications={notifications}
+          markAsRead={markAsRead}
+          deleteNotification={deleteNotification}
+        />
+      </div>
     </>
   );
 }

@@ -20,7 +20,8 @@ export default function Collection({ collection, isActive }: Props) {
   const { handleRename } = useManageCollection();
   const { actionStatus } = useSelector((state: RootState) => state.UserCollections);
   function handleDoubleClick() {
-    if (actionStatus !== CollectionActionStatus.RENAMING) navigate(`/dashboard/collections/${collection.id}`);
+    if (actionStatus !== CollectionActionStatus.RENAMING)
+      navigate(`/dashboard/collections/${collection.id}`);
   }
   return (
     <ContextMenuComponent
@@ -29,7 +30,7 @@ export default function Collection({ collection, isActive }: Props) {
       isActive={isActive}
     >
       <figure
-        className="flex flex-col items-center cursor-pointer p-2 rounded-xl"
+        className="flex flex-col items-center cursor-pointer rounded-md"
         onDoubleClick={() => handleDoubleClick()}
       >
         <Folder size={82} fill="#008CFC" stroke="1" />
@@ -40,7 +41,7 @@ export default function Collection({ collection, isActive }: Props) {
             onSubmit={(data) => handleRename(collection, setRenameId, data)}
           />
         ) : (
-          <figcaption className="max-w-[100px] overflow-hidden whitespace-nowrap overflow-ellipsis">
+          <figcaption className="max-w-[100px] capitalize overflow-hidden whitespace-nowrap overflow-ellipsis">
             {collection.title}
           </figcaption>
         )}

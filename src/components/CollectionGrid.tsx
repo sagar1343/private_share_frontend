@@ -70,7 +70,7 @@ export default function CollectionGrid() {
   return (
     <div className="w-full flex flex-col h-full">
       <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
-        <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 sm:pt-0">
+        <div className="flex gap-2">
           <SearchComponent
             value={searchTerm}
             onChange={setSearchTerm}
@@ -89,16 +89,6 @@ export default function CollectionGrid() {
               ref={containerRef}
               className="grid grid-cols-3 lg:grid-cols-6 gap-x-6 justify-items-center items-center sm:justify-items-start"
             >
-              {page == 1 && (
-                <li>
-                  {actionStatus === CollectionActionStatus.CREATING ? (
-                    <CollectionCreatingItem />
-                  ) : (
-                    <CreateCollectionButton />
-                  )}
-                </li>
-              )}
-
               {sortedCollections.map((collection) => (
                 <CollectionItem
                   key={collection.id}

@@ -1,9 +1,15 @@
 import Heading from "@/components/Heading";
+import Loader from "@/components/Loader";
 import MatricsGrid from "@/components/MetricsGrid";
+import StorageStats from "@/components/StorageStats";
 import { Button } from "@/components/ui/button";
+import useFetch from "@/hooks/useFetch";
+import { DashboardResponse } from "@/types/DashboardResponse";
 import { Folder, Upload } from "lucide-react";
 
 export default function Dashboard() {
+  const { data, isLoading } = useFetch<DashboardResponse>(["dashboard"], "api/dashboard");
+  if (isLoading && !data) return <Loader />;
   return (
     <div>
       <div className="flex flex-wrap gap-y-4 items-center justify-between">
@@ -20,7 +26,10 @@ export default function Dashboard() {
         </div>
       </div>
       <section className="mt-8 space-y-8">
-        <MatricsGrid />
+        <MatricsGrid data={data!} />
+        <div className="grid lg:grid-cols-2 gap-4">
+          <StorageStats data={data!} />
+        </div>
       </section>
     </div>
   );

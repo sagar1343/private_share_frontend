@@ -62,7 +62,7 @@ export default function FileContainer({ className, collectionId }: Props) {
   return (
     <>
       <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
-        <div className="flex sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 sm:pt-0">
+        <div className="flex gap-2">
           <SearchComponent
             value={searchTerm}
             onChange={setSearchTerm}
@@ -75,7 +75,7 @@ export default function FileContainer({ className, collectionId }: Props) {
       {filteredFiles.length == 0 ? (
         <EmptyStateModal title={"files"} searchTerm={searchTerm} />
       ) : (
-        <div className={clsx("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4", className)}>
+        <div className={clsx("grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4", className)}>
           {sortedFiles.map((file) => (
             <FileCard key={file.id} file={file} collectionId={collectionId} />
           ))}

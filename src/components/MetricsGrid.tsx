@@ -1,6 +1,7 @@
 import { FileText, FolderOpen, Share2, User2 } from "lucide-react";
 import { ReactElement } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { DashboardResponse } from "@/types/DashboardResponse";
 
 interface DashboardMatric {
   label: string;
@@ -9,34 +10,33 @@ interface DashboardMatric {
   logo: ReactElement;
 }
 
-const dashboardMatrics: DashboardMatric[] = [
-  {
-    label: "Total Collections",
-    value: 12,
-    extras: "+2 from last month",
-    logo: <FolderOpen className="size-4" />,
-  },
-  {
-    label: "Total Files",
-    value: 248,
-    extras: "+18 from last week",
-    logo: <FileText className="size-4" />,
-  },
-  {
-    label: "Shared Files",
-    value: 32,
-    extras: "+4 from yesterday",
-    logo: <Share2 className="size-4" />,
-  },
-  {
-    label: "Storage Used",
-    value: "2.4 GB",
-    extras: "of 10 GB available",
-    logo: <User2 className="size-4" />,
-  },
-];
-
-export default function MatricsGrid() {
+export default function MatricsGrid({ data }: { data: DashboardResponse }) {
+  const dashboardMatrics: DashboardMatric[] = [
+    {
+      label: "Total Collections",
+      value: data.total_collection,
+      extras: "+2 from last month",
+      logo: <FolderOpen className="size-4" />,
+    },
+    {
+      label: "Total Files",
+      value: data.total_files,
+      extras: "+18 from last week",
+      logo: <FileText className="size-4" />,
+    },
+    {
+      label: "Shared Files",
+      value: data.total_shared_files,
+      extras: "+4 from yesterday",
+      logo: <Share2 className="size-4" />,
+    },
+    {
+      label: "Storage Used",
+      value: data.storage_used,
+      extras: `of ${data.max_allowed_storage} available`,
+      logo: <User2 className="size-4" />,
+    },
+  ];
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {dashboardMatrics.map((metric) => (

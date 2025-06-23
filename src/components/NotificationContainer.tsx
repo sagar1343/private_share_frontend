@@ -15,7 +15,11 @@ interface Props {
   markAsRead: (id: string) => void;
   deleteNotification: (id: string) => void;
 }
-export default function NotificationCard({ notifications, markAsRead, deleteNotification }: Props) {
+export default function NotificationContainer({
+  notifications,
+  markAsRead,
+  deleteNotification,
+}: Props) {
   const navigate = useNavigate();
   return (
     <>

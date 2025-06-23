@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.private-share.sagarcodes.me/",
+  baseURL: "http://localhost:8000/",
 });
 
 api.interceptors.request.use((config) => {
@@ -23,8 +23,7 @@ api.interceptors.response.use(
       errorData?.code === "token_not_valid" &&
       errorData?.messages?.some(
         (msg: any) =>
-          msg?.message?.toLowerCase().includes("invalid") &&
-          msg?.token_class === "AccessToken"
+          msg?.message?.toLowerCase().includes("invalid") && msg?.token_class === "AccessToken"
       ) &&
       !originalRequest._retry;
 
@@ -34,22 +33,14 @@ api.interceptors.response.use(
       const tokens = JSON.parse(localStorage.getItem("tokens") || "{}");
 
       try {
-        const refreshResponse = await axios.post(
-          `${api.defaults.baseURL}/refresh/`,
-          {
-            refresh: tokens.refresh,
-          }
-        );
+        const refreshResponse = await axios.post(`${api.defaults.baseURL}/refresh/`, {
+          refresh: tokens.refresh,
+        });
 
         const newAccessToken = refreshResponse.data.access;
-        localStorage.setItem(
-          "tokens",
-          JSON.stringify({ ...tokens, access: newAccessToken })
-        );
+        localStorage.setItem("tokens", JSON.stringify({ ...tokens, access: newAccessToken }));
 
-        api.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${newAccessToken}`;
+        api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
         return api(originalRequest);

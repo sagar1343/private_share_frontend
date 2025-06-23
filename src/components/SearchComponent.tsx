@@ -7,14 +7,10 @@ interface Props {
   placeholder: string;
 }
 
-export default function SearchComponent({
-  value,
-  onChange,
-  placeholder,
-}: Props) {
+export default function SearchComponent({ value, onChange, placeholder }: Props) {
   return (
-    <div className="relative w-full sm:w-96">
-      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+    <div className="relative min-w-3xs">
+      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         type="text"
         placeholder={placeholder}
