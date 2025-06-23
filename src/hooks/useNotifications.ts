@@ -11,15 +11,15 @@ export default function useNotifications(): [
   INotification[],
   React.Dispatch<React.SetStateAction<INotification[]>>
 ] {
-  const audio = new Audio(notification_sound);
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [notifications, setNotifications] = useState<INotification[]>(() =>
     getStoredNotifications()
   );
 
   const connect = useCallback(() => {
+    const audio = new Audio(notification_sound);
     const tokensStr = localStorage.getItem("tokens");
     if (!tokensStr) {
       console.log("No tokens available");
@@ -76,8 +76,9 @@ export default function useNotifications(): [
       if (wsRef.current) {
         wsRef.current.close();
       }
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
+      const timeoutRef = reconnectTimeoutRef.current;
+      if (timeoutRef) {
+        clearTimeout(timeoutRef);
       }
     };
   }, [connect]);

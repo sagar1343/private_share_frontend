@@ -2,6 +2,7 @@ import { FileText, FolderOpen, Share2, User2 } from "lucide-react";
 import { ReactElement } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { DashboardResponse } from "@/types/DashboardResponse";
+import { Skeleton } from "./ui/skeleton";
 
 interface DashboardMatric {
   label: string;
@@ -48,6 +49,25 @@ export default function MatricsGrid({ data }: { data: DashboardResponse }) {
           <CardContent>
             <h2 className="font-bold text-2xl">{metric.value}</h2>
             <p className="text-xs text-muted-foreground">{metric.extras}</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+export function MetricsGridSkeleton() {
+  return (
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Card key={i} className="gap-2">
+          <CardHeader className="flex justify-between items-center">
+            <Skeleton className="h-4 w-24 mb-2" />
+            <Skeleton className="h-6 w-6" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-6 w-24 mb-2" />
+            <Skeleton className="h-3 w-32" />
           </CardContent>
         </Card>
       ))}

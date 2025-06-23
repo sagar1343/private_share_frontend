@@ -11,9 +11,8 @@ import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
 import Notifications from "@/pages/Notifications";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
-import ReceivedFiles from "@/pages/ReceivedFiles";
-import Recent from "@/pages/Recent";
 import Settings from "@/pages/Settings";
+import SharedFiles from "@/pages/SharedFiles";
 import Starred from "@/pages/Starred";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -83,10 +82,10 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "share",
+            path: "shared-files",
             element: (
               <ProtectedRoute>
-                <ReceivedFiles />
+                <SharedFiles />
               </ProtectedRoute>
             ),
           },
@@ -95,14 +94,6 @@ const router = createBrowserRouter([
             element: (
               <ProtectedRoute>
                 <Notifications />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "recent-files",
-            element: (
-              <ProtectedRoute>
-                <Recent />
               </ProtectedRoute>
             ),
           },

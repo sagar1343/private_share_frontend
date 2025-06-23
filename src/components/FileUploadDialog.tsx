@@ -36,7 +36,6 @@ export default function FileUploadDialog({ collectionId }: Props) {
 
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
     onDrop,
-    maxSize: 105 * 1024 * 1024,
     multiple: false,
   });
 
@@ -54,7 +53,7 @@ export default function FileUploadDialog({ collectionId }: Props) {
   async function uploadFile(file: File) {
     const formdata = new FormData();
     formdata.append("file", file);
-    formdata.append("collections", collectionId.toString());
+    formdata.append("collection", collectionId.toString());
     formdata.append("file_name", file.name);
 
     try {
@@ -64,9 +63,7 @@ export default function FileUploadDialog({ collectionId }: Props) {
         },
         onUploadProgress(progressEvent) {
           if (progressEvent.total) {
-            const percent = Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100
-            );
+            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
             setProgress(percent);
           }
         },
@@ -101,11 +98,8 @@ export default function FileUploadDialog({ collectionId }: Props) {
         navigate(`/dashboard/collections/${collectionId}/files/${response.data.id}`);
       },
       onError: (error) => {
-        console.log(error);
         toast.error(
-          error instanceof AxiosError
-            ? error.response?.data.file
-            : "Failed to upload the file"
+          error instanceof AxiosError ? error.response?.data.file : "Failed to upload the file"
         );
       },
     });
@@ -144,13 +138,10 @@ export default function FileUploadDialog({ collectionId }: Props) {
               )}
             >
               <div
-                className={clsx(
-                  "flex flex-col items-center justify-center pt-5 pb-6",
-                  {
-                    "text-muted-foreground": !isDragActive,
-                    "text-primary": isDragActive,
-                  }
-                )}
+                className={clsx("flex flex-col items-center justify-center pt-5 pb-6", {
+                  "text-muted-foreground": !isDragActive,
+                  "text-primary": isDragActive,
+                })}
               >
                 <CloudUpload
                   className={clsx("size-16 mb-4", {

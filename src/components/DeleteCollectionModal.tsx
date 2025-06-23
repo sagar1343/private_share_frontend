@@ -8,7 +8,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import useManageCollection from "@/hooks/useManageCollection";
+import { useDeleteCollection } from "@/services/collectionService";
+import { useAuthContext } from "@/context/AuthContext";
 
 interface Props {
   collectionId: number;
@@ -21,7 +22,20 @@ export default function DeleteCollectionDialog({
   isOpen,
   handleClose,
 }: Props) {
-  const { handleDelete } = useManageCollection();
+  const { authenticatedUser } = useAuthContext();
+  const deleteCollectionMutation = useDeleteCollection();
+
+  const handleDelete = async () => {
+    try {
+      await deleteCollectionMutation.mutateAsync({
+        userId: authenticatedUser?.id!,
+        collectionId,
+      });
+      handleClose();
+    } catch (error) {
+      // Error handling is done in the mutation
+    }
+  };
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleClose}>
@@ -37,14 +51,19 @@ export default function DeleteCollectionDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <div className="flex justify-center space-x-5">
-            <AlertDialogCancel onClick={handleClose} className="cursor-pointer">
+            <AlertDialogCancel 
+              onClick={handleClose} 
+              className="cursor-pointer"
+              disabled={deleteCollectionMutation.isPending}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => handleDelete(collectionId, handleClose)}
+              onClick={handleDelete}
               className="bg-primary text-white hover:bg-primary/80 cursor-pointer"
+              disabled={deleteCollectionMutation.isPending}
             >
-              Delete
+              {deleteCollectionMutation.isPending ? "Deleting..." : "Delete"}
             </AlertDialogAction>
           </div>
         </AlertDialogFooter>

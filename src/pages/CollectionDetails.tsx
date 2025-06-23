@@ -1,4 +1,6 @@
-import FileContainer from "@/components/FileContainer";
+import GenericFileContainer from "@/components/GenericFileContainer";
+import FileCard from "@/components/FileCard";
+import FilesSkeleton from "@/components/FilesSkeleton";
 import FileUploadDialog from "@/components/FileUploadDialog";
 import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
@@ -27,7 +29,15 @@ export default function CollectionDetails() {
         <FileUploadDialog collectionId={collection?.id!} />
       </div>
       <div className="mt-8">
-        <FileContainer className="sm:mt-12" collectionId={collection?.id!} />
+        <GenericFileContainer
+          endpoint="api/files/"
+          queryKey={["files", { collectionId: collection?.id! }]}
+          queryParams={{ collection: collection?.id.toString()! }}
+          CardComponent={FileCard}
+          skeleton={<FilesSkeleton />}
+          getCardProps={(file) => ({ file, collectionId: collection?.id! })}
+          containerClassName="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4"
+        />
       </div>
     </div>
   );

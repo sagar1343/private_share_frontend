@@ -19,7 +19,7 @@ export default function Header() {
   }, [location]);
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+    <header className="sticky top-0 z-20 bg-background/20 backdrop-blur-xl flex h-16 shrink-0 items-center gap-2 border-b px-4">
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="h-5!" />
       <Breadcrumb>

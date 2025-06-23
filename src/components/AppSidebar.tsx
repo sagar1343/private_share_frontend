@@ -27,7 +27,6 @@ import clsx from "clsx";
 import {
   Bell,
   ChevronUp,
-  Clock,
   Folder,
   FolderOpen,
   Home,
@@ -38,10 +37,10 @@ import {
   Settings2,
   Shield,
   Star,
-  SunMoon,
-  Upload,
+  Upload
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 const navigationItems = [
   {
@@ -60,19 +59,14 @@ const navigationItems = [
     icon: FolderOpen,
   },
   {
-    title: "Received Files",
-    url: "dashboard/share",
+    title: "Shared Files",
+    url: "dashboard/shared-files",
     icon: Library,
   },
   {
     title: "Notifications",
     url: "dashboard/notifications",
     icon: Bell,
-  },
-  {
-    title: "Recent Files",
-    url: "dashboard/recent-files",
-    icon: Clock,
   },
   {
     title: "Starred",
@@ -96,11 +90,6 @@ const managementItem = [
     title: "Settings",
     url: "/settings",
     icon: Settings2,
-  },
-  {
-    title: "Display Settings",
-    url: "/",
-    icon: SunMoon,
   },
 ];
 
@@ -173,6 +162,9 @@ export function AppSidebar() {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+                <SidebarMenuItem>
+                  <ThemeToggle />
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroupContent>
@@ -214,8 +206,8 @@ export function AppSidebar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   side="top"
-                  align="start"
-                  className="w-[--radix-popper-anchor-width] min-w-56 bg-sidebar-accent"
+                  align="end"
+                  className="w-[--radix-popper-anchor-width] min-w-[17rem] bg-sidebar-accent"
                 >
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">

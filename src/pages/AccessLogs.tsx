@@ -3,44 +3,52 @@ import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
 import useFetch from "@/hooks/useFetch";
+import usePagination from "@/hooks/usePagination";
+import { buildPaginatedEndpoint } from "@/lib/apiUtils";
 import { IAccessLogs } from "@/types/AccessLogs";
 import { PaginatedResponse } from "@/types/Pagination";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 type TabKey = "all" | "today" | "yesterday";
 
-type GroupedLogs = {
+interface GroupedLogs {
   today: IAccessLogs[];
   yesterday: IAccessLogs[];
   earlier: IAccessLogs[];
-};
+}
 
 export default function AccessLogs() {
   const { id } = useParams();
-  const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [activeTab, setActiveTab] = useState<TabKey>("all");
+  const pageSize = 12;
+
+  const { page, onNext, onPrevious } = usePagination({
+    dependencies: [],
+  });
 
   const { data, isLoading } = useFetch<PaginatedResponse<IAccessLogs>>(
     ["logs", { fileId: id, page }],
-    `api/files/${id}/logs/?page=${page}`
+    buildPaginatedEndpoint({
+      baseUrl: `api/files/${id}/logs/`,
+      page,
+      pageSize,
+    })
   );
-  const [logs, setLogs] = useState<IAccessLogs[]>([]);
 
-  useEffect(() => {
-    if (data) setLogs(data.results);
-  }, [data]);
+  if (isLoading) return <Loader />;
 
-  const onNext = () => {
-    if (data?.next) setPage((p) => p + 1);
-  };
+  if (!data?.results || data.results.length === 0) {
+    return (
+      <>
+        <Heading heading="Access Logs" />
+        <p className="mt-12 text-center text-gray-500">No access logs available.</p>
+      </>
+    );
+  }
 
-  const onPrevious = () => {
-    if (data?.previous) setPage((p) => p - 1);
-  };
-
-  const filteredLogs = logs.filter((log) =>
+  const filteredLogs = data.results.filter((log) =>
     log.access_by.toLowerCase().includes(filter.toLowerCase())
   );
 
@@ -65,26 +73,10 @@ export default function AccessLogs() {
           earlier: [],
         };
 
-  const logsToShow =
-    activeTab === "all"
-      ? [...groupedLogs.today, ...groupedLogs.yesterday, ...groupedLogs.earlier]
-      : activeGroupedLogs[activeTab];
-
-  if (isLoading) return <Loader />;
-
-  if (logs.length === 0) {
-    return (
-      <>
-        <Heading>Access Logs</Heading>
-        <p className="mt-12 text-center text-gray-500">No access logs available.</p>
-      </>
-    );
-  }
-
   return (
     <>
       <AccessLogsTable
-        fileTitle={data?.results[0].private_file}
+        fileTitle={data.results[0]?.private_file}
         groupedLogs={activeGroupedLogs}
         filter={filter}
         setFilter={setFilter}
@@ -92,14 +84,14 @@ export default function AccessLogs() {
         setActiveTab={setActiveTab}
       />
 
-      {logsToShow.length > 0 && (
+      {data.count > pageSize && (
         <div className="flex justify-center my-12">
           <Pagination
-            count={data?.count!}
+            count={data.count}
             currentPage={page}
-            handleNext={onNext}
-            handlePrevious={onPrevious}
-            pageSize={12}
+            handleNext={() => onNext(!!data.next)}
+            handlePrevious={() => onPrevious(!!data.previous)}
+            pageSize={pageSize}
           />
         </div>
       )}

@@ -15,7 +15,7 @@ export default function FileUplaod({ setValue, setDefault }: Props) {
 
   function onDrop(acceptedFiles: File[], fileRejection: FileRejection[]) {
     if (fileRejection.length) {
-      return console.log(fileRejection[0]?.errors);
+      return;
     }
 
     if (acceptedFiles) {
@@ -40,20 +40,16 @@ export default function FileUplaod({ setValue, setDefault }: Props) {
         className={clsx(
           "h-full min-h-[300px] flex flex-col items-center justify-center w-full border-2  border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600",
           {
-            "border-gray-300 dark:border-gray-600 dark:hover:border-gray-500":
-              !isDragActive,
+            "border-gray-300 dark:border-gray-600 dark:hover:border-gray-500": !isDragActive,
             "border-primary": isDragActive,
           }
         )}
       >
         <div
-          className={clsx(
-            "flex flex-col items-center justify-center pt-5 pb-6",
-            {
-              "text-gray-500 dark:text-gray-400": !isDragActive,
-              "text-primary dark:text-primary": isDragActive,
-            }
-          )}
+          className={clsx("flex flex-col items-center justify-center pt-5 pb-6", {
+            "text-gray-500 dark:text-gray-400": !isDragActive,
+            "text-primary dark:text-primary": isDragActive,
+          })}
         >
           {isUploaded ? (
             <>
@@ -64,19 +60,13 @@ export default function FileUplaod({ setValue, setDefault }: Props) {
             <>
               <CloudUpload className="size-16 mb-4" />
               <p className="mb-2 text-sm">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
+                <span className="font-semibold">Click to upload</span> or drag and drop
               </p>
-              <p className="text-xs">SVG, PNG, JPG , PDF etc. (MAX SIZE 5MB)</p>
+              <p className="text-xs">SVG, PNG, JPG , PDF etc. (MAX SIZE 100MB)</p>
             </>
           )}
         </div>
-        <input
-          {...getInputProps()}
-          id="dropzone-file"
-          type="file"
-          className="hidden"
-        />
+        <input {...getInputProps()} id="dropzone-file" type="file" className="hidden" />
       </label>
     </div>
   );

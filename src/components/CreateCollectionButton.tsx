@@ -1,3 +1,4 @@
+// This file is unused and will be deleted or ignored.
 import { AppDispatch } from "@/app/store";
 import { CollectionActionStatus, setActionStatus } from "@/app/features/collection/collectionSlice";
 import { FolderPlus } from "lucide-react";

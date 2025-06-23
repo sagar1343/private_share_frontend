@@ -1,14 +1,15 @@
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
-import { ArrowDownAZ, ArrowUpAZ, Calendar, FileDown, FileUp, Filter } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+} from "@/components/ui/select";
+import { ArrowDownAZ, ArrowUpAZ, Calendar, FileDown, Filter } from "lucide-react";
 import type React from "react";
 
 export type SortContext = "collections" | "files" | "received";
-
-interface SortOption {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-}
 
 interface Props {
   sort: string;
@@ -17,73 +18,115 @@ interface Props {
   className?: string;
 }
 
+const FIELD_OPTIONS: Record<
+  SortContext,
+  { value: string; label: string; icon: React.ReactNode }[]
+> = {
+  collections: [
+    { value: "created_at", label: "Date", icon: <Calendar className="h-4 w-4 mr-2" /> },
+    { value: "title", label: "Title", icon: <ArrowDownAZ className="h-4 w-4 mr-2" /> },
+  ],
+  files: [
+    { value: "created_at", label: "Date", icon: <Calendar className="h-4 w-4 mr-2" /> },
+    { value: "file_name", label: "Title", icon: <ArrowDownAZ className="h-4 w-4 mr-2" /> },
+    { value: "size", label: "Size", icon: <FileDown className="h-4 w-4 mr-2" /> },
+  ],
+  received: [
+    { value: "created_at", label: "Date", icon: <Calendar className="h-4 w-4 mr-2" /> },
+    { value: "file_name", label: "Title", icon: <ArrowDownAZ className="h-4 w-4 mr-2" /> },
+    { value: "size", label: "Size", icon: <FileDown className="h-4 w-4 mr-2" /> },
+  ],
+};
+
+const DIRECTION_OPTIONS = [
+  { value: "asc", label: "Ascending", icon: <ArrowDownAZ className="h-4 w-4 mr-2" /> },
+  { value: "desc", label: "Descending", icon: <ArrowUpAZ className="h-4 w-4 mr-2" /> },
+];
+
 export default function SortDropdown({ sort, setSort, context = "files", className = "" }: Props) {
-  const allOptions: Record<string, SortOption> = {
-    "title-asc": {
-      label: "Title (A-Z)",
-      value: "title-asc",
-      icon: <ArrowDownAZ className="h-4 w-4 mr-2" />,
-    },
-    "title-desc": {
-      label: "Title (Z-A)",
-      value: "title-desc",
-      icon: <ArrowUpAZ className="h-4 w-4 mr-2" />,
-    },
-    "date-desc": {
-      label: "Newest First",
-      value: "date-desc",
-      icon: <Calendar className="h-4 w-4 mr-2" />,
-    },
-    "date-asc": {
-      label: "Oldest First",
-      value: "date-asc",
-      icon: <Calendar className="h-4 w-4 mr-2" />,
-    },
-    "size-asc": {
-      label: "Size (Smallest)",
-      value: "size-asc",
-      icon: <FileDown className="h-4 w-4 mr-2" />,
-    },
-    "size-desc": {
-      label: "Size (Largest)",
-      value: "size-desc",
-      icon: <FileUp className="h-4 w-4 mr-2" />,
-    },
-  };
+  const fields = FIELD_OPTIONS[context];
+  const { field, direction } = (() => {
+    if (sort.startsWith("-")) return { field: sort.slice(1), direction: "desc" };
+    return { field: sort, direction: "asc" };
+  })();
+  const currentField = fields.find((f) => f.value === field) || fields[0];
+  const currentDirection =
+    DIRECTION_OPTIONS.find((d) => d.value === direction) || DIRECTION_OPTIONS[0];
+  const label = `${currentField.label} ${
+    field === "created_at"
+      ? direction === "asc"
+        ? "(Oldest)"
+        : "(Newest)"
+      : field === "size"
+      ? direction === "asc"
+        ? "(Smallest)"
+        : "(Largest)"
+      : direction === "asc"
+      ? "(A-Z)"
+      : "(Z-A)"
+  }`;
 
-  const contextOptions: Record<SortContext, string[]> = {
-    collections: ["title-asc", "title-desc", "date-desc", "date-asc"],
-    files: ["date-desc", "date-asc", "title-asc", "title-desc", "size-desc", "size-asc"],
-    received: ["date-desc", "date-asc", "title-asc", "title-desc", "size-desc", "size-asc"],
-  };
-
-  const options = contextOptions[context].map((key) => allOptions[key]);
+  function handleValueChange(value: string) {
+    // If value starts with + or -, it's a backend value
+    if (value.startsWith("-") || value.startsWith("+")) {
+      setSort(value.replace(/^\+/, "")); // Remove + if present
+      return;
+    }
+    // Otherwise, fallback to field (asc)
+    setSort(value);
+  }
 
   return (
     <div className={`relative ${className}`}>
-      <Select value={sort} onValueChange={setSort}>
-        <SelectTrigger className="w-full min-w-[44px] bg-background hover:bg-muted/50 transition-colors border-input">
+      <Select value={sort} onValueChange={handleValueChange}>
+        <SelectTrigger className="w-full bg-background hover:bg-muted/50 transition-colors border-input">
           <div className="flex items-center">
             <Filter className="h-4 w-4" />
           </div>
         </SelectTrigger>
-
-        <SelectContent className="min-w-[200px]" align="end">
-          <div className="py-2 px-3 text-xs font-medium text-muted-foreground border-b border-border mb-1">
-            SORT BY
-          </div>
-          {options.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              className="cursor-pointer focus:bg-muted"
-            >
-              <div className="flex items-center w-full">
-                {option.icon}
-                <span>{option.label}</span>
-              </div>
-            </SelectItem>
-          ))}
+        <SelectContent className="min-w-[220px]" align="end">
+          <SelectGroup>
+            <SelectLabel>Sort by</SelectLabel>
+            {fields.map((option) => (
+              <SelectItem
+                key={option.value}
+                value={direction === "desc" ? `-${option.value}` : option.value}
+                className="cursor-pointer focus:bg-muted"
+              >
+                <div className="flex items-center w-full">
+                  {option.icon}
+                  <span>{option.label}</span>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectGroup>
+          <SelectGroup>
+            <SelectLabel>Order</SelectLabel>
+            {DIRECTION_OPTIONS.map((option) => (
+              <SelectItem
+                key={option.value}
+                value={option.value === "desc" ? `-${field}` : field}
+                className="cursor-pointer focus:bg-muted"
+              >
+                <div className="flex items-center w-full">
+                  {option.icon}
+                  <span>
+                    {field === "created_at"
+                      ? option.value === "asc"
+                        ? "Oldest"
+                        : "Newest"
+                      : field === "size"
+                      ? option.value === "asc"
+                        ? "Smallest"
+                        : "Largest"
+                      : option.value === "asc"
+                      ? "A-Z"
+                      : "Z-A"}
+                  </span>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </div>
