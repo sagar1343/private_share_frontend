@@ -4,11 +4,10 @@ import SearchComponent from "@/components/SearchComponent";
 import SortDropdown from "@/components/SortDropdown";
 import useFetch from "@/hooks/useFetch";
 import usePagination from "@/hooks/usePagination";
-import clsx from "clsx";
-import { useState } from "react";
 import { buildPaginatedEndpoint } from "@/lib/apiUtils";
 import { PaginatedResponse } from "@/types/Pagination";
-import React from "react";
+import clsx from "clsx";
+import React, { useState } from "react";
 
 interface Props {
   className?: string;

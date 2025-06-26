@@ -1,19 +1,17 @@
 import CreateCollectionDialog from "@/components/CreateCollectionDialog";
+import FileUploadAction from "@/components/FileUploadAction";
 import Heading from "@/components/Heading";
 import MatricsGrid, { MetricsGridSkeleton } from "@/components/MetricsGrid";
 import RecentFiles from "@/components/RecentFiles";
 import RecentFilesSkeleton from "@/components/RecentFilesSkeleton";
 import StorageStats, { StorageStatsSkeleton } from "@/components/StorageStats";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import useFetch from "@/hooks/useFetch";
-import { DashboardResponse } from "@/types/DashboardResponse";
-import { Upload } from "lucide-react";
+import { useDashboardSummary } from "@/context/DashboardContext";
 
 export default function Dashboard() {
-  const { data, isLoading } = useFetch<DashboardResponse>(["dashboard"], "api/dashboard");
+  const [data, loading] = useDashboardSummary();
 
-  if (isLoading && !data) {
+  if (loading && !data) {
     return (
       <div>
         <div className="flex flex-wrap gap-y-4 items-center justify-between">
@@ -43,14 +41,12 @@ export default function Dashboard() {
         </div>
         <div className="flex gap-3">
           <CreateCollectionDialog />
-          <Button>
-            <Upload /> File Upload
-          </Button>
+          <FileUploadAction />
         </div>
       </div>
       <section className="mt-8 space-y-8">
         <MatricsGrid data={data!} />
-        <div className="grid lg:grid-cols-2 items-start gap-4">
+        <div className="grid lg:grid-cols-2 items-start max-lg:space-y-8 lg:gap-4">
           <StorageStats data={data!} />
           <RecentFiles />
         </div>

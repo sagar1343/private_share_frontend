@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
+import SummaryProvider from "./context/DashboardContext";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -22,7 +23,9 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={client}>
       <AuthProvider>
         <ThemeProvider defaultTheme="dark" storageKey="private_share_theme">
-          <RouterProvider router={router} />
+          <SummaryProvider>
+            <RouterProvider router={router} />
+          </SummaryProvider>
         </ThemeProvider>
       </AuthProvider>
       <Toast />

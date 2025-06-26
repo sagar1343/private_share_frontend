@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardResponse } from "@/types/DashboardResponse";
 import { Skeleton } from "./ui/skeleton";
+import parseSize from "filesize-parser";
 
 export default function StorageStats({ data }: { data: DashboardResponse }) {
   return (
@@ -18,7 +19,11 @@ export default function StorageStats({ data }: { data: DashboardResponse }) {
             <div
               className="bg-[#0089FA] h-2 rounded-full transition-all duration-300"
               style={{
-                width: parseInt(data.storage_used.substring(0, data.storage_used.length - 2)),
+                width: `${
+                  (parseSize(data.storage_used || "0B") /
+                    parseSize(data.max_allowed_storage || "1B")) *
+                  100
+                }%`,
               }}
             />
           </div>

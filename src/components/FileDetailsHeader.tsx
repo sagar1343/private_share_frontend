@@ -32,7 +32,7 @@ export default function FileDetailsHeader({ file }: { file: IFile }) {
 
   return (
     <div>
-      <div className="group flex items-center gap-4">
+      <div className="group flex flex-wrap items-center gap-4">
         <Heading heading={fileName} />
         <div className="group-hover:flex hidden items-center">
           <FileNameUpdate fileName={fileName} fileId={file.id} setFileName={setFileName} />

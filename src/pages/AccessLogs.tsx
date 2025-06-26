@@ -33,7 +33,6 @@ export default function AccessLogs() {
     buildPaginatedEndpoint({
       baseUrl: `api/files/${id}/logs/`,
       page,
-      pageSize,
     })
   );
 

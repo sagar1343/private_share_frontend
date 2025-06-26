@@ -1,12 +1,10 @@
-import Heading from "./Heading";
 import { Card } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
 
 export default function SharedFilesSkeleton() {
   return (
     <div>
-      <Heading heading="Shared Files" />
-      <div className="mt-8">
+      <div>
         <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
           <div className="flex gap-2">
             <div className="relative min-w-3xs">

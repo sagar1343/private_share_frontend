@@ -13,15 +13,17 @@ import { useAuthContext } from "@/context/AuthContext";
 import { useCreateCollection } from "@/services/collectionService";
 import { CollectionFormData } from "@/types/CollectionFormData";
 import { Folder } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-export default function CreateCollectionDialog() {
+export default function CreateCollectionDialog({ customTrigger }: { customTrigger?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const { authenticatedUser } = useAuthContext();
   const createCollectionMutation = useCreateCollection();
   const { register, handleSubmit, reset, formState } = useForm<CollectionFormData>();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: CollectionFormData) => {
     try {
@@ -37,7 +39,8 @@ export default function CreateCollectionDialog() {
 
       setOpen(false);
       reset();
-    } catch (error) {}
+      navigate("/dashboard/collections/");
+    } catch (e) {}
   };
 
   useEffect(() => {
@@ -54,10 +57,14 @@ export default function CreateCollectionDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button>
-          <Folder className="mr-2 h-4 w-4" />
-          New Collection
-        </Button>
+        {customTrigger ? (
+          customTrigger
+        ) : (
+          <Button>
+            <Folder className="mr-2 h-4 w-4" />
+            New Collection
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:min-w-[425px]">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

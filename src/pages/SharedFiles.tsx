@@ -1,17 +1,12 @@
-import EmptyStateModal from "@/components/EmptyStateModal";
-import Heading from "@/components/Heading";
-import Pagination from "@/components/Pagination";
-import ReceivedFileCard from "@/components/ReceivedFileCard";
-import FileModal from "@/components/ReceivedFileModal";
-import SearchComponent from "@/components/SearchComponent";
-import SharedFilesSkeleton from "@/components/SharedFilesSkeleton";
-import SortDropdown from "@/components/SortDropdown";
 import GenericFileContainer from "@/components/GenericFileContainer";
+import Heading from "@/components/Heading";
+import ReceivedFileCard from "@/components/ReceivedFileCard";
+import SharedFilesSkeleton from "@/components/SharedFilesSkeleton";
 
 export default function SharedFiles() {
   return (
     <>
-      <Heading heading="Shared Files" />
+      <Heading heading="Shared Files" content="These are the files others have shared with you. " />
       <div className="mt-8 w-full flex flex-col">
         <GenericFileContainer
           endpoint="api/fileshare"

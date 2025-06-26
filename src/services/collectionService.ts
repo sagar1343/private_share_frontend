@@ -1,6 +1,6 @@
 import api from "@/services/api";
 import { ICollection } from "@/types/Collection";
-import { CollectionFormData } from "@/types/CollectionFormData";
+import { CollectionColorData, CollectionFormData } from "@/types/CollectionFormData";
 import { PaginatedResponse } from "@/types/Pagination";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -15,7 +15,12 @@ export const collectionKeys = {
   detail: (id: number) => [...collectionKeys.details(), id] as const,
 };
 
-export const fetchCollections = async (userId: number, page: number, searchTerm?: string, ordering?: string) => {
+export const fetchCollections = async (
+  userId: number,
+  page: number,
+  searchTerm?: string,
+  ordering?: string
+) => {
   const params = new URLSearchParams();
   params.append("page", page.toString());
   if (searchTerm?.trim()) params.append("search", searchTerm.trim());
@@ -47,7 +52,7 @@ export const updateCollection = async ({
 }: {
   userId: number;
   collectionId: number;
-  data: CollectionFormData;
+  data: CollectionFormData | CollectionColorData;
 }): Promise<ICollection> => {
   const response = await api.patch<ICollection>(
     `api/users/${userId}/collections/${collectionId}/`,
@@ -66,7 +71,12 @@ export const deleteCollection = async ({
   await api.delete(`api/users/${userId}/collections/${collectionId}/`);
 };
 
-export const useCollections = (userId: number, page: number, searchTerm?: string, ordering?: string) => {
+export const useCollections = (
+  userId: number,
+  page: number,
+  searchTerm?: string,
+  ordering?: string
+) => {
   return useQuery({
     queryKey: ["collections", userId, page, searchTerm, ordering],
     queryFn: () => fetchCollections(userId, page, searchTerm, ordering),
@@ -99,7 +109,6 @@ export const useCreateCollection = () => {
           };
         }
       );
-
       toast.success("Created Successfully");
     },
     onError: (error: AxiosError) => {

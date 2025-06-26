@@ -5,7 +5,7 @@ import Heading from "@/components/Heading";
 export default function Collections() {
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap gap-y-4 items-center justify-between">
         <Heading heading="Collections" content="Organize your files into collections." />
         <CreateCollectionDialog />
       </div>

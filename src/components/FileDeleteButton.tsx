@@ -30,7 +30,7 @@ export default function FileDeleteButton({ fileId, collectionId }: Props) {
     onSuccess: () => {
       toast.success("Succefully deleted");
       setOpen(false);
-      navigate(`/dashboards/collections/${collectionId}`, { replace: true });
+      navigate(`/dashboard/collections/${collectionId}`, { replace: true });
 
       queryClient.refetchQueries({
         queryKey: ["files"],

@@ -46,10 +46,10 @@ export default function CollectionGrid() {
       </div>
       {(!paginatedCollections?.results || paginatedCollections.results.length === 0) && (
         <>
-          {searchTerm == "" ? (
+          {searchTerm ? (
             <EmptyStateModal title="collection" />
           ) : (
-            <p className="mt-12 text-center text-gray-500">No collections found.</p>
+            <p className="text-muted-foreground text-center">No collections found.</p>
           )}
         </>
       )}

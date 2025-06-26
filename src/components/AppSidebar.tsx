@@ -23,6 +23,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuthContext } from "@/context/AuthContext";
+import { useDashboardSummary } from "@/context/DashboardContext";
 import clsx from "clsx";
 import {
   Bell,
@@ -37,66 +38,93 @@ import {
   Settings2,
   Shield,
   Star,
-  Upload
+  Upload,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import CreateCollectionDialog from "./CreateCollectionDialog";
+import FileUploadAction from "./FileUploadAction";
 import ThemeToggle from "./ThemeToggle";
-
-const navigationItems = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Dashboard",
-    url: "dashboard/overview",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "My Collections",
-    url: "dashboard/collections",
-    icon: FolderOpen,
-  },
-  {
-    title: "Shared Files",
-    url: "dashboard/shared-files",
-    icon: Library,
-  },
-  {
-    title: "Notifications",
-    url: "dashboard/notifications",
-    icon: Bell,
-  },
-  {
-    title: "Starred",
-    url: "dashboard/starred",
-    icon: Star,
-  },
-];
-const quickActions = [
-  {
-    title: "Upload File",
-    icon: Upload,
-  },
-  {
-    title: "New Collection",
-    icon: Folder,
-  },
-];
-
-const managementItem = [
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings2,
-  },
-];
+import { Badge } from "./ui/badge";
 
 export function AppSidebar() {
   const { authenticatedUser, isAuthenticated, logout } = useAuthContext();
   const navigate = useNavigate();
   const { open } = useSidebar();
+  const [data] = useDashboardSummary();
+
+  const navigationItems = [
+    {
+      title: "Home",
+      url: "/",
+      icon: Home,
+    },
+    {
+      title: "Dashboard",
+      url: "dashboard/overview",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "My Collections",
+      url: "dashboard/collections",
+      icon: FolderOpen,
+      badge: data?.total_collection,
+    },
+    {
+      title: "Shared Files",
+      url: "dashboard/shared-files",
+      icon: Library,
+      badge: data?.total_shared_files,
+    },
+    {
+      title: "Notifications",
+      url: "dashboard/notifications",
+      icon: Bell,
+    },
+    {
+      title: "Starred",
+      url: "dashboard/starred",
+      icon: Star,
+      badge: data?.starred_files,
+    },
+  ];
+  const quickActions = [
+    {
+      title: "Upload File",
+      component: (
+        <FileUploadAction
+          customTrigger={
+            <SidebarMenuItem>
+              <SidebarMenuButton className="cursor-pointer">
+                <Upload /> File Upload
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          }
+        />
+      ),
+    },
+    {
+      title: "New Collection",
+      component: (
+        <CreateCollectionDialog
+          customTrigger={
+            <SidebarMenuItem>
+              <SidebarMenuButton className="cursor-pointer">
+                <Folder /> New Collection
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          }
+        />
+      ),
+    }
+  ];
+  const managementItem = [
+    {
+      title: "Settings",
+      url: "/settings",
+      icon: Settings2,
+    },
+  ];
+
   return (
     <Sidebar collapsible="icon" variant="sidebar">
       <SidebarContent>
@@ -121,6 +149,9 @@ export function AppSidebar() {
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
+                      {typeof item.badge === "number" && item.badge > 0 && (
+                        <Badge className="ml-auto bg-primary/10 text-primary">{item.badge}</Badge>
+                      )}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -135,12 +166,7 @@ export function AppSidebar() {
               <SidebarMenu>
                 {quickActions.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <div>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </div>
-                    </SidebarMenuButton>
+                    <SidebarMenuButton asChild>{item.component}</SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>

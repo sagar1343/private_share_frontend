@@ -1,7 +1,7 @@
 import GenericFileContainer from "@/components/GenericFileContainer";
 import FileCard from "@/components/FileCard";
 import FilesSkeleton from "@/components/FilesSkeleton";
-import FileUploadDialog from "@/components/FileUploadDialog";
+import FileUploadAction from "@/components/FileUploadAction";
 import Heading from "@/components/Heading";
 import Loader from "@/components/Loader";
 import { useAuthContext } from "@/context/AuthContext";
@@ -21,12 +21,12 @@ export default function CollectionDetails() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between">
+      <div className="flex flex-wrap gap-y-4 items-center justify-between">
         <Heading
           heading={collection?.title!}
           content="Easily manage all your uploaded and received files in one place."
         />
-        <FileUploadDialog collectionId={collection?.id!} />
+        <FileUploadAction collectionId={collection?.id!} />
       </div>
       <div className="mt-8">
         <GenericFileContainer
@@ -35,7 +35,11 @@ export default function CollectionDetails() {
           queryParams={{ collection: collection?.id.toString()! }}
           CardComponent={FileCard}
           skeleton={<FilesSkeleton />}
-          getCardProps={(file) => ({ file, collectionId: collection?.id! })}
+          getCardProps={(file) => ({
+            file,
+            collectionId: collection?.id!,
+            color: collection?.color,
+          })}
           containerClassName="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4"
         />
       </div>
