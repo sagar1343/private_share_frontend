@@ -5,7 +5,6 @@ import AccessLogs from "@/pages/AccessLogs";
 import CollectionDetails from "@/pages/CollectionDetails";
 import Collections from "@/pages/Collections";
 import Dashboard from "@/pages/Dashboard";
-import FileCreate from "@/pages/FileCreate";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
@@ -54,14 +53,6 @@ const router = createBrowserRouter([
             element: (
               <ProtectedRoute>
                 <CollectionDetails />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "collections/:collectionId/files",
-            element: (
-              <ProtectedRoute>
-                <FileCreate />
               </ProtectedRoute>
             ),
           },

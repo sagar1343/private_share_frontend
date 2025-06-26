@@ -14,8 +14,15 @@ import { useLocation } from "react-router-dom";
 export default function Header() {
   const location = useLocation();
   const [breadcrumbItems, setBreadcrumbItems] = useState<string[]>([]);
+
   useEffect(() => {
-    if (location.pathname) setBreadcrumbItems(() => location.pathname.substring(1).split("/"));
+    if (location.pathname)
+      setBreadcrumbItems(() =>
+        location.pathname
+          .substring(1)
+          .split("/")
+          .filter((item) => item !== "files")
+      );
   }, [location]);
 
   return (

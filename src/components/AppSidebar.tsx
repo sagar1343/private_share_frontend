@@ -43,6 +43,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import CreateCollectionDialog from "./CreateCollectionDialog";
 import FileUploadAction from "./FileUploadAction";
+import ProtectedRoute from "./ProtectedRoute";
 import ThemeToggle from "./ThemeToggle";
 import { Badge } from "./ui/badge";
 
@@ -115,7 +116,7 @@ export function AppSidebar() {
           }
         />
       ),
-    }
+    },
   ];
   const managementItem = [
     {

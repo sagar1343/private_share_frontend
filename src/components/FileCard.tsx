@@ -12,7 +12,7 @@ interface Props {
   collectionId?: number;
 }
 
-export default function FileCard({ file, collectionId }: Props) {
+export default function FileCard({ file }: Props) {
   const navigate = useNavigate();
   const [starred, setStarred] = useState(file.starred);
 

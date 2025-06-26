@@ -49,30 +49,13 @@ export default function SortDropdown({ sort, setSort, context = "files", classNa
     if (sort.startsWith("-")) return { field: sort.slice(1), direction: "desc" };
     return { field: sort, direction: "asc" };
   })();
-  const currentField = fields.find((f) => f.value === field) || fields[0];
-  const currentDirection =
-    DIRECTION_OPTIONS.find((d) => d.value === direction) || DIRECTION_OPTIONS[0];
-  const label = `${currentField.label} ${
-    field === "created_at"
-      ? direction === "asc"
-        ? "(Oldest)"
-        : "(Newest)"
-      : field === "size"
-      ? direction === "asc"
-        ? "(Smallest)"
-        : "(Largest)"
-      : direction === "asc"
-      ? "(A-Z)"
-      : "(Z-A)"
-  }`;
 
   function handleValueChange(value: string) {
-    // If value starts with + or -, it's a backend value
     if (value.startsWith("-") || value.startsWith("+")) {
-      setSort(value.replace(/^\+/, "")); // Remove + if present
+      setSort(value.replace(/^\+/, ""));
       return;
     }
-    // Otherwise, fallback to field (asc)
+
     setSort(value);
   }
 
