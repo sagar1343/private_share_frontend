@@ -3,4 +3,6 @@ export interface PaginatedResponse<T> {
   next: string;
   previous: string;
   results: T[];
+  page_size: number;
+  current_page?: number;
 }

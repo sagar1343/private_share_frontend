@@ -24,7 +24,7 @@ const colorMap: Record<string, string> = {
   [Color.YELLOW]: "#f5a623",
   [Color.RED]: "#e00",
   [Color.GREEN]: "#22c55e",
-  [Color.PURPLE]: "#a855f7",
+  [Color.VIOLET]: "#8f00ff",
   [Color.PINK]: "#ff0080",
   [Color.BLUE]: "#0389FA",
 };

@@ -34,11 +34,7 @@ export default function GenericFileContainer({
 }: Props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [sort, setSort] = useState("-created_at");
-  const pageSize = 12;
-
-  const { page, onNext, onPrevious } = usePagination({
-    dependencies: [searchTerm, sort],
-  });
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useFetch<PaginatedResponse<any>>(
     [...queryKey, { page, searchTerm, sort }],
@@ -55,7 +51,7 @@ export default function GenericFileContainer({
 
   return (
     <>
-      <div className="sticky top-0 sm:static z-10 bg-background sm:bg-transparent border-b sm:border-b-0 border-border/20 sm:border-transparent pb-4 sm:pb-0 mb-4 sm:mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="flex gap-2">
           <SearchComponent
             value={searchTerm}
@@ -80,14 +76,12 @@ export default function GenericFileContainer({
         </div>
       )}
 
-      {data && data.count > pageSize && (
+      {data && data.count > 0 && (
         <div className="flex justify-center my-12">
           <Pagination
-            count={data.count}
             currentPage={page}
-            handleNext={() => onNext(!!data.next)}
-            handlePrevious={() => onPrevious(!!data.previous)}
-            pageSize={pageSize}
+            totalPages={Math.ceil(data.count / data.page_size)}
+            onPageChange={setPage}
           />
         </div>
       )}

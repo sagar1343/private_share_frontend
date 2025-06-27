@@ -6,21 +6,41 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { INotification } from "@/types/Notification";
-import { AlertTriangle, Bell, CheckCircle, Clock, Info, MoreVertical } from "lucide-react";
+import { AlertTriangle, Bell, CheckCircle, Clock, Info, MoreVertical, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 interface Props {
-  unreadCount: number;
   notifications: INotification[];
+  isLoading?: boolean;
+  unreadCount: number;
   markAsRead: (id: string) => void;
+  markAsUnread: (id: string) => void;
   deleteNotification: (id: string) => void;
+  loadMore?: () => void;
+  hasMore?: boolean;
 }
+
 export default function NotificationContainer({
   notifications,
+  isLoading = false,
   markAsRead,
+  markAsUnread,
   deleteNotification,
+  loadMore,
+  hasMore = false,
 }: Props) {
   const navigate = useNavigate();
+
+  if (isLoading && notifications.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <Loader />
+        <h2 className="text-xl font-medium mb-2">Loading notifications...</h2>
+      </div>
+    );
+  }
+
   return (
     <>
       {notifications.length === 0 ? (
@@ -56,7 +76,7 @@ export default function NotificationContainer({
                             className="h-auto p-0 text-xs"
                             onClick={() => {
                               markAsRead(notification.id);
-                              navigate(notification.action_url!);
+                              navigate(`/dashboard/${notification.action_url}`);
                             }}
                           >
                             View details
@@ -73,9 +93,13 @@ export default function NotificationContainer({
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-40">
-                          {!notification.read && (
+                          {!notification.read ? (
                             <DropdownMenuItem onClick={() => markAsRead(notification.id)}>
                               Mark as read
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem onClick={() => markAsUnread(notification.id)}>
+                              Mark as unread
                             </DropdownMenuItem>
                           )}
                           <DropdownMenuItem
@@ -92,18 +116,34 @@ export default function NotificationContainer({
               </div>
             </div>
           ))}
+
+          {hasMore && (
+            <div className="flex justify-center pt-4">
+              <Button variant="outline" onClick={loadMore} disabled={isLoading} className="w-full">
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  "Load more notifications"
+                )}
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </>
   );
 }
 
-function getNotificationIcon(type: INotification["type"]) {
+function getNotificationIcon(type: string) {
   switch (type) {
     case "file_expiration":
-      return <Clock className="h-5 w-5 text-amber-500" />;
     case "warning":
-      return <AlertTriangle className="h-5 w-5 text-amber-500" />;
+      return <Clock className="h-5 w-5 text-amber-500" />;
+    case "file_deletion":
+      return <AlertTriangle className="h-5 w-5 text-red-500" />;
     case "success":
       return <CheckCircle className="h-5 w-5 text-green-500" />;
     case "info":

@@ -14,7 +14,7 @@ export default function EmptyStateModal({ title }: Props) {
         </div>
         <h3 className="text-lg font-medium mb-2">No {title} found</h3>
         <p className="text-gray-500 max-w-sm">
-          {`No matching results were found. Try a different search.`}
+          No matching results were found. Try a different search.
         </p>
       </CardContent>
     </Card>

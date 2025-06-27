@@ -41,7 +41,7 @@ export default function AccessLogsTable({
       .toUpperCase()
       .slice(0, 2);
   };
-  const { collectionId, id: fileId } = useParams();
+
   const formatRelativeTime = (timeString: string) => {
     const date = new Date(timeString);
     const now = new Date();
@@ -139,28 +139,7 @@ export default function AccessLogsTable({
       <Card className="border-0">
         <CardHeader className="pb-0">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <CardTitle className="flex items-center gap-2">
-              <Breadcrumb>
-                <BreadcrumbList className="mt-6 mb-12 flex items-center">
-                  <BreadcrumbItem className="max-md:hidden">
-                    <Link to={`/collections/${collectionId}/files/${fileId}`}>
-                      {" "}
-                      <Heading className="mt-0! mb-0! max-w-[12ch] truncate leading-relaxed max-md:hidden">
-                        {fileTitle}
-                      </Heading>
-                    </Link>
-                  </BreadcrumbItem>
-                  <BreadcrumbItem className="items-center max-md:hidden">
-                    <ChevronRight size="28" />
-                  </BreadcrumbItem>
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>
-                      <Heading className="mt-0! mb-0!">Access Logs</Heading>
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </CardTitle>
+            <CardTitle className="flex items-center gap-2"></CardTitle>
           </div>
         </CardHeader>
 

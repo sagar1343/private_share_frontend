@@ -1,22 +1,99 @@
 import notification_sound from "@/assets/audio/notification_sound.mp3";
-import { INotification } from "@/types/Notification";
+import {
+  deleteNotification,
+  fetchNotifications,
+  markNotificationAsRead,
+  markNotificationAsUnread,
+} from "@/services/notificationService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 interface TokenPair {
   access: string;
   refresh: string;
 }
 
-export default function useNotifications(): [
-  INotification[],
-  React.Dispatch<React.SetStateAction<INotification[]>>
-] {
+export default function useNotifications() {
+  const queryClient = useQueryClient();
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  const [notifications, setNotifications] = useState<INotification[]>(() =>
-    getStoredNotifications()
+  const {
+    data: notificationsData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["notifications", page],
+    queryFn: () => fetchNotifications(page),
+    staleTime: 30000,
+  });
+
+  const notifications = notificationsData?.results || [];
+  const totalCount = notificationsData?.count || 0;
+
+  const markAsReadMutation = useMutation({
+    mutationFn: markNotificationAsRead,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    onError: (error) => {
+      toast.error("Failed to mark notification as read");
+      console.error("Error marking notification as read:", error);
+    },
+  });
+
+  const markAsUnreadMutation = useMutation({
+    mutationFn: markNotificationAsUnread,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    onError: (error) => {
+      toast.error("Failed to mark notification as unread");
+      console.error("Error marking notification as unread:", error);
+    },
+  });
+
+  const deleteNotificationMutation = useMutation({
+    mutationFn: deleteNotification,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      toast.success("Notification deleted");
+    },
+    onError: (error) => {
+      toast.error("Failed to delete notification");
+      console.error("Error deleting notification:", error);
+    },
+  });
+
+  const markAsRead = useCallback(
+    (id: string) => {
+      markAsReadMutation.mutate(id);
+    },
+    [markAsReadMutation]
   );
+
+  const markAsUnread = useCallback(
+    (id: string) => {
+      markAsUnreadMutation.mutate(id);
+    },
+    [markAsUnreadMutation]
+  );
+
+  const deleteNotificationHandler = useCallback(
+    (id: string) => {
+      deleteNotificationMutation.mutate(id);
+    },
+    [deleteNotificationMutation]
+  );
+
+  const loadMore = useCallback(() => {
+    if (hasMore && !isLoading) {
+      setPage((prev) => prev + 1);
+    }
+  }, [hasMore, isLoading]);
 
   const connect = useCallback(() => {
     const audio = new Audio(notification_sound);
@@ -29,7 +106,6 @@ export default function useNotifications(): [
     try {
       const tokens: TokenPair = JSON.parse(tokensStr);
       console.log("Attempting to connect to WebSocket...");
-      console.log("Token:", tokens.access);
 
       const wsUrl = `${import.meta.env.VITE_WS_URL}ws/notifications/?token=${tokens.access}`;
       console.log("WebSocket URL:", wsUrl);
@@ -43,9 +119,6 @@ export default function useNotifications(): [
 
       ws.onopen = () => {
         console.log("WebSocket connected successfully");
-        if (reconnectTimeoutRef.current) {
-          clearTimeout(reconnectTimeoutRef.current);
-        }
       };
 
       ws.onclose = (event) => {
@@ -54,9 +127,10 @@ export default function useNotifications(): [
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        if (data.event === "notifications") {
-          audio.play();
-          setNotifications((prevNotfications) => [data.message, ...prevNotfications]);
+        if (data.type === "send_notification") {
+          audio.play().catch(() => {});
+          queryClient.invalidateQueries({ queryKey: ["notifications"] });
+          toast.success("New notification received");
         }
         console.log("Received message:", data);
       };
@@ -67,7 +141,7 @@ export default function useNotifications(): [
     } catch (error) {
       console.error("Error setting up WebSocket:", error);
     }
-  }, []);
+  }, [queryClient]);
 
   useEffect(() => {
     connect();
@@ -76,24 +150,26 @@ export default function useNotifications(): [
       if (wsRef.current) {
         wsRef.current.close();
       }
-      const timeoutRef = reconnectTimeoutRef.current;
-      if (timeoutRef) {
-        clearTimeout(timeoutRef);
-      }
     };
   }, [connect]);
 
   useEffect(() => {
-    localStorage.setItem("notifications", JSON.stringify(notifications));
-  }, [notifications]);
+    if (notificationsData) {
+      setHasMore(Boolean(notificationsData.next));
+    }
+  }, [notificationsData]);
 
-  return [notifications, setNotifications];
-}
-
-function getStoredNotifications(): INotification[] {
-  const stored = localStorage.getItem("notifications");
-  if (stored) {
-    return JSON.parse(stored);
-  }
-  return [];
+  return {
+    notifications,
+    isLoading,
+    error,
+    unreadCount: notifications.filter((n) => !n.read).length,
+    totalCount,
+    hasMore,
+    markAsRead,
+    markAsUnread,
+    deleteNotification: deleteNotificationHandler,
+    loadMore,
+    refetch,
+  };
 }

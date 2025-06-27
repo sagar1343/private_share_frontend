@@ -1,26 +1,38 @@
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Clock } from "lucide-react";
 import { IAccessLogs } from "@/types/AccessLogs";
-import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { getInitials, formatRelativeTime } from "../utils/accessLogUtils";
 
 export default function LogCard({ log }: { log: IAccessLogs }) {
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const date = new Date(log.access_time);
+  const formattedTime = date.toLocaleTimeString("en-US", {
     hour: "numeric",
-    minute: "numeric",
-    timeZone: "UTC",
-  };
-
+    minute: "2-digit",
+    hour12: true,
+  });
   return (
-    <Card className="border-0 py-2">
-      <CardHeader className="px-0 border-b">
-        <CardTitle>
-          <span className="font-light text-green-700 dark:text-green-400">{log.access_by}</span>
-        </CardTitle>
-        <CardDescription>
-          <p>{new Date(log.access_time).toLocaleDateString("en-US", options)}</p>
-        </CardDescription>
-      </CardHeader>
+    <Card className="border-l-2 border-l-primary flex flex-row w-full p-3 rounded-md">
+      <div className="flex items-center gap-3 w-full">
+        <Avatar className="h-10 w-10 border">
+          <AvatarFallback className="bg-primary/10 text-primary">
+            {getInitials(log.access_by)}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <p className="font-medium truncate">{log.access_by}</p>
+            <Badge variant="outline" className="ml-2 text-xs">
+              {formattedTime}
+            </Badge>
+          </div>
+          <p className="text-sm text-muted-foreground flex items-center gap-1">
+            <Clock className="h-3 w-3" />
+            {formatRelativeTime(log.access_time)}
+          </p>
+        </div>
+      </div>
     </Card>
   );
 }

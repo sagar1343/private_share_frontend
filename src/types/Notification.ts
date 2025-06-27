@@ -1,9 +1,17 @@
 export interface INotification {
   id: string;
-  type: "file_expiration" | "system" | "success" | "warning" | "info";
+  recipient: number;
   title: string;
+  type: string;
   message: string;
-  timestamp: string;
   read: boolean;
   action_url: string;
+  timestamp: string;
+}
+
+export interface NotificationResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: INotification[];
 }

@@ -48,7 +48,7 @@ export default function StorageStats({ data }: { data: DashboardResponse }) {
             </div>
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full" />
+                <div className="w-3 h-3 bg-[#8f00ff] rounded-full" />
                 <span>Shared</span>
               </div>
               <span>{data.total_shared_files}</span>

@@ -5,23 +5,19 @@ import SearchComponent from "@/components/SearchComponent";
 import SortDropdown from "@/components/SortDropdown";
 import { useAuthContext } from "@/context/AuthContext";
 import useClickOutside from "@/hooks/useClickOutside";
-import usePagination from "@/hooks/usePagination";
 import { useCollections } from "@/services/collectionService";
 import { useState } from "react";
 import Collection from "./CollectionItem";
+import React from "react";
 
 export default function CollectionGrid() {
   const { authenticatedUser } = useAuthContext();
   const [_active, setActive] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sort, setSort] = useState("-created_at");
-  const pageSize = 18;
+  const [page, setPage] = useState(1);
 
   const containerRef = useClickOutside<HTMLUListElement>(() => setActive(null));
-
-  const { page, onNext, onPrevious } = usePagination({
-    dependencies: [searchTerm, sort],
-  });
 
   const { data: paginatedCollections, isLoading } = useCollections(
     authenticatedUser?.id!,
@@ -63,14 +59,12 @@ export default function CollectionGrid() {
           ))}
         </ul>
 
-        {paginatedCollections?.count && paginatedCollections?.count > pageSize ? (
+        {paginatedCollections?.count && paginatedCollections?.count > 0 ? (
           <div className="flex justify-center my-12">
             <Pagination
-              count={paginatedCollections.count}
               currentPage={page}
-              handleNext={() => onNext(!!paginatedCollections.next)}
-              handlePrevious={() => onPrevious(!!paginatedCollections.previous)}
-              pageSize={pageSize}
+              totalPages={Math.ceil(paginatedCollections.count / paginatedCollections.page_size)}
+              onPageChange={setPage}
             />
           </div>
         ) : null}

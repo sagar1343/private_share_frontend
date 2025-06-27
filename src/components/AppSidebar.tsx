@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuthContext } from "@/context/AuthContext";
 import { useDashboardSummary } from "@/context/DashboardContext";
+import useNotifications from "@/hooks/useNotifications";
 import clsx from "clsx";
 import {
   Bell,
@@ -43,7 +44,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import CreateCollectionDialog from "./CreateCollectionDialog";
 import FileUploadAction from "./FileUploadAction";
-import ProtectedRoute from "./ProtectedRoute";
 import ThemeToggle from "./ThemeToggle";
 import { Badge } from "./ui/badge";
 
@@ -52,6 +52,7 @@ export function AppSidebar() {
   const navigate = useNavigate();
   const { open } = useSidebar();
   const [data] = useDashboardSummary();
+  const { unreadCount } = useNotifications();
 
   const navigationItems = [
     {
@@ -80,6 +81,7 @@ export function AppSidebar() {
       title: "Notifications",
       url: "dashboard/notifications",
       icon: Bell,
+      badge: unreadCount,
     },
     {
       title: "Starred",
