@@ -1,5 +1,5 @@
+import { NotificationResponse } from "@/types/Notification";
 import api from "./api";
-import { INotification, NotificationResponse } from "@/types/Notification";
 
 export const fetchNotifications = async (
   page: number = 1

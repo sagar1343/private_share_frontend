@@ -8,7 +8,6 @@ import useClickOutside from "@/hooks/useClickOutside";
 import { useCollections } from "@/services/collectionService";
 import { useState } from "react";
 import Collection from "./CollectionItem";
-import React from "react";
 
 export default function CollectionGrid() {
   const { authenticatedUser } = useAuthContext();

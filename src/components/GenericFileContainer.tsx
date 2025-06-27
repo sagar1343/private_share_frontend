@@ -3,7 +3,6 @@ import Pagination from "@/components/Pagination";
 import SearchComponent from "@/components/SearchComponent";
 import SortDropdown from "@/components/SortDropdown";
 import useFetch from "@/hooks/useFetch";
-import usePagination from "@/hooks/usePagination";
 import { buildPaginatedEndpoint } from "@/lib/apiUtils";
 import { PaginatedResponse } from "@/types/Pagination";
 import clsx from "clsx";

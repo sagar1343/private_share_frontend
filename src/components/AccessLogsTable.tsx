@@ -1,13 +1,10 @@
-import Heading from "@/components/Heading";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle, Calendar, ChevronRight, Clock, Search } from "lucide-react";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "./ui/breadcrumb";
-import { Link, useParams } from "react-router-dom";
 import { IAccessLogs } from "@/types/AccessLogs";
+import { AlertCircle, Calendar, Clock, Search } from "lucide-react";
 
 type TabKey = "all" | "today" | "yesterday";
 
@@ -25,7 +22,6 @@ interface Props {
 }
 
 export default function AccessLogsTable({
-  fileTitle,
   groupedLogs,
   filter,
   setFilter,

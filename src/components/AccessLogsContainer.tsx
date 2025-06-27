@@ -1,12 +1,11 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IAccessLogs } from "@/types/AccessLogs";
 import { Loader2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import AccessLogsFilter from "./AccessLogsFilter";
 import EmptyState from "./EmptyState";
 import LogsList from "./LogsList";
 import Pagination from "./Pagination";
 import SearchComponent from "./SearchComponent";
-import AccessLogsFilter from "./AccessLogsFilter";
-import React, { useState, useEffect } from "react";
 
 interface Props {
   fileTitle: string | undefined;
@@ -29,8 +28,6 @@ export default function AccessLogsContainer({
   groupedLogs,
   filter,
   setFilter,
-  activeTab,
-  setActiveTab,
   isLoading = false,
   currentPage,
   totalPages,
@@ -44,11 +41,7 @@ export default function AccessLogsContainer({
 
   let logs: IAccessLogs[] = [];
   if (logFilter === "all") {
-    logs = [
-      ...groupedLogs.today,
-      ...groupedLogs.yesterday,
-      ...groupedLogs.earlier,
-    ];
+    logs = [...groupedLogs.today, ...groupedLogs.yesterday, ...groupedLogs.earlier];
   } else if (logFilter === "today") {
     logs = groupedLogs.today;
   } else if (logFilter === "yesterday") {

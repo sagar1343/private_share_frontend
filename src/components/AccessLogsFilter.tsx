@@ -1,6 +1,12 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+} from "@/components/ui/select";
 import { Calendar, Clock, Filter } from "lucide-react";
-import React from "react";
 
 interface Props {
   value: string;
@@ -27,7 +33,11 @@ export default function AccessLogsFilter({ value, onChange, className = "" }: Pr
           <SelectGroup>
             <SelectLabel>Filter by</SelectLabel>
             {FILTER_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value} className="cursor-pointer focus:bg-muted">
+              <SelectItem
+                key={option.value}
+                value={option.value}
+                className="cursor-pointer focus:bg-muted"
+              >
                 <div className="flex items-center w-full">
                   {option.icon}
                   <span>{option.label}</span>
@@ -39,4 +49,4 @@ export default function AccessLogsFilter({ value, onChange, className = "" }: Pr
       </Select>
     </div>
   );
-} 
+}
